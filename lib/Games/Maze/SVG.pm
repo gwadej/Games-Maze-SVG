@@ -8,7 +8,7 @@ use strict;
 
 =head1 NAME
 
-Maze::SVG - Build mazes in SVG.
+Games::Maze::SVG - Build mazes in SVG.
 
 =head1 VERSION
 
@@ -24,13 +24,8 @@ Games::Maze::SVG uses the Games::Maze module to create mazes in SVG.
 
     use Games::Maze::SVG;
 
-    my $foo = Maze::SVG->new();
+    my $foo = Games::Maze::SVG->new();
     ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
 
 =cut
 
@@ -93,6 +88,41 @@ my %crumbstyles = (
 # ----------------------------------------------
 #  Subroutines
 
+=over 4
+
+=item new
+
+Create a new Games::Maze::SVG object. Supports the following named parameters:
+
+=over 4
+
+=item wallform
+
+String naming the wall format. Legal values are bevel, round, roundcorners,
+and straight.
+
+=item crumb
+
+String describing the breadcrumb design. Legal values are dash,
+dot, line, and none
+
+=item dx
+
+The size of the tiles in the X direction.
+
+=item dy
+
+The size of the tiles in the Y direction.
+
+=item dir
+
+Directory in which to find the ecmascript for the maze interactivity. Should
+either be relative, or in URL form.
+
+=back
+
+=cut
+
 sub  new
  {
   my $obj = 
@@ -110,6 +140,12 @@ sub  new
  }
 
 
+=item is_hex
+
+Method returns true if the maze is made of hexagonal cells.
+
+=cut
+
 sub  is_hex
  {
   my $self = shift;
@@ -118,6 +154,12 @@ sub  is_hex
  }
 
 
+=item is_hex_shaped
+
+Method returns true if the overall shape of the maze is a hexagon.
+
+=cut
+
 sub  is_hex_shaped
  {
   my $self = shift;
@@ -125,6 +167,22 @@ sub  is_hex_shaped
   'Hex' eq ($self->{mazeparms}->{shape}||'');
  }
 
+
+=item set_wall_form
+
+Set the wall format for the current maze.
+
+=over 4
+
+=item $form
+
+String specifying a wall format.
+
+=back
+
+Returns a reference to self for chaining.
+
+=cut
 
 sub  set_wall_form
  {
@@ -144,6 +202,14 @@ sub  set_wall_form
  }
 
 
+=item set_interactive
+
+Method makes the maze interactive.
+
+Returns a reference to self for chaining.
+
+=cut
+
 sub  set_interactive
  {
   my $self = shift;
@@ -151,6 +217,21 @@ sub  set_interactive
   $self;
  }
 
+
+=item set_crumbstyle
+
+=over 4
+
+=item $bcs
+
+String specifying the breadcrumb style. Generates an exception if the
+breadcrumb style is not recognized.
+
+Returns a reference to self for chaining.
+
+=back
+
+=cut
 
 sub  set_crumbstyle
  {
@@ -164,6 +245,12 @@ sub  set_crumbstyle
   $self;
  }
 
+
+=item toString
+
+Method that converts the current maze into an SVG string.
+
+=cut
 
 sub  toString
  {
@@ -387,6 +474,14 @@ EOB
  }
 
 
+#
+# Generates just the maze portion of the SVG.
+#
+# $dx - The size of the tiles in the X direction.
+# $dy - The size of the tiles in the Y direction.
+# $rows - Reference to an array of row data.
+#
+# returns a string containing the SVG for the maze description.
 sub  _just_maze
  {
   my $dx   = shift;
@@ -412,9 +507,25 @@ sub  _just_maze
  }
 
 
-# ----------------------
-#  Convert the rectangular grid from ascii format to SVG definition
-#   references.
+=item transform_rect_grid
+
+Convert the rectangular grid from ascii format to SVG definition
+   references.
+
+=over 4
+
+=item $rows
+
+Reference to an array of rows
+
+=item $walls
+
+String specifying wall format.
+
+=back
+
+=cut
+
 sub  transform_rect_grid
  {
   my $rows  = shift;
@@ -452,9 +563,22 @@ sub  transform_rect_grid
   @{$rows} = @out;
  }
 
-# ----------------------
-#  Convert the hexagonal grid from ascii format to SVG definition
-#   references.
+
+=item transform_hex_grid
+
+Convert the hexagonal grid from ascii format to SVG definition
+ references.
+
+=over 4
+
+=item $rows
+
+Reference to an array of rows
+
+=back
+
+=cut
+
 sub transform_hex_grid
  {
   my $rows = shift;
@@ -483,9 +607,21 @@ sub transform_hex_grid
  }
 
 
-# --------------------
-# remove the extra horizontal space inserted to regularize the look
-#  of the rectangular maze
+=item remove_horiz_padding
+
+Remove the extra horizontal space inserted to regularize the look
+ of the rectangular maze
+
+=over 4
+
+=item $rows
+
+Reference to an array of rows
+
+=back
+
+=cut
+
 sub  remove_horiz_padding
  {
   my $rows = shift;
@@ -501,14 +637,22 @@ sub  remove_horiz_padding
    }
  }
 
-# ----------------------
-#  Extract the wall forms from the DATA file handle.
+=item get_wall_forms
+
+Extract the wall forms from the DATA file handle.
+
+Returns a hash of wall forms.
+
+=cut
+
 sub get_wall_forms
 {
  local $/ = "\n===\n";
  chomp( my @list = <DATA> );
  @list;
 }
+
+=back
 
 =head1 AUTHOR
 
@@ -523,6 +667,9 @@ I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
 
 =head1 ACKNOWLEDGEMENTS
+
+Thanks go to Valen Johnson and Jason Wood for extensive test play of the
+mazes.
 
 =head1 COPYRIGHT & LICENSE
 
