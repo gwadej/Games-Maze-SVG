@@ -19,7 +19,7 @@ if($parms{style})
  }
 
 # Prepare to generate output
-my $build_maze = Games::Maze::SVG::new( dir => '/svg/');
+my $build_maze = Games::Maze::SVG->new( dir => '/svg/');
 
 # extract parameters from command line
 my $desc = eval { get_maze_desc( \%parms ); };
@@ -35,7 +35,7 @@ if($@)
 $build_maze->{mazeparms} = $desc;
 $build_maze->set_wall_form( $parms{walls} ) if $parms{walls};
 $build_maze->set_interactive();
-$build_maze->set_crumbstyle( $parms{crumb} ) if $parms{crumb};
+$build_maze->set_breadcrumb( $parms{crumb} ) if $parms{crumb};
 
 my $svg = $build_maze->toString();
 print $q->header( -type => "image/svg+xml", -Content_length => length $svg ),

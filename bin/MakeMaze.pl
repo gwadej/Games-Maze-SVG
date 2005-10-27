@@ -29,7 +29,7 @@ my $desc = get_maze_desc( \%opts, @ARGV );
 $build_maze->{mazeparms} = $desc;
 $build_maze->set_wall_form( $opts{f} ) if $opts{f};
 $build_maze->set_interactive() if $opts{i};
-$build_maze->set_crumbstyle( $opts{b} ) if $opts{b};
+$build_maze->set_breadcrumb( $opts{b} ) if $opts{b};
 
 # build maze
 my $num = $opts{n} || 1;

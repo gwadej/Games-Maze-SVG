@@ -1,0 +1,18 @@
+#!perl -T
+
+use Test::More tests => 4;
+
+use Games::Maze::SVG;
+
+use strict;
+use warnings;
+
+# Default constructor.
+my $maze = Games::Maze::SVG->new( mazeparms => { cell => 'Hex' } );
+
+isa_ok( $maze, 'Games::Maze::SVG', "Correct type" );
+
+can_ok( $maze, qw/is_hex is_hex_shaped toString/ );
+
+ok( $maze->is_hex(), "Has hex cells" );
+ok( !$maze->is_hex_shaped(), "Not hex shaped" );

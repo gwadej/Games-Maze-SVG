@@ -124,20 +124,21 @@ either be relative, or in URL form.
 =cut
 
 sub  new
- {
-  my $obj = 
-         {
-          mazeparms => {},
-	  wallform  => 'round',
-	  crumb     => 'dash',
-	  dx        => DELTA_X,
-	  dy        => DELTA_Y,
-	  dir       => '',
-	  @_,
-         };
+{
+    my $class = shift;
+    my $obj = 
+    {
+        mazeparms => {},
+	wallform  => 'round',
+	crumb     => 'dash',
+	dx        => DELTA_X,
+	dy        => DELTA_Y,
+	dir       => '',
+	@_,
+    };
 
-  bless $obj;
- }
+    bless $obj;
+}
 
 
 =item is_hex
@@ -185,21 +186,21 @@ Returns a reference to self for chaining.
 =cut
 
 sub  set_wall_form
- {
-  my $self = shift;
-  my $form = shift;
+{
+    my $self = shift;
+    my $form = shift;
   
-  if(exists $Walls{$form})
-   {
-    $self->{wallform} = $form;
-   }
-  else
-   {
-    my $forms = join( ", ", sort keys %Walls );
-    die "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
-   }
-  $self;
- }
+    if(exists $Walls{$form})
+    {
+        $self->{wallform} = $form;
+    }
+    else
+    {
+        my $forms = join( ", ", sort keys %Walls );
+        die "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
+    }
+    $self;
+}
 
 
 =item set_interactive
@@ -218,7 +219,7 @@ sub  set_interactive
  }
 
 
-=item set_crumbstyle
+=item set_breadcrumb
 
 =over 4
 
@@ -227,23 +228,40 @@ sub  set_interactive
 String specifying the breadcrumb style. Generates an exception if the
 breadcrumb style is not recognized.
 
-Returns a reference to self for chaining.
-
 =back
+
+Returns a reference to self for chaining.
 
 =cut
 
-sub  set_crumbstyle
- {
-  my $self = shift;
-  my $bcs  = shift;
+sub  set_breadcrumb
+{
+    my $self = shift;
+    my $bcs  = shift;
 
-  return unless defined $bcs;
+    return unless defined $bcs;
 
-  die "Unrecognized breadcrumb style '$bcs'.\n" unless exists $crumbstyles{$bcs};
-  $self->{crumb} = $bcs;
-  $self;
- }
+    die "Unrecognized breadcrumb style '$bcs'.\n"
+      unless exists $crumbstyles{$bcs};
+    $self->{crumb} = $bcs;
+    $self->{crumbstyle} = $crumbstyles{$bcs};
+
+    $self;
+}
+
+
+=item get_crumbstyle
+
+Returns the CSS style for the breadcrumb.
+
+=cut
+
+sub  get_crumbstyle
+{
+    my $self = shift;
+
+    $self->{crumbstyle} ||= $crumbstyles{$self->{crumb}};
+}
 
 
 =item toString
@@ -277,7 +295,7 @@ sub  toString
 		button => '#ccf',
                };
 
-  my $crumbstyle = $crumbstyles{$self->{crumb}};
+  my $crumbstyle = $self->get_crumbstyle();
   my $mazeout;
   my ($xp, $yp, $xe, $ye, $xsign, $ysign);
 
@@ -388,7 +406,7 @@ EOB
       path    { stroke: black; fill: none; }
       polygon { stroke: black; fill: grey; }
       #sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
-      #crumb  { fill:none; stroke:$color->{crumb}; $crumbstyle; }
+      #crumb  { fill:none; stroke:$color->{crumb}; $crumbstyle }
       #mazebg { fill:$color->{mazebg}; stroke:none; }
       .panel  { fill:$color->{panel}; stroke:none; }
       .button {
