@@ -643,6 +643,7 @@ Reference to an array of rows
 sub  remove_horiz_padding
  {
   my $rows = shift;
+
   for(my $i = $#{$rows->[0]}; $i > 0; $i -= 3)
    {
     splice( @{$_}, $i-1, 1 ) foreach(@{$rows});
