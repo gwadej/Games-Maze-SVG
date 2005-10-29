@@ -129,7 +129,7 @@ sub  new
 {
     my $class = shift;
     
-    my $type = shift || 'Rect';
+    my $shape = shift || 'Rect';
     my $obj = 
     {
         mazeparms => {},
@@ -141,24 +141,24 @@ sub  new
 	@_,
     };
 
-    if('Rect' eq $type)
+    if('Rect' eq $shape)
     {
-        delete $obj->{mazeparms}->{cell};
-        delete $obj->{mazeparms}->{form};
+        $obj->{mazeparms}->{cell} = 'Quad';
+        $obj->{mazeparms}->{form} = 'Rectangle';
     }
-    elsif('RectHex' eq $type)
+    elsif('RectHex' eq $shape)
     {
         $obj->{mazeparms}->{cell} = 'Hex';
-        delete $obj->{mazeparms}->{form};
+        $obj->{mazeparms}->{form} = 'Rectangle';
     }
-    elsif('Hex' eq $type)
+    elsif('Hex' eq $shape)
     {
         $obj->{mazeparms}->{cell} = 'Hex';
         $obj->{mazeparms}->{form} = 'Hexagon';
     }
     else
     {
-        die "Unrecognized maze type '$type'.\n";
+        die "Unrecognized maze shape '$shape'.\n";
     }
 
     bless $obj;
@@ -189,7 +189,7 @@ sub  is_hex_shaped
  {
   my $self = shift;
   
-  'Hex' eq ($self->{mazeparms}->{shape}||'');
+  'Hexagon' eq ($self->{mazeparms}->{form}||'');
  }
 
 

@@ -10,17 +10,17 @@ $| = 1;
 my $q = CGI::new();
 my %parms = $q->Vars();
 # Fixup for new HTML style
-my $type = 'Rect';
+my $shape = 'Rect';
 if($parms{style})
  {
   my @pieces = split( ':', $parms{style} );
   $parms{walls} = $pieces[1];
-  $type = 'RectHex' if $pieces[0] eq "hex";
-  $type = 'Hex'     if $pieces[0] eq "Hex";
+  $shape = 'RectHex' if $pieces[0] eq "hex";
+  $shape = 'Hex'     if $pieces[0] eq "Hex";
  }
 
 # Prepare to generate output
-my $build_maze = Games::Maze::SVG->new( $type, dir => '/svg/');
+my $build_maze = Games::Maze::SVG->new( $shape, dir => '/svg/');
 
 # extract parameters from command line
 my $desc = eval { get_maze_desc( \%parms ); };

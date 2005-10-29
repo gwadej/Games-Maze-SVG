@@ -15,10 +15,10 @@ getopts( 'xXSs:e:n:o:f:b:i', \%opts ) || usage();
 usage() if @ARGV == 1;
 
 # Prepare to generate output
-my $type = 'Rect';
-$type = 'RectHex' if $opts{x};
-$type = 'Hex' if $opts{X};
-my $build_maze = $opts{S} ? Games::Maze::SVG->new( $type ) : Games::Maze::Ascii->new();
+my $shape = 'Rect';
+$shape = 'RectHex' if $opts{x};
+$shape = 'Hex' if $opts{X};
+my $build_maze = $opts{S} ? Games::Maze::SVG->new( $shape ) : Games::Maze::Ascii->new();
 my $out = \*STDOUT;
 
 if($opts{o})
