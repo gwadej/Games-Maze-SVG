@@ -1,8 +1,11 @@
-#!perl -T
+#!perl
 
 use Test::More tests => 7;
 
 use Games::Maze::SVG;
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use MazeTestUtils;
 
 use strict;
 use warnings;
@@ -114,14 +117,6 @@ grid_ok( $rectgrid2, 'bevel', $rectbevelout2, 'Small Beveled Rectangle 2' );
 
 # -----------------
 # Subroutines
-
-sub split_maze
-{
-    my $maze = shift;
-
-    [ map { [ split //, $_ ] } split( /\n/, $maze ) ];
-}
-
 
 sub grid_ok
 {

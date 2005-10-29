@@ -1,33 +1,35 @@
-#!perl -T
+#!perl
 
 use Test::More tests => 3;
 
 use Games::Maze::SVG;
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use MazeTestUtils;
 
 use strict;
 use warnings;
 
 can_ok( "Games::Maze::SVG", "transform_hex_grid" );
 
-my $simplegrid = <<'EOM';
- __
+my $simplegrid = normalize_maze( <<'EOM' );
+ __ 
 /  \
 \__/
 EOM
 
 my $simpleout = [
-   [ qw/ 0  xh xh  0/ ],
-   [ qw/xsr  0  0 xsl/ ],
-   [ qw/xsl xh xh xsr/ ],
+   [ qw/ 0  xh xh  0  0/ ],
+   [ qw/xsr  0  0 xsl 0/ ],
+   [ qw/xsl xh xh xsr 0/ ],
 ];
 
 grid_ok( $simplegrid, $simpleout, 'Simple Hex' );
 
-# Warning: Trailing spaces are important in the following.
-my $hexgrid = <<'EOM';
-          __          
-         /  \__       
-    __/  \     \__    
+my $hexgrid = normalize_maze( <<'EOM' );
+          __
+         /  \__
+    __/  \     \__
  __/  \     \__   \__ 
 /     /  \__/   __/  \
 \  /  \  /  \__      /
@@ -37,9 +39,9 @@ my $hexgrid = <<'EOM';
 \  /  \__/  \  /  \  /
 /  \  /   __/     /  \
 \__   \  /  \__/  \  /
-   \__/  \      __/   
-      \__   \__/      
-         \__/         
+   \__/  \      __/
+      \__   \__/  
+         \__/
 EOM
 
 my $hexout = [
@@ -66,14 +68,6 @@ grid_ok( $hexgrid, $hexout, 'Hexagon maze' );
 
 # -----------------
 # Subroutines
-
-sub split_maze
-{
-    my $maze = shift;
-
-    [ map { [ split //, $_ ] } split( /\n/, $maze ) ];
-}
-
 
 sub grid_ok
 {
