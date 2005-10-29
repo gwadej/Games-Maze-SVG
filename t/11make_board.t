@@ -67,6 +67,7 @@ is_deeply( $maze->make_board_array( $rectanglebevel ),
            $rectbevel_board,
 	   "beveled rectangle" );
 
+$maze = Games::Maze::SVG->new( 'RectHex' );
 my $recthex = [
    [ qw/ 0  xh  xh  0   0  0   0  xh  xh  0   0  0  0  0/ ],
    [ qw/xsr  0   0 xsl xh xh  xsr  0   0 xsl  0  0  0  0/ ],
@@ -97,6 +98,7 @@ is_deeply( $maze->make_board_array( $recthex ),
            $recthex_board,
 	   "rectangle, hex cells" );
 
+$maze = Games::Maze::SVG->new( 'Hex' );
 my $hexagon = [
    [ qw| 0   0  0  0   0  0  0   0  0  0  xh xh  0   0  0  0   0  0  0   0  0  0  0| ],
    [ qw| 0   0  0  0   0  0  0   0  0 xsr  0  0 xsl xh xh  0   0  0  0   0  0  0  0| ],

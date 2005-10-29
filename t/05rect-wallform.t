@@ -10,7 +10,7 @@ use warnings;
 
 # Test setting wall form
 
-my $maze = Games::Maze::SVG->new();
+my $maze = Games::Maze::SVG->new( 'Rect' );
 
 can_ok( $maze, "set_wall_form" );
 

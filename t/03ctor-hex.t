@@ -8,7 +8,7 @@ use strict;
 use warnings;
 
 # Default constructor.
-my $maze = Games::Maze::SVG->new( mazeparms => { cell => 'Hex', shape => 'Hex' } );
+my $maze = Games::Maze::SVG->new( 'Hex' );
 
 isa_ok( $maze, 'Games::Maze::SVG', "Correct type" );
 

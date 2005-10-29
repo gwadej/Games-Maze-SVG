@@ -8,7 +8,7 @@ use strict;
 use warnings;
 
 # Default constructor.
-my $maze = Games::Maze::SVG->new();
+my $maze = Games::Maze::SVG->new( 'Rect' );
 
 isa_ok( $maze, 'Games::Maze::SVG', "Correct type" );
 

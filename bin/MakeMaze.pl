@@ -15,7 +15,10 @@ getopts( 'xXSs:e:n:o:f:b:i', \%opts ) || usage();
 usage() if @ARGV == 1;
 
 # Prepare to generate output
-my $build_maze = $opts{S} ? Games::Maze::SVG->new() : Games::Maze::Ascii->new();
+my $type = 'Rect';
+$type = 'RectHex' if $opts{x};
+$type = 'Hex' if $opts{X};
+my $build_maze = $opts{S} ? Games::Maze::SVG->new( $type ) : Games::Maze::Ascii->new();
 my $out = \*STDOUT;
 
 if($opts{o})
@@ -26,7 +29,7 @@ if($opts{o})
 
 # extract parameters from command line
 my $desc = get_maze_desc( \%opts, @ARGV );
-$build_maze->{mazeparms} = $desc;
+$build_maze->{mazeparms} = { %{$desc}, %{$build_maze->{mazeparms}} };
 $build_maze->set_wall_form( $opts{f} ) if $opts{f};
 $build_maze->set_interactive() if $opts{i};
 $build_maze->set_breadcrumb( $opts{b} ) if $opts{b};
@@ -62,8 +65,8 @@ sub  get_maze_desc
 
   my %desc = ( dimensions => $dims );
 
-  $desc{cell} = 'Hex'     if $opts->{x} || $opts->{X};
-  $desc{form} = 'Hexagon' if $opts->{X};
+#  $desc{cell} = 'Hex'     if $opts->{x} || $opts->{X};
+#  $desc{form} = 'Hexagon' if $opts->{X};
   if(defined $opts->{s})
    {
     unless($opts->{s} >= 1 and $opts->{s} <= $dims->[0])

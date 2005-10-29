@@ -94,6 +94,8 @@ my %crumbstyles = (
 
 Create a new Games::Maze::SVG object. Supports the following named parameters:
 
+Takes one positional parameter that is the maze type: Rect, RectHex, or Hex
+
 =over 4
 
 =item wallform
@@ -126,6 +128,8 @@ either be relative, or in URL form.
 sub  new
 {
     my $class = shift;
+    
+    my $type = shift || 'Rect';
     my $obj = 
     {
         mazeparms => {},
@@ -136,6 +140,26 @@ sub  new
 	dir       => '',
 	@_,
     };
+
+    if('Rect' eq $type)
+    {
+        delete $obj->{mazeparms}->{cell};
+        delete $obj->{mazeparms}->{form};
+    }
+    elsif('RectHex' eq $type)
+    {
+        $obj->{mazeparms}->{cell} = 'Hex';
+        delete $obj->{mazeparms}->{form};
+    }
+    elsif('Hex' eq $type)
+    {
+        $obj->{mazeparms}->{cell} = 'Hex';
+        $obj->{mazeparms}->{form} = 'Hexagon';
+    }
+    else
+    {
+        die "Unrecognized maze type '$type'.\n";
+    }
 
     bless $obj;
 }
