@@ -20,6 +20,7 @@ t/07interactive.t
 t/08xform_rect.t
 t/09xform_recthex.t
 t/10xform_hexagon.t
+t/11make_board.t
 t/lib/MazeTestUtils.pm
 t/pod-coverage.t
 t/pod.t
