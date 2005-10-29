@@ -264,6 +264,41 @@ sub  get_crumbstyle
 }
 
 
+=item get_script
+
+Method that returns the path to the interactivity script.
+
+=cut
+
+sub get_script
+{
+    my $self = shift;
+    
+    $self->is_hex() ? "$self->{dir}hexmaze.es" : "$self->{dir}rectmaze.es";
+}
+
+=item make_board_array
+
+Build a two-dimensional array of integers that maps the board from
+the two dimensional matrix of wall descriptions.
+
+=cut
+
+sub make_board_array
+{
+    my $self = shift;
+    my $rows = shift;
+    my @board = ();
+
+    foreach my $row (@{$rows})
+    {
+        push @board, [ map { $_ ? ($_ eq 'xh' ? -1 : 1) : 0 } @{$row} ];
+    }
+    
+    \@board;
+}
+
+
 =item toString
 
 Method that converts the current maze into an SVG string.
@@ -283,7 +318,6 @@ sub  toString
                  split( /\n/, $maze->to_ascii() );
 
   my ($dx2, $dy2) = ($self->{dx}/2, $self->{dy}/2);
-  my $scriptname = '';
   my $script = '';
   my $sprite = '';
   my $crumb  = '';
@@ -307,7 +341,6 @@ sub  toString
     transform_hex_grid( \@rows );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
-    $scriptname = 'hexmaze';
     ($xp, $yp) = (3*($maze->{entry}->[0]-1)+2, 2*($maze->{entry}->[1]-1) );
     ($xe, $ye) = (3*($maze->{exit}->[0]-1)+2, 2*($maze->{exit}->[1])+1 );
     if($self->is_hex_shaped())
@@ -324,7 +357,6 @@ sub  toString
     transform_rect_grid( \@rows, $self->{wallform} );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
-    $scriptname = 'rectmaze';
     ($xp, $yp) = (2*($maze->{entry}->[0]-1)+1, 2*($maze->{entry}->[1]-1) );
     ($xe, $ye) = (2*($maze->{exit}->[0]-1)+1, 2*($maze->{exit}->[1]) );
     ($xsign, $ysign) = (($xe+0.5)*$self->{dx},($ye+2)*$self->{dy});
@@ -339,21 +371,24 @@ sub  toString
 
   if($self->{interactive})
    {
-    $script  = qq{    <script language="ecmascript" xlink:href="$self->{dir}$scriptname.es"/>\n};
+    $script  = qq{    <script language="ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
+
+    my $board = $self->make_board_array( \@rows );
+
     $script .= qq{    <script language="ecmascript">\n}
               .qq{      var board = new Array();\n};
     my $i = 0;
-    foreach my $row (@rows)
+    foreach my $row (@{$board})
      {
       $script .= qq{      board[$i] = new Array(}
-                 . join( ', ', map { $_ ? ($_ eq 'xh' ? -1 : 1) : 0 } @{$row} )
+                 . join( ', ', @{$row} )
 	         . qq{ );\n};
       $i++;
      }
     $script .= qq{    </script>\n};
 
-    $sprite = qq{  <use id="me" x="0" y="0" xlink:href="#sprite" visibility="hidden"/>\n};
-    $crumb = qq{  <polyline id="crumb" points="0,0"/>};
+    $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
+    $crumb = qq{  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>};
 
     $background = <<"EOB";
   <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
@@ -406,7 +441,7 @@ EOB
       path    { stroke: black; fill: none; }
       polygon { stroke: black; fill: grey; }
       #sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
-      #crumb  { fill:none; stroke:$color->{crumb}; $crumbstyle }
+      .crumbs { fill:none; $crumbstyle }
       #mazebg { fill:$color->{mazebg}; stroke:none; }
       .panel  { fill:$color->{panel}; stroke:none; }
       .button {
