@@ -127,12 +127,8 @@ sub  new
     my $shape = shift || 'Rect';
     my $obj = 
     {
-        mazeparms => {},
+    	Games::Maze::SVG::init_object(),
 	wallform  => 'round',
-	crumb     => 'dash',
-	dx        => DELTA_X,
-	dy        => DELTA_Y,
-	dir       => '',
 	@_,
     };
 
@@ -270,7 +266,7 @@ sub  toString
   my $mazeout;
   my ($xp, $yp, $xe, $ye, $xsign, $ysign);
 
-    transform_rect_grid( \@rows, $self->{wallform} );
+    $self->transform_rect_grid( \@rows, $self->{wallform} );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
     ($xp, $yp) = (2*($maze->{entry}->[0]-1)+1, 2*($maze->{entry}->[1]-1) );
@@ -495,41 +491,42 @@ String specifying wall format.
 =cut
 
 sub  transform_rect_grid
- {
-  my $rows  = shift;
-  my $walls = shift;
-  my @out  = ();
+{
+    my $self = shift;
+    my $rows  = shift;
+    my $walls = shift;
+    my @out  = ();
 
-  my $sp = 'bevel' eq ($walls||'') ? '.' : ' ';
-  remove_horiz_padding( $rows );
+    my $sp = 'bevel' eq ($walls||'') ? '.' : ' ';
+    remove_horiz_padding( $rows );
 
-  # transform the printout into block commands
-  my $height = @{$rows};
-  my $width  = @{$rows->[0]};
-  for(my $r=0; $r < $height; ++$r)
-   {
-    for(my $c=0; $c < $width; ++$c)
-     {
-      if($rows->[$r]->[$c] eq ' ')
-       {
-        $out[$r]->[$c] = 0;
-       }
-      else
-       {
-        # convert the cell and its neighbors into a signature
-        my $sig = $rows->[$r]->[$c]                   # cell
-	        . ($c==0 ? $sp : $rows->[$r]->[$c-1]) # left neighbor
-	        . ($rows->[$r]->[$c+1] || $sp)        # right neighbor
-		. ($r==0 ? $sp : $rows->[$r-1]->[$c]) # up neighbor
-	        . ($rows->[$r+1] ? $rows->[$r+1]->[$c] : $sp); # down neighbor
-	# convert the signature into the block name
-	die "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
-	$out[$r]->[$c] = $Blocks{$sig};
-       }
-     }
-   }
-  @{$rows} = @out;
- }
+    # transform the printout into block commands
+    my $height = @{$rows};
+    my $width  = @{$rows->[0]};
+    for(my $r=0; $r < $height; ++$r)
+    {
+	for(my $c=0; $c < $width; ++$c)
+	{
+	    if($rows->[$r]->[$c] eq ' ')
+	    {
+        	$out[$r]->[$c] = 0;
+	    }
+	    else
+	    {
+        	# convert the cell and its neighbors into a signature
+        	my $sig = $rows->[$r]->[$c]                   # cell
+	        	. ($c==0 ? $sp : $rows->[$r]->[$c-1]) # left neighbor
+	        	. ($rows->[$r]->[$c+1] || $sp)        # right neighbor
+			. ($r==0 ? $sp : $rows->[$r-1]->[$c]) # up neighbor
+	        	. ($rows->[$r+1] ? $rows->[$r+1]->[$c] : $sp); # down neighbor
+		# convert the signature into the block name
+		die "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
+		$out[$r]->[$c] = $Blocks{$sig};
+	    }
+	}
+    }
+    @{$rows} = @out;
+}
 
 
 =item remove_horiz_padding

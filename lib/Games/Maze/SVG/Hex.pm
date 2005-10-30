@@ -105,12 +105,7 @@ sub  new
     my $shape = shift || 'Rect';
     my $obj = 
     {
-        mazeparms => {},
-	wallform  => 'round',
-	crumb     => 'dash',
-	dx        => DELTA_X,
-	dy        => DELTA_Y,
-	dir       => '',
+    	Games::Maze::SVG::init_object(),
 	@_,
     };
 
@@ -251,7 +246,7 @@ sub  toString
     $self->{dx}  /= 2;
     $dx2          = $self->{dx}/2;
 
-    transform_hex_grid( \@rows );
+    $self->transform_hex_grid( \@rows );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
     ($xp, $yp) = (3*($maze->{entry}->[0]-1)+2, 2*($maze->{entry}->[1]-1) );
@@ -472,31 +467,32 @@ Reference to an array of rows
 =cut
 
 sub transform_hex_grid
- {
-  my $rows = shift;
-  my @out  = ();
+{
+    my $self = shift;
+    my $rows = shift;
+    my @out  = ();
 
-  # transform the printout into block commands
-  my $height = @{$rows};
-  my $width  = @{$rows->[0]}+1;
-  for(my $r=0; $r < $height; ++$r)
-   {
-    for(my $c=0; $c < $width; ++$c)
-     {
-      if(defined $rows->[$r]->[$c])
-       {
-        die "Missing block for '$rows->[$r]->[$c]'.\n"
-	                    unless exists $HexBlocks{$rows->[$r]->[$c]};
-        $out[$r]->[$c] = $HexBlocks{$rows->[$r]->[$c]};
-       }
-      else
-       {
-        $out[$r]->[$c] = 0;
-       }
-     }
-   }
-  @{$rows} = @out;
- }
+    # transform the printout into block commands
+    my $height = @{$rows};
+    my $width  = @{$rows->[0]}+1;
+    for(my $r=0; $r < $height; ++$r)
+    {
+	for(my $c=0; $c < $width; ++$c)
+        {
+	    if(defined $rows->[$r]->[$c])
+	    {
+        	die "Missing block for '$rows->[$r]->[$c]'.\n"
+	                	    unless exists $HexBlocks{$rows->[$r]->[$c]};
+        	$out[$r]->[$c] = $HexBlocks{$rows->[$r]->[$c]};
+	    }
+	    else
+	    {
+        	$out[$r]->[$c] = 0;
+	    }
+        }
+    }
+    @{$rows} = @out;
+}
 
 
 =item get_wall_forms

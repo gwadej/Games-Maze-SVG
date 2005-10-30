@@ -10,7 +10,8 @@ use MazeTestUtils;
 use strict;
 use warnings;
 
-can_ok( "Games::Maze::SVG::Rect", "transform_rect_grid" );
+my $maze = Games::Maze::SVG->new( 'Rect' );
+can_ok( $maze, "transform_rect_grid" );
 
 my $simplegrid = <<EOM;
 :--:
@@ -125,6 +126,6 @@ sub grid_ok
     my $out = shift;
     my $msg = shift;
 
-    is_deeply( [Games::Maze::SVG::Rect::transform_rect_grid( $grid, $wall )],
+    is_deeply( [$maze->transform_rect_grid( $grid, $wall )],
          $out, $msg );
 }

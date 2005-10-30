@@ -141,6 +141,27 @@ sub  new
 }
 
 
+=item init_object
+
+Initializes the maze object with the default values for all mazes. The derived
+classes should call this method in their constructors.
+
+Returns the initial data members as a list.
+
+=cut
+
+sub init_object
+{
+    (
+        mazeparms => {},
+	wallform  => 'straight',
+	crumb     => 'dash',
+	dx        => DELTA_X,
+	dy        => DELTA_Y,
+	dir       => '',
+    );
+}
+
 =item set_interactive
 
 Method makes the maze interactive.
@@ -241,7 +262,7 @@ sub  toString
     $self->{dx}  /= 2;
     $dx2          = $self->{dx}/2;
 
-    transform_hex_grid( \@rows );
+    $self->transform_hex_grid( \@rows );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
     ($xp, $yp) = (3*($maze->{entry}->[0]-1)+2, 2*($maze->{entry}->[1]-1) );
@@ -257,7 +278,7 @@ sub  toString
    }
   else
    {
-    transform_rect_grid( \@rows, $self->{wallform} );
+    $self->transform_rect_grid( \@rows, $self->{wallform} );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
     ($xp, $yp) = (2*($maze->{entry}->[0]-1)+1, 2*($maze->{entry}->[1]-1) );

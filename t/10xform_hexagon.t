@@ -10,7 +10,8 @@ use MazeTestUtils;
 use strict;
 use warnings;
 
-can_ok( "Games::Maze::SVG::Hex", "transform_hex_grid" );
+my $maze = Games::Maze::SVG->new( 'Hex' );
+can_ok( $maze, "transform_hex_grid" );
 
 my $simplegrid = normalize_maze( <<'EOM' );
  __ 
@@ -75,6 +76,6 @@ sub grid_ok
     my $out = shift;
     my $msg = shift;
 
-    is_deeply( [Games::Maze::SVG::Hex::transform_hex_grid( $grid )],
+    is_deeply( [$maze->transform_hex_grid( $grid )],
          $out, $msg );
 }
