@@ -3,6 +3,9 @@ bin/svgmaze.pl
 Changes
 lib/Games/Maze/Ascii.pm
 lib/Games/Maze/SVG.pm
+lib/Games/Maze/SVG/Hex.pm
+lib/Games/Maze/SVG/Rect.pm
+lib/Games/Maze/SVG/RectHex.pm
 Makefile.PL
 MANIFEST
 META.yml			# Will be created by "make dist"
@@ -21,6 +24,9 @@ t/08xform_rect.t
 t/09xform_recthex.t
 t/10xform_hexagon.t
 t/11make_board.t
+t/12rect_output.t
+t/13recthex_output.t
+t/14hex_output.t
 t/lib/MazeTestUtils.pm
 t/pod-coverage.t
 t/pod.t

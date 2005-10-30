@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 use Games::Maze::SVG;
 
@@ -10,7 +10,8 @@ use warnings;
 # Default constructor.
 my $maze = Games::Maze::SVG->new();
 
-isa_ok( $maze, 'Games::Maze::SVG', "Correct type" );
+isa_ok( $maze, 'Games::Maze::SVG', "Correct base type" );
+isa_ok( $maze, 'Games::Maze::SVG::Rect', "Correct type" );
 
 can_ok( $maze, qw/is_hex is_hex_shaped toString get_script/ );
 

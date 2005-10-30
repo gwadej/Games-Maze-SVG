@@ -1,34 +1,32 @@
 #  SVG maze output
 #  Performs transformation, cleanup, and printing of output of Games::Maze
 
-package Games::Maze::SVG;
+package Games::Maze::SVG::Rect;
+
+use base Games::Maze::SVG;
 
 use Games::Maze;
-use Games::Maze::SVG::Rect;
-use Games::Maze::SVG::RectHex;
-use Games::Maze::SVG::Hex;
-
 use strict;
 
 =head1 NAME
 
-Games::Maze::SVG - Build mazes in SVG.
+Games::Maze::SVG::Rect - Build rectangular mazes in SVG.
 
 =head1 VERSION
 
-Version 0.5
+Version 0.1
 
 =cut
 
-our $VERSION = 0.5;
+our $VERSION = 0.1;
 
 =head1 SYNOPSIS
 
-Games::Maze::SVG uses the Games::Maze module to create mazes in SVG.
+Games::Maze::SVG::Rect uses the Games::Maze module to create mazes in SVG.
 
     use Games::Maze::SVG;
 
-    my $foo = Games::Maze::SVG->new();
+    my $foo = Games::Maze::SVG->new( 'Rect' );
     ...
 
 =cut
@@ -69,12 +67,6 @@ my %Blocks = ( ': - |' => 'ul',  ':-  |' => 'ur',
 	       ':.-||' => 'otr', ':-.||' => 'otl',
 	       ':--|.' => 'otu', ':--.|' => 'otd',
              );
-my %HexBlocks = (
-                  ' '  => 0,
-		  '_'  => 'xh',
-		  '/'  => 'xsr',
-		  '\\' => 'xsl',
-                );
 
 my %Walls = get_wall_forms();
 
@@ -96,9 +88,8 @@ my %crumbstyles = (
 
 =item new
 
-Create a new Games::Maze::SVG object. Supports the following named parameters:
-
-Takes one positional parameter that is the maze type: Rect, RectHex, or Hex
+Create a new Games::Maze::SVG::Rect object. Supports the following named
+parameters:
 
 =over 4
 
@@ -134,39 +125,46 @@ sub  new
     my $class = shift;
     
     my $shape = shift || 'Rect';
+    my $obj = 
+    {
+        mazeparms => {},
+	wallform  => 'round',
+	crumb     => 'dash',
+	dx        => DELTA_X,
+	dy        => DELTA_Y,
+	dir       => '',
+	@_,
+    };
 
-    return Games::Maze::SVG::Rect->new( @_ )    if 'Rect' eq $shape;
-    return Games::Maze::SVG::RectHex->new( @_ ) if 'RectHex' eq $shape;
-    return Games::Maze::SVG::Hex->new( @_ )     if 'Hex' eq $shape;
+    $obj->{mazeparms}->{cell} = 'Quad';
+    $obj->{mazeparms}->{form} = 'Rectangle';
+
+    bless $obj;
 }
 
 
 =item is_hex
 
-Method returns true if the maze is made of hexagonal cells.
+Method always returns false.
 
 =cut
 
 sub  is_hex
- {
-  my $self = shift;
-  
-  'Hex' eq ($self->{mazeparms}->{cell}||'');
- }
+{
+    undef;
+}
 
 
 =item is_hex_shaped
 
-Method returns true if the overall shape of the maze is a hexagon.
+Method always returns false.
 
 =cut
 
 sub  is_hex_shaped
- {
-  my $self = shift;
-  
-  'Hexagon' eq ($self->{mazeparms}->{form}||'');
- }
+{
+    undef;
+}
 
 
 =item set_wall_form
@@ -274,7 +272,7 @@ sub get_script
 {
     my $self = shift;
     
-    $self->is_hex() ? "$self->{dir}hexmaze.es" : "$self->{dir}rectmaze.es";
+    "$self->{dir}rectmaze.es";
 }
 
 =item make_board_array
@@ -292,7 +290,7 @@ sub make_board_array
 
     foreach my $row (@{$rows})
     {
-        push @board, [ map { $_ ? ($_ eq 'xh' ? -1 : 1) : 0 } @{$row} ];
+        push @board, [ map { $_ ? 1 : 0 } @{$row} ];
     }
     
     \@board;
@@ -333,34 +331,12 @@ sub  toString
   my $mazeout;
   my ($xp, $yp, $xe, $ye, $xsign, $ysign);
 
-  if($self->is_hex())
-   {
-    $self->{dx}  /= 2;
-    $dx2          = $self->{dx}/2;
-
-    transform_hex_grid( \@rows );
-    $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
-
-    ($xp, $yp) = (3*($maze->{entry}->[0]-1)+2, 2*($maze->{entry}->[1]-1) );
-    ($xe, $ye) = (3*($maze->{exit}->[0]-1)+2, 2*($maze->{exit}->[1])+1 );
-    if($self->is_hex_shaped())
-    {
-        ($xsign, $ysign) = (($xe+1)*$self->{dx},($ye+3)*$self->{dy});
-    }
-    else
-    {
-        ($xsign, $ysign) = ($xe*$self->{dx},($ye+2)*$self->{dy});
-    }
-   }
-  else
-   {
     transform_rect_grid( \@rows, $self->{wallform} );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
     ($xp, $yp) = (2*($maze->{entry}->[0]-1)+1, 2*($maze->{entry}->[1]-1) );
     ($xe, $ye) = (2*($maze->{exit}->[0]-1)+1, 2*($maze->{exit}->[1]) );
     ($xsign, $ysign) = (($xe+0.5)*$self->{dx},($ye+2)*$self->{dy});
-   }
 
   my $totalwidth = $mazeout->{width};
   my $ht         = $mazeout->{height} + SIGN_HEIGHT;
@@ -610,49 +586,6 @@ sub  transform_rect_grid
 	# convert the signature into the block name
 	die "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
 	$out[$r]->[$c] = $Blocks{$sig};
-       }
-     }
-   }
-  @{$rows} = @out;
- }
-
-
-=item transform_hex_grid
-
-Convert the hexagonal grid from ascii format to SVG definition
- references.
-
-=over 4
-
-=item $rows
-
-Reference to an array of rows
-
-=back
-
-=cut
-
-sub transform_hex_grid
- {
-  my $rows = shift;
-  my @out  = ();
-
-  # transform the printout into block commands
-  my $height = @{$rows};
-  my $width  = @{$rows->[0]}+1;
-  for(my $r=0; $r < $height; ++$r)
-   {
-    for(my $c=0; $c < $width; ++$c)
-     {
-      if(defined $rows->[$r]->[$c])
-       {
-        die "Missing block for '$rows->[$r]->[$c]'.\n"
-	                    unless exists $HexBlocks{$rows->[$r]->[$c]};
-        $out[$r]->[$c] = $HexBlocks{$rows->[$r]->[$c]};
-       }
-      else
-       {
-        $out[$r]->[$c] = 0;
        }
      }
    }
