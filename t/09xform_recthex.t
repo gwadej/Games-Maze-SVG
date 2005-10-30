@@ -27,8 +27,8 @@ my $simpleout = [
 grid_ok( $simplegrid, $simpleout, 'Simple Hex' );
 
 
-my $hexgrid = <<'EOM';
- __    __    
+my $hexgrid = normalize_maze( <<'EOM' );
+ __    __ 
 /  \__/  \
 \  /   __   \
 /  \  /   __/
