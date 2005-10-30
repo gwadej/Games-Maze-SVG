@@ -1,15 +1,14 @@
 #!perl
 
-use Test::More tests => 5;
+use Test::More tests => 7;
 
 use Games::Maze::SVG;
 
 use strict;
 use warnings;
 
-can_ok( "Games::Maze::SVG", "make_board_array" );
-
 my $maze = Games::Maze::SVG->new();
+can_ok( $maze, "make_board_array" );
 
 my $rectangle = [
    [ qw/ul  h ur  0  r  h  h  h ur/ ],
@@ -68,6 +67,8 @@ is_deeply( $maze->make_board_array( $rectanglebevel ),
 	   "beveled rectangle" );
 
 $maze = Games::Maze::SVG->new( 'RectHex' );
+can_ok( $maze, "make_board_array" );
+
 my $recthex = [
    [ qw/ 0  xh  xh  0   0  0   0  xh  xh  0   0  0  0  0/ ],
    [ qw/xsr  0   0 xsl xh xh  xsr  0   0 xsl  0  0  0  0/ ],
@@ -99,6 +100,8 @@ is_deeply( $maze->make_board_array( $recthex ),
 	   "rectangle, hex cells" );
 
 $maze = Games::Maze::SVG->new( 'Hex' );
+can_ok( $maze, "make_board_array" );
+
 my $hexagon = [
    [ qw| 0   0  0  0   0  0  0   0  0  0  xh xh  0   0  0  0   0  0  0   0  0  0  0| ],
    [ qw| 0   0  0  0   0  0  0   0  0 xsr  0  0 xsl xh xh  0   0  0  0   0  0  0  0| ],

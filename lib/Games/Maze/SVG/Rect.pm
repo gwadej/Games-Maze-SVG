@@ -201,67 +201,6 @@ sub  set_wall_form
 }
 
 
-=item set_interactive
-
-Method makes the maze interactive.
-
-Returns a reference to self for chaining.
-
-=cut
-
-sub  set_interactive
- {
-  my $self = shift;
-  $self->{interactive} = 1;
-  $self;
- }
-
-
-=item set_breadcrumb
-
-=over 4
-
-=item $bcs
-
-String specifying the breadcrumb style. Generates an exception if the
-breadcrumb style is not recognized.
-
-=back
-
-Returns a reference to self for chaining.
-
-=cut
-
-sub  set_breadcrumb
-{
-    my $self = shift;
-    my $bcs  = shift;
-
-    return unless defined $bcs;
-
-    die "Unrecognized breadcrumb style '$bcs'.\n"
-      unless exists $crumbstyles{$bcs};
-    $self->{crumb} = $bcs;
-    $self->{crumbstyle} = $crumbstyles{$bcs};
-
-    $self;
-}
-
-
-=item get_crumbstyle
-
-Returns the CSS style for the breadcrumb.
-
-=cut
-
-sub  get_crumbstyle
-{
-    my $self = shift;
-
-    $self->{crumbstyle} ||= $crumbstyles{$self->{crumb}};
-}
-
-
 =item get_script
 
 Method that returns the path to the interactivity script.
