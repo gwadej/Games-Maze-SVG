@@ -11,7 +11,7 @@ use strict;
 use warnings;
 
 my $maze = Games::Maze::SVG->new( "RectHex" );
-can_ok( $maze, "transform_hex_grid" );
+can_ok( $maze, "transform_grid" );
 
 my $simplegrid = <<'EOM';
  __ 
@@ -69,6 +69,6 @@ sub grid_ok
     my $out = shift;
     my $msg = shift;
 
-    is_deeply( [$maze->transform_hex_grid( $grid )],
+    is_deeply( [$maze->transform_grid( $grid, 'straight' )],
          $out, $msg );
 }

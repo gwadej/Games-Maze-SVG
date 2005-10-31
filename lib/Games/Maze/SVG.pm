@@ -76,8 +76,6 @@ my %HexBlocks = (
 		  '\\' => 'xsl',
                 );
 
-my %Walls = get_wall_forms();
-
 my %crumbstyles = (
                    dash => "stroke-width:1; stroke-dasharray:5,3;",
                    dot  => "stroke-width:2; stroke-dasharray:2,6;",
@@ -223,6 +221,19 @@ sub  get_crumbstyle
 }
 
 
+=item get_script
+
+Method that returns the path to the interactivity script.
+
+=cut
+
+sub get_script
+{
+    my $self = shift;
+    
+    "$self->{dir}$self->{scriptname}";
+}
+
 =item toString
 
 Method that converts the current maze into an SVG string.
@@ -230,17 +241,37 @@ Method that converts the current maze into an SVG string.
 =cut
 
 sub  toString
- {
+{
   my $self = shift;
   my $maze = Games::Maze->new( %{$self->{mazeparms}} );
-
-  $self->set_wall_form( 'straight' ) if $self->is_hex();
 
   my $output = '';
   $maze->make();
   my @rows = map { [ split //, $_ ] }
                  split( /\n/, $maze->to_ascii() );
 
+  $self->{replaceables} = {
+      dx2 => sub { $_[0]->{dx}/2; },
+      dy2 => sub { $_[0]->{dy}/2; },
+      totalwidth => '',
+      heig => '',
+      width => '',
+      load => '',
+      sprite_color => 'orange',
+      crumb_style => $self->get_crumbstyle(),
+      mazebg_color => '#ffc', # '#9cc'; # '#fc0'
+      panel_color => '#ccc',
+      sprite_def => '',
+      wall_definitions => '',
+      script => '',
+      script_type => 'text/ecmascript',
+      background => '',
+      maze => '',
+      crumb => '',
+      sprite_use => '',
+      direction_panel => '',
+  };
+  
   my ($dx2, $dy2) = ($self->{dx}/2, $self->{dy}/2);
   my $script = '';
   my $sprite = '';
@@ -259,10 +290,12 @@ sub  toString
 
   if($self->is_hex())
    {
-    $self->{dx}  /= 2;
-    $dx2          = $self->{dx}/2;
+    $self->{dx} /= 2;
+    $dx2 /= 2;
+    
+    $self->_set_replacement( 'dx', $self->{dx} / 2 );
 
-    $self->transform_hex_grid( \@rows );
+    $self->transform_grid( \@rows );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
     ($xp, $yp) = (3*($maze->{entry}->[0]-1)+2, 2*($maze->{entry}->[1]-1) );
@@ -278,7 +311,7 @@ sub  toString
    }
   else
    {
-    $self->transform_rect_grid( \@rows, $self->{wallform} );
+    $self->transform_grid( \@rows, $self->{wallform} );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
     ($xp, $yp) = (2*($maze->{entry}->[0]-1)+1, 2*($maze->{entry}->[1]-1) );
@@ -295,11 +328,11 @@ sub  toString
 
   if($self->{interactive})
    {
-    $script  = qq{    <script language="ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
+    $script  = qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
 
     my $board = $self->make_board_array( \@rows );
 
-    $script .= qq{    <script language="ecmascript">\n}
+    $script .= qq{    <script type="text/ecmascript">\n}
               .qq{      var board = new Array();\n};
     my $i = 0;
     foreach my $row (@{$board})
@@ -310,15 +343,21 @@ sub  toString
       $i++;
      }
     $script .= qq{    </script>\n};
+    $self->_set_replacement( 'script', $script );
 
     $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
     $crumb = qq{  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>};
+    $self->_set_replacement( 'sprite_use', $sprite );
+    $self->_set_replacement( 'crumb', $crumb );
 
     $background = <<"EOB";
   <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
 EOB
+    $self->_set_replacement( 'background', $background );
+
     $totalwidth += $panelwidth;
     $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:$self->{dx}, y:$self->{dy}} )"];
+    $self->_set_replacement( 'load', $load );
    }
 
   $output .= <<"EOH";
@@ -396,7 +435,7 @@ EOB
         </feMerge>
      </filter>
     <path id="sprite" d="M0,0 Q$dx2,$dy2 0,$self->{dy} Q$dx2,$dy2 $self->{dx},$self->{dy} Q$dx2,$dy2 $self->{dx},0 Q$dx2,$dy2 0,0"/>
-$Walls{$self->{wallform}}
+@{[$self->wall_definitions()]}
 $script
     <script type="text/ecmascript">
       function push( evt )
@@ -448,7 +487,61 @@ EOH
 EOB
    }
   $output . "\n</svg>\n";
- }
+}
+
+
+#
+#  Fill in the replaceable parameter
+#
+#  name string naming parameter to be replaced
+#  value value of replacement text
+#
+#  return reference to self for chaining.
+#
+sub _set_replacement
+{
+    my $self = shift;
+
+    $self->{replaceables}->{shift()} = shift;
+    
+    $self;
+}
+
+
+#
+#  Generate replacement text.
+#
+#  name name of parameter to retrieve.
+#
+#  returns the string associated with the name.
+sub _get_replacement
+{
+    my $self = shift;
+    my $name = shift;
+
+    if(ref $self->{replaceables}->{$name})
+    {
+        $self->{replaceables}->{$name}->( $self, $name );
+    }
+    else
+    {
+        $self->{replaceables}->{$name};
+    }
+}
+
+
+sub _fill_out_template
+{
+    my $self = shift;
+    my $template = shift;
+    
+    $template =~ s[\{\{(\w+)\}\}]
+                  [
+		    exists $self->{replaceables}->{$1}
+		    ? $self->_get_replacement( $1 )
+		    : "{{$1}}"
+		  ]gems;
+}
 
 
 #
@@ -483,22 +576,6 @@ sub  _just_maze
   { width=>$maxx, height=>$y, maze=>$output };
  }
 
-
-=item get_wall_forms
-
-Extract the wall forms from the DATA file handle.
-
-Returns a hash of wall forms.
-
-=cut
-
-sub get_wall_forms
-{
- local $/ = "\n===\n";
- chomp( my @list = <DATA> );
- @list;
-}
-
 =back
 
 =head1 AUTHOR
@@ -529,94 +606,101 @@ under the same terms as Perl itself.
 
 1;
 
-
 __DATA__
-straight
-===
-    <path id="ul" d="M5,10 v-5 h5"/>
-    <path id="ur" d="M0,5  h5  v5"/>
-    <path id="ll" d="M5,0  v5  h5"/>
-    <path id="lr" d="M0,5  h5  v-5"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <path id="tr" d="M5,0  v10 M5,5 h5"/>
-    <path id="tl" d="M5,0  v10 M0,5 h5"/>
-    <path id="tu" d="M0,5  h10 M5,0 v5"/>
-    <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>
-    <path id="xh"  d="M0,10 h5"/>
-    <path id="xsr" d="M0,10 l5,-10"/>
-    <path id="xsl" d="M0,0  l5,10"/>
-===
-roundcorners
-===
-    <path id="ul" d="M5,10 Q5,5 10,5"/>
-    <path id="ur" d="M0,5  Q5,5 5,10"/>
-    <path id="ll" d="M5,0  Q5,5 10,5"/>
-    <path id="lr" d="M0,5  Q5,5 5,0"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <path id="tr" d="M5,0  v10 M5,5 h5"/>
-    <path id="tl" d="M5,0  v10 M0,5 h5"/>
-    <path id="tu" d="M0,5  h10 M5,0 v5"/>
-    <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>
-===
-round
-===
-    <path id="ul" d="M5,10 Q5,5 10,5"/>
-    <path id="ur" d="M0,5  Q5,5 5,10"/>
-    <path id="ll" d="M5,0  Q5,5 10,5"/>
-    <path id="lr" d="M0,5  Q5,5 5,0"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <path id="tr" d="M5,0  Q5,5 10,5 Q5,5 5,10"/>
-    <path id="tl" d="M5,0  Q5,5 0,5  Q5,5 5,10"/>
-    <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
-    <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
-    <path id="cross"
-                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
-===
-bevel
-===
-    <path id="ul" d="M5,10.1 v-.1 l5,-5 h.1"/>
-    <path id="ur" d="M-.1,5 h.1 l5,5 v.1"/>
-    <path id="ll" d="M5,-.1 v.1 l5,5 h.1"/>
-    <path id="lr" d="M-.1,5 h.1 l5,-5 v-.1"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <polygon id="tr" points="5,0 5,10 10,5"/>
-    <polygon id="tl" points="5,0 5,10 0,5"/>
-    <polygon id="tu" points="0,5 10,5 5,0"/>
-    <polygon id="td" points="0,5 10,5 5,10"/>
-    <polygon id="cross" points="0,5 5,10 10,5 5,0"/>
-    <path id="oul" d="M5,10.1 v-.1 l5,-5 h.1"/>
-    <path id="our" d="M-.1,5 h.1 l5,5 v.1"/>
-    <path id="oll" d="M5,-.1 v.1 l5,5 h.1"/>
-    <path id="olr" d="M-.1,5 h.1 l5,-5 v-.1"/>
-    <path id="oh"  d="M0,5  h10"/>
-    <path id="ov"  d="M5,0  v10"/>
-    <path id="ol"  d="M0,5  h5"/>
-    <path id="or"  d="M5,5  h5"/>
-    <path id="ot"  d="M5,0  v5"/>
-    <path id="od"  d="M5,5  v5"/>
-    <path id="otr" d="M5,0 l5,5 l-5,5"/>
-    <path id="otl" d="M5,0 l-5,5 l5,5"/>
-    <path id="otu" d="M0,5 l5,-5 l5,5"/>
-    <path id="otd" d="M0,5 l5,5 l5,-5"/>
+<?xml version="1.0"?>
+<svg width="{{totalwidth}}" height="{{height}}"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"{{load}}
+     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+  <metadata>
+    <!--
+        Copyright 2004-2005, G. Wade Johnson
+	Some rights reserved.
+    -->
+    <rdf:RDF xmlns="http://web.resource.org/cc/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <Work rdf:about="">
+       <dc:title>SVG Maze</dc:title>
+       <dc:date>2005</dc:date>
+       <dc:description>An SVG-based Game</dc:description>
+       <dc:creator><Agent>
+	  <dc:title>G. Wade Johnson</dc:title>
+       </Agent></dc:creator>
+       <dc:rights><Agent>
+	  <dc:title>G. Wade Johnson</dc:title>
+       </Agent></dc:rights>
+       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Interactive" />
+       <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
+    </Work>
+
+    <License rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
+       <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
+       <permits rdf:resource="http://web.resource.org/cc/Distribution" />
+       <requires rdf:resource="http://web.resource.org/cc/Notice" />
+       <requires rdf:resource="http://web.resource.org/cc/Attribution" />
+       <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+       <requires rdf:resource="http://web.resource.org/cc/ShareAlike" />
+    </License>
+
+    </rdf:RDF>
+  </metadata>
+  <defs>
+    <style type="text/css">
+      path    { stroke: black; fill: none; }
+      polygon { stroke: black; fill: grey; }
+      #sprite { stroke: grey; stroke-width:0.2; fill: {{sprite_color}}; }
+      .crumbs { fill:none; {{crumb_style}} }
+      #mazebg { fill:{{mazebg_color}}; stroke:none; }
+      .panel  { fill:{{panel_color}}; stroke:none; }
+      .button {
+                 cursor: pointer;
+              }
+      text { font-family: sans-serif; }
+      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
+                  }
+      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
+      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
+      .sign rect {  fill:red; stroke:none; }
+      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
+                 }
+    </style>
+     <filter id="bevel">
+       <feFlood flood-color="#ccf" result="lite-flood"/>
+       <feFlood flood-color="#006" result="dark-flood"/>
+       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
+                    result="lighter"/>
+       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
+       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
+                    result="darker"/>
+       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
+       <feMerge>
+         <feMergeNode in="lightedge"/>
+         <feMergeNode in="darkedge"/>
+         <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+     </filter>
+{{sprite_def}}
+{{wall_definitions}}
+{{script}}
+    <script type="{{script_type}}">
+      function push( evt )
+       {
+        var btn = evt.getCurrentTarget();
+	btn.setAttributeNS( null, "opacity", "0.5" );
+       }
+      function release( evt )
+       {
+        var btn = evt.getCurrentTarget();
+	if("" != btn.getAttributeNS( null, "opacity" ))
+           btn.removeAttributeNS( null, "opacity" );
+       }
+    </script>
+  </defs>
+{{background}}
+{{maze}}
+{{crumb}}
+{{sprite_use}}
+{{direction_panel}}
+</svg>
+

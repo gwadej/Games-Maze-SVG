@@ -111,6 +111,7 @@ sub  new
 
     $obj->{mazeparms}->{cell} = 'Hex';
     $obj->{mazeparms}->{form} = 'Hexagon';
+    $obj->{scriptname} = "hexmaze.es";
 
     bless $obj;
 }
@@ -174,19 +175,6 @@ sub  set_wall_form
 }
 
 
-=item get_script
-
-Method that returns the path to the interactivity script.
-
-=cut
-
-sub get_script
-{
-    my $self = shift;
-    
-    "$self->{dir}hexmaze.es";
-}
-
 =item make_board_array
 
 Build a two-dimensional array of integers that maps the board from
@@ -207,215 +195,6 @@ sub make_board_array
     
     \@board;
 }
-
-
-=item toString
-
-Method that converts the current maze into an SVG string.
-
-=cut
-
-sub  toString
- {
-  my $self = shift;
-  my $maze = Games::Maze->new( %{$self->{mazeparms}} );
-
-  $self->set_wall_form( 'straight' ) if $self->is_hex();
-
-  my $output = '';
-  $maze->make();
-  my @rows = map { [ split //, $_ ] }
-                 split( /\n/, $maze->to_ascii() );
-
-  my ($dx2, $dy2) = ($self->{dx}/2, $self->{dy}/2);
-  my $script = '';
-  my $sprite = '';
-  my $crumb  = '';
-  my $color  = {
-                mazebg => '#ffc', # '#9cc'; # '#fc0'
-                panel  => '#ccc',
-                crumb  => '#f3f',
-                sprite => 'orange',
-		button => '#ccf',
-               };
-
-  my $crumbstyle = $self->get_crumbstyle();
-  my $mazeout;
-  my ($xp, $yp, $xe, $ye, $xsign, $ysign);
-
-    $self->{dx}  /= 2;
-    $dx2          = $self->{dx}/2;
-
-    $self->transform_hex_grid( \@rows );
-    $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
-
-    ($xp, $yp) = (3*($maze->{entry}->[0]-1)+2, 2*($maze->{entry}->[1]-1) );
-    ($xe, $ye) = (3*($maze->{exit}->[0]-1)+2, 2*($maze->{exit}->[1])+1 );
-        ($xsign, $ysign) = (($xe+1)*$self->{dx},($ye+3)*$self->{dy});
-
-  my $totalwidth = $mazeout->{width};
-  my $ht         = $mazeout->{height} + SIGN_HEIGHT;
-  my $panelwidth = 250;
-  my $background =
-      qq{  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>\n};
-  my $load = '';
-
-  if($self->{interactive})
-   {
-    $script  = qq{    <script language="ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
-
-    my $board = $self->make_board_array( \@rows );
-
-    $script .= qq{    <script language="ecmascript">\n}
-              .qq{      var board = new Array();\n};
-    my $i = 0;
-    foreach my $row (@{$board})
-     {
-      $script .= qq{      board[$i] = new Array(}
-                 . join( ', ', @{$row} )
-	         . qq{ );\n};
-      $i++;
-     }
-    $script .= qq{    </script>\n};
-
-    $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
-    $crumb = qq{  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>};
-
-    $background = <<"EOB";
-  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
-EOB
-    $totalwidth += $panelwidth;
-    $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:$self->{dx}, y:$self->{dy}} )"];
-   }
-
-  $output .= <<"EOH";
-<?xml version="1.0"?>
-<svg width="$totalwidth" height="$ht"
-     xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"$load
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
-  <metadata>
-    <!--
-        Copyright 2004-2005, G. Wade Johnson
-	Some rights reserved.
-    -->
-    <rdf:RDF xmlns="http://web.resource.org/cc/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <Work rdf:about="">
-       <dc:title>SVG Maze</dc:title>
-       <dc:date>2005</dc:date>
-       <dc:description>An SVG-based Game</dc:description>
-       <dc:creator><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
-       </Agent></dc:creator>
-       <dc:rights><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
-       </Agent></dc:rights>
-       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Interactive" />
-       <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
-    </Work>
-
-    <License rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
-       <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
-       <permits rdf:resource="http://web.resource.org/cc/Distribution" />
-       <requires rdf:resource="http://web.resource.org/cc/Notice" />
-       <requires rdf:resource="http://web.resource.org/cc/Attribution" />
-       <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
-       <requires rdf:resource="http://web.resource.org/cc/ShareAlike" />
-    </License>
-
-    </rdf:RDF>
-  </metadata>
-  <defs>
-    <style type="text/css">
-      path    { stroke: black; fill: none; }
-      polygon { stroke: black; fill: grey; }
-      #sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
-      .crumbs { fill:none; $crumbstyle }
-      #mazebg { fill:$color->{mazebg}; stroke:none; }
-      .panel  { fill:$color->{panel}; stroke:none; }
-      .button {
-                 cursor: pointer;
-              }
-      text { font-family: sans-serif; }
-      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
-                  }
-      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
-      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-      .sign rect {  fill:red; stroke:none; }
-      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
-                 }
-    </style>
-     <filter id="bevel">
-       <feFlood flood-color="#ccf" result="lite-flood"/>
-       <feFlood flood-color="#006" result="dark-flood"/>
-       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
-                    result="lighter"/>
-       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
-       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
-                    result="darker"/>
-       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
-       <feMerge>
-         <feMergeNode in="lightedge"/>
-         <feMergeNode in="darkedge"/>
-         <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-     </filter>
-    <path id="sprite" d="M0,0 Q$dx2,$dy2 0,$self->{dy} Q$dx2,$dy2 $self->{dx},$self->{dy} Q$dx2,$dy2 $self->{dx},0 Q$dx2,$dy2 0,0"/>
-$Walls{$self->{wallform}}
-$script
-    <script type="text/ecmascript">
-      function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
-      function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
-    </script>
-  </defs>
-$background
-$mazeout->{maze}
-$crumb
-$sprite
-EOH
-
-  if($self->{interactive})
-   {
-    my $xrect = $mazeout->{width} + 20;
-    my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
-    $output .= <<"EOB";
-  <rect x="$mazeout->{width}" y="0" width="$panelwidth" height="$ht"
-        class="panel"/>
-
-  <g onclick="restart()" transform="translate($xrect,20)"
-     onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-    <rect x="0" y="0" width="50" height="20" rx="5" ry="5"
-          class="button"/>
-    <text x="25" y="15" class="button">Begin</text>
-  </g>
-  
-  <g class="instruct" transform="translate($xrect,70)">
-    <text x="0" y="0">Click Begin button to start</text>
-    <text x="0" y="30">Use the arrow keys to move the sprite</text>
-    <text x="0" y="50">Hold the shift to move quickly.</text>
-    <text x="0" y="80">The mouse must remain over the</text>
-    <text x="0" y="100">maze for the keys to work.</text>
-  </g>
-  <g transform="translate($xsign,$ysign)" class="sign">
-    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
-    <text x="0" y="4">Exit</text>
-  </g>
-  <text id="solvedmsg" x="$cx" y="$cy" opacity="1.0">Solved!</text>
-EOB
-   }
-  $output . "\n</svg>\n";
- }
 
 
 #
@@ -451,7 +230,7 @@ sub  _just_maze
  }
 
 
-=item transform_hex_grid
+=item transform_grid
 
 Convert the hexagonal grid from ascii format to SVG definition
  references.
@@ -462,11 +241,15 @@ Convert the hexagonal grid from ascii format to SVG definition
 
 Reference to an array of rows
 
+=item $walls
+
+String specifying wall format. (Unused at present.)
+
 =back
 
 =cut
 
-sub transform_hex_grid
+sub transform_grid
 {
     my $self = shift;
     my $rows = shift;
@@ -494,6 +277,19 @@ sub transform_hex_grid
     @{$rows} = @out;
 }
 
+
+=item wall_definitions
+
+Method that returns the definition for the shaps used to build the walls.
+
+=cut
+
+sub wall_definitions
+{
+    my $self = shift;
+
+    $Walls{$self->{wallform}}
+}
 
 =item get_wall_forms
 
