@@ -19,7 +19,7 @@ my $rectgrid =
 my $output = do { local $/ = undef; <DATA>; };
 
 $gmaze->mock(
-    make => sub { my $self = shift; $self->{entry} = [3,1]; $self->{exit} = [7,8]; },
+    make => sub { my $self = shift; $self->{entry} = [2,1]; $self->{exit} = [6,8]; },
     to_ascii => sub { normalize_maze( <<'EOM' ); },
           __
          /  \__
@@ -54,7 +54,7 @@ __DATA__
 <svg width="330" height="150"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     onload="initialize( board, {x:8, y:0}, {x:20, y:17}, {x:5, y:10} )"
+     onload="initialize( board, {x:5, y:0}, {x:17, y:17}, {x:5, y:10} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
   <metadata>
     <!--
@@ -125,24 +125,10 @@ __DATA__
         </feMerge>
      </filter>
     <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
-    <path id="ul" d="M5,10 v-5 h5"/>
-    <path id="ur" d="M0,5  h5  v5"/>
-    <path id="ll" d="M5,0  v5  h5"/>
-    <path id="lr" d="M0,5  h5  v-5"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <path id="tr" d="M5,0  v10 M5,5 h5"/>
-    <path id="tl" d="M5,0  v10 M0,5 h5"/>
-    <path id="tu" d="M0,5  h10 M5,0 v5"/>
-    <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>
     <path id="xh"  d="M0,10 h5"/>
     <path id="xsr" d="M0,10 l5,-10"/>
     <path id="xsl" d="M0,0  l5,10"/>
+
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
     <script type="text/ecmascript">
       var board = new Array();
@@ -274,8 +260,8 @@ __DATA__
   <use x="40" y="100" xlink:href="#xh"/>
   <use x="45" y="100" xlink:href="#xsr"/>
 
-  <polyline id="crumb" class="crumbs" stroke="#f3f" points="8,0"/>
-  <use id="me" x="8" y="0" xlink:href="#sprite" visibility="hidden"/>
+  <polyline id="crumb" class="crumbs" stroke="#f3f" points="5,0"/>
+  <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
 
   <rect x="80" y="0" width="250" height="150"
         class="panel"/>
@@ -294,7 +280,7 @@ __DATA__
     <text x="0" y="80">The mouse must remain over the</text>
     <text x="0" y="100">maze for the keys to work.</text>
   </g>
-  <g transform="translate(105,200)" class="sign">
+  <g transform="translate(90,200)" class="sign">
     <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
     <text x="0" y="4">Exit</text>
   </g>
