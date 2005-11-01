@@ -156,7 +156,7 @@ sub init_object
 	crumb     => 'dash',
 	dx        => DELTA_X,
 	dy        => DELTA_Y,
-	dir       => '',
+	dir       => 'scripts/',
     );
 }
 
