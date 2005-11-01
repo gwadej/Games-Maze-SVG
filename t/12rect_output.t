@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 1;
+use Test::More tests => 5;
 use Test::MockModule;
 
 use Games::Maze::SVG;
@@ -36,6 +36,105 @@ is( $maze->toString(), $output, "Full transform works." );
 
 #open( my $fh, '>rect1.svg' ) or die;
 #print $fh $maze->toString();
+
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'bevel' );
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10.1 v-.1 l5,-5 h.1"/>
+    <path id="ur" d="M-.1,5 h.1 l5,5 v.1"/>
+    <path id="ll" d="M5,-.1 v.1 l5,5 h.1"/>
+    <path id="lr" d="M-.1,5 h.1 l5,-5 v-.1"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <polygon id="tr" points="5,0 5,10 10,5"/>
+    <polygon id="tl" points="5,0 5,10 0,5"/>
+    <polygon id="tu" points="0,5 10,5 5,0"/>
+    <polygon id="td" points="0,5 10,5 5,10"/>
+    <polygon id="cross" points="0,5 5,10 10,5 5,0"/>
+    <path id="oul" d="M5,10.1 v-.1 l5,-5 h.1"/>
+    <path id="our" d="M-.1,5 h.1 l5,5 v.1"/>
+    <path id="oll" d="M5,-.1 v.1 l5,5 h.1"/>
+    <path id="olr" d="M-.1,5 h.1 l5,-5 v-.1"/>
+    <path id="oh"  d="M0,5  h10"/>
+    <path id="ov"  d="M5,0  v10"/>
+    <path id="ol"  d="M0,5  h5"/>
+    <path id="or"  d="M5,5  h5"/>
+    <path id="ot"  d="M5,0  v5"/>
+    <path id="od"  d="M5,5  v5"/>
+    <path id="otr" d="M5,0 l5,5 l-5,5"/>
+    <path id="otl" d="M5,0 l-5,5 l5,5"/>
+    <path id="otu" d="M0,5 l5,-5 l5,5"/>
+    <path id="otd" d="M0,5 l5,5 l5,-5"/>},
+    "Full transform, bevel wall style." );
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'roundcorners' );
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10 Q5,5 10,5"/>
+    <path id="ur" d="M0,5  Q5,5 5,10"/>
+    <path id="ll" d="M5,0  Q5,5 10,5"/>
+    <path id="lr" d="M0,5  Q5,5 5,0"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <path id="tr" d="M5,0  v10 M5,5 h5"/>
+    <path id="tl" d="M5,0  v10 M0,5 h5"/>
+    <path id="tu" d="M0,5  h10 M5,0 v5"/>
+    <path id="td" d="M0,5  h10 M5,5 v5"/>
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>},
+    "Full transform, roundcorners wall style." );
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'round' );
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10 Q5,5 10,5"/>
+    <path id="ur" d="M0,5  Q5,5 5,10"/>
+    <path id="ll" d="M5,0  Q5,5 10,5"/>
+    <path id="lr" d="M0,5  Q5,5 5,0"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <path id="tr" d="M5,0  Q5,5 10,5 Q5,5 5,10"/>
+    <path id="tl" d="M5,0  Q5,5 0,5  Q5,5 5,10"/>
+    <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
+    <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
+    <path id="cross"
+                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>},
+    "Full transform, round wall style." );
+
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'straight' );
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10 v-5 h5"/>
+    <path id="ur" d="M0,5  h5  v5"/>
+    <path id="ll" d="M5,0  v5  h5"/>
+    <path id="lr" d="M0,5  h5  v-5"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <path id="tr" d="M5,0  v10 M5,5 h5"/>
+    <path id="tl" d="M5,0  v10 M0,5 h5"/>
+    <path id="tu" d="M0,5  h10 M5,0 v5"/>
+    <path id="td" d="M0,5  h10 M5,5 v5"/>
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>},
+    "Full transform, straight wall style." );
+
+
 
 __DATA__
 <?xml version="1.0"?>

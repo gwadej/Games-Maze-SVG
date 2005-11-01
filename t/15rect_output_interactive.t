@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 1;
+use Test::More tests => 5;
 use Test::MockModule;
 
 use Games::Maze::SVG;
@@ -31,17 +31,120 @@ EOM
 
 # Default constructor.
 my $maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_interactive();
 
-is( $maze->toString(), $output, "Full transform works." );
+is( $maze->toString(), $output, "Full transform, default wall style." );
 
-#open( my $fh, '>rect1.svg' ) or die;
-#print $fh $maze->toString();
+open( my $fh, '>rect1.svg' ) or die;
+print $fh $maze->toString();
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'bevel' );
+$maze->set_interactive();
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10.1 v-.1 l5,-5 h.1"/>
+    <path id="ur" d="M-.1,5 h.1 l5,5 v.1"/>
+    <path id="ll" d="M5,-.1 v.1 l5,5 h.1"/>
+    <path id="lr" d="M-.1,5 h.1 l5,-5 v-.1"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <polygon id="tr" points="5,0 5,10 10,5"/>
+    <polygon id="tl" points="5,0 5,10 0,5"/>
+    <polygon id="tu" points="0,5 10,5 5,0"/>
+    <polygon id="td" points="0,5 10,5 5,10"/>
+    <polygon id="cross" points="0,5 5,10 10,5 5,0"/>
+    <path id="oul" d="M5,10.1 v-.1 l5,-5 h.1"/>
+    <path id="our" d="M-.1,5 h.1 l5,5 v.1"/>
+    <path id="oll" d="M5,-.1 v.1 l5,5 h.1"/>
+    <path id="olr" d="M-.1,5 h.1 l5,-5 v-.1"/>
+    <path id="oh"  d="M0,5  h10"/>
+    <path id="ov"  d="M5,0  v10"/>
+    <path id="ol"  d="M0,5  h5"/>
+    <path id="or"  d="M5,5  h5"/>
+    <path id="ot"  d="M5,0  v5"/>
+    <path id="od"  d="M5,5  v5"/>
+    <path id="otr" d="M5,0 l5,5 l-5,5"/>
+    <path id="otl" d="M5,0 l-5,5 l5,5"/>
+    <path id="otu" d="M0,5 l5,-5 l5,5"/>
+    <path id="otd" d="M0,5 l5,5 l5,-5"/>},
+    "Full transform, bevel wall style." );
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'roundcorners' );
+$maze->set_interactive();
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10 Q5,5 10,5"/>
+    <path id="ur" d="M0,5  Q5,5 5,10"/>
+    <path id="ll" d="M5,0  Q5,5 10,5"/>
+    <path id="lr" d="M0,5  Q5,5 5,0"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <path id="tr" d="M5,0  v10 M5,5 h5"/>
+    <path id="tl" d="M5,0  v10 M0,5 h5"/>
+    <path id="tu" d="M0,5  h10 M5,0 v5"/>
+    <path id="td" d="M0,5  h10 M5,5 v5"/>
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>},
+    "Full transform, roundcorners wall style." );
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'round' );
+$maze->set_interactive();
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10 Q5,5 10,5"/>
+    <path id="ur" d="M0,5  Q5,5 5,10"/>
+    <path id="ll" d="M5,0  Q5,5 10,5"/>
+    <path id="lr" d="M0,5  Q5,5 5,0"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <path id="tr" d="M5,0  Q5,5 10,5 Q5,5 5,10"/>
+    <path id="tl" d="M5,0  Q5,5 0,5  Q5,5 5,10"/>
+    <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
+    <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
+    <path id="cross"
+                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>},
+    "Full transform, round wall style." );
+
+
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'straight' );
+$maze->set_interactive();
+like( $maze->toString(),
+      qr{    <path id="ul" d="M5,10 v-5 h5"/>
+    <path id="ur" d="M0,5  h5  v5"/>
+    <path id="ll" d="M5,0  v5  h5"/>
+    <path id="lr" d="M0,5  h5  v-5"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <path id="tr" d="M5,0  v10 M5,5 h5"/>
+    <path id="tl" d="M5,0  v10 M0,5 h5"/>
+    <path id="tu" d="M0,5  h10 M5,0 v5"/>
+    <path id="td" d="M0,5  h10 M5,5 v5"/>
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>},
+    "Full transform, straight wall style." );
+
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="70" height="90"
+<svg width="320" height="90"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
+     onload="initialize( board, {x:3, y:-2}, {x:3, y:10}, {x:10, y:10} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
   <metadata>
     <!--
@@ -128,6 +231,17 @@ __DATA__
     <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
     <path id="cross"
                   d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
+    <script type="text/ecmascript" xlink:href="scripts/rectmaze.es"/>
+    <script type="text/ecmascript">
+      var board = new Array();
+      board[0] = new Array(1, 1, 1, 1, 1, 1, 1 );
+      board[1] = new Array(1, 0, 1, 0, 1, 0, 1 );
+      board[2] = new Array(1, 1, 1, 1, 1, 1, 1 );
+      board[3] = new Array(1, 0, 1, 0, 1, 0, 1 );
+      board[4] = new Array(1, 1, 1, 1, 1, 1, 1 );
+      board[5] = new Array(1, 0, 1, 0, 1, 0, 1 );
+      board[6] = new Array(1, 1, 1, 1, 1, 1, 1 );
+    </script>
 
     <script type="text/ecmascript">
       function push( evt )
@@ -186,7 +300,30 @@ __DATA__
   <use x="50" y="60" xlink:href="#h"/>
   <use x="60" y="60" xlink:href="#lr"/>
 
+  <polyline id="crumb" class="crumbs" stroke="#f3f" points="3,-2"/>
+  <use id="me" x="3" y="-2" xlink:href="#sprite" visibility="hidden"/>
 
+  <rect x="70" y="0" width="250" height="90"
+        class="panel"/>
 
+  <g onclick="restart()" transform="translate(90,20)"
+     onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+    <rect x="0" y="0" width="50" height="20" rx="5" ry="5"
+          class="button"/>
+    <text x="25" y="15" class="button">Begin</text>
+  </g>
+  
+  <g class="instruct" transform="translate(90,70)">
+    <text x="0" y="0">Click Begin button to start</text>
+    <text x="0" y="30">Use the arrow keys to move the sprite</text>
+    <text x="0" y="50">Hold the shift to move quickly.</text>
+    <text x="0" y="80">The mouse must remain over the</text>
+    <text x="0" y="100">maze for the keys to work.</text>
+  </g>
+  <g transform="translate(35,120)" class="sign">
+    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+    <text x="0" y="4">Exit</text>
+  </g>
+  <text id="solvedmsg" x="35" y="70" opacity="1.0">Solved!</text>
 
 </svg>

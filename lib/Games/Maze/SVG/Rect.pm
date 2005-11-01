@@ -420,9 +420,6 @@ straight
     <path id="tu" d="M0,5  h10 M5,0 v5"/>
     <path id="td" d="M0,5  h10 M5,5 v5"/>
     <path id="cross" d="M0,5 h10 M5,0 v10"/>
-    <path id="xh"  d="M0,10 h5"/>
-    <path id="xsr" d="M0,10 l5,-10"/>
-    <path id="xsl" d="M0,0  l5,10"/>
 ===
 roundcorners
 ===

@@ -121,24 +121,10 @@ __DATA__
         </feMerge>
      </filter>
     <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
-    <path id="ul" d="M5,10 v-5 h5"/>
-    <path id="ur" d="M0,5  h5  v5"/>
-    <path id="ll" d="M5,0  v5  h5"/>
-    <path id="lr" d="M0,5  h5  v-5"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <path id="tr" d="M5,0  v10 M5,5 h5"/>
-    <path id="tl" d="M5,0  v10 M0,5 h5"/>
-    <path id="tu" d="M0,5  h10 M5,0 v5"/>
-    <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>
     <path id="xh"  d="M0,10 h5"/>
     <path id="xsr" d="M0,10 l5,-10"/>
     <path id="xsl" d="M0,0  l5,10"/>
+
 
     <script type="text/ecmascript">
       function push( evt )

@@ -37,6 +37,7 @@ EOM
 
 # Default constructor.
 my $maze = Games::Maze::SVG->new( 'RectHex' );
+$maze->set_interactive();
 
 #open( my $fh, '>recthex1.svg' ) or die;
 #print $fh $maze->toString();
@@ -47,9 +48,10 @@ is( $maze->toString(), $output, "Full transform works." );
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="50" height="110"
+<svg width="300" height="110"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
+     onload="initialize( board, {x:11, y:-2}, {x:11, y:11}, {x:5, y:10} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
   <metadata>
     <!--
@@ -120,24 +122,23 @@ __DATA__
         </feMerge>
      </filter>
     <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
-    <path id="ul" d="M5,10 v-5 h5"/>
-    <path id="ur" d="M0,5  h5  v5"/>
-    <path id="ll" d="M5,0  v5  h5"/>
-    <path id="lr" d="M0,5  h5  v-5"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <path id="tr" d="M5,0  v10 M5,5 h5"/>
-    <path id="tl" d="M5,0  v10 M0,5 h5"/>
-    <path id="tu" d="M0,5  h10 M5,0 v5"/>
-    <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>
     <path id="xh"  d="M0,10 h5"/>
     <path id="xsr" d="M0,10 l5,-10"/>
     <path id="xsl" d="M0,0  l5,10"/>
+
+    <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
+    <script type="text/ecmascript">
+      var board = new Array();
+      board[0] = new Array(0, -1, -1, 0, 0, 0, 0, -1, -1, 0 );
+      board[1] = new Array(1, 0, 0, 1, -1, -1, 1, 0, 0, 1 );
+      board[2] = new Array(1, -1, -1, 1, 0, 0, 1, -1, -1, 1 );
+      board[3] = new Array(1, 0, 0, 1, -1, -1, 1, 0, 0, 1 );
+      board[4] = new Array(1, -1, -1, 1, 0, 0, 1, -1, -1, 1 );
+      board[5] = new Array(1, 0, 0, 1, -1, -1, 1, 0, 0, 1 );
+      board[6] = new Array(1, -1, -1, 1, 0, 0, 1, -1, -1, 1 );
+      board[7] = new Array(0, 0, 0, 1, -1, -1, 1, 0, 0, 0 );
+      board[8] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+    </script>
 
     <script type="text/ecmascript">
       function push( evt )
@@ -206,7 +207,30 @@ __DATA__
   <use x="25" y="70" xlink:href="#xh"/>
   <use x="30" y="70" xlink:href="#xsr"/>
 
+  <polyline id="crumb" class="crumbs" stroke="#f3f" points="11,-2"/>
+  <use id="me" x="11" y="-2" xlink:href="#sprite" visibility="hidden"/>
 
+  <rect x="50" y="0" width="250" height="110"
+        class="panel"/>
 
+  <g onclick="restart()" transform="translate(70,20)"
+     onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+    <rect x="0" y="0" width="50" height="20" rx="5" ry="5"
+          class="button"/>
+    <text x="25" y="15" class="button">Begin</text>
+  </g>
+  
+  <g class="instruct" transform="translate(70,70)">
+    <text x="0" y="0">Click Begin button to start</text>
+    <text x="0" y="30">Use the arrow keys to move the sprite</text>
+    <text x="0" y="50">Hold the shift to move quickly.</text>
+    <text x="0" y="80">The mouse must remain over the</text>
+    <text x="0" y="100">maze for the keys to work.</text>
+  </g>
+  <g transform="translate(55,130)" class="sign">
+    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+    <text x="0" y="4">Exit</text>
+  </g>
+  <text id="solvedmsg" x="25" y="80" opacity="1.0">Solved!</text>
 
 </svg>
