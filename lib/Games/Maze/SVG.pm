@@ -37,45 +37,6 @@ use constant DELTA_X     => 10;
 use constant DELTA_Y     => 10;
 use constant SIGN_HEIGHT => 20;
 
-# ----------------
-#  Shape transformation tables
-my %Blocks = ( ': - |' => 'ul',  ':-  |' => 'ur',
-	       ': -| ' => 'll',  ':- | ' => 'lr',
-               ':--  ' => 'h',   '-::  ' => 'h',
-               ':  ||' => 'v',   '|  ::' => 'v',
-               ':-   ' => 'l',   ': -  ' => 'r',
-               ':  | ' => 't',   ':   |' => 'd',
-	       ': -||' => 'tr',  ':- ||' => 'tl',
-	       ':--| ' => 'tu',  ':-- |' => 'td',
-	       ':--||' => 'cross',
-	       ':.- |' => 'oul', ':- .|' => 'our',
-	       ': -.|' => 'oul', ':-. |' => 'our',
-	       ':.-.|' => 'oul', ':-..|' => 'our',
-	       ':.-| ' => 'oll', ':-.| ' => 'olr',
-	       ': -|.' => 'oll', ':- |.' => 'olr',
-	       ':.-|.' => 'oll', ':-.|.' => 'olr',
-               ':--. ' => 'oh',  '-::. ' => 'oh',
-               ':-- .' => 'oh',  '-:: .' => 'oh',
-               ':. ||' => 'ov',  '|. ::' => 'ov',
-               ': .||' => 'ov',  '| .::' => 'ov',
-               ':- . ' => 'ol',  ': -. ' => 'or',
-               ':-.  ' => 'ol',  ':.-  ' => 'or',
-               ':-  .' => 'ol',  ': - .' => 'or',
-               ':. | ' => 'ot',  ':.  |' => 'od',
-               ': .| ' => 'ot',  ': . |' => 'od',
-               ':  |.' => 'ot',  ':  .|' => 'od',
-               ':. |.' => 'ot',  ':. .|' => 'od',
-               ': .|.' => 'ot',  ': ..|' => 'od',
-	       ':.-||' => 'otr', ':-.||' => 'otl',
-	       ':--|.' => 'otu', ':--.|' => 'otd',
-             );
-my %HexBlocks = (
-                  ' '  => 0,
-		  '_'  => 'xh',
-		  '/'  => 'xsr',
-		  '\\' => 'xsl',
-                );
-
 my %crumbstyles = (
                    dash => "stroke-width:1; stroke-dasharray:5,3;",
                    dot  => "stroke-width:2; stroke-dasharray:2,6;",
@@ -342,7 +303,22 @@ sub  toString
 	         . qq{ );\n};
       $i++;
      }
-    $script .= qq{    </script>\n};
+    $script .= <<'EOS';
+    </script>
+    <script type="text/ecmascript">
+      function push( evt )
+       {
+        var btn = evt.getCurrentTarget();
+	btn.setAttributeNS( null, "opacity", "0.5" );
+       }
+      function release( evt )
+       {
+        var btn = evt.getCurrentTarget();
+	if("" != btn.getAttributeNS( null, "opacity" ))
+           btn.removeAttributeNS( null, "opacity" );
+       }
+    </script>
+EOS
     $self->_set_replacement( 'script', $script );
 
     $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
@@ -356,7 +332,8 @@ EOB
     $self->_set_replacement( 'background', $background );
 
     $totalwidth += $panelwidth;
-    $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:$self->{dx}, y:$self->{dy}} )"];
+    $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:$self->{dx}, y:$self->{dy}} )"
+     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
     $self->_set_replacement( 'load', $load );
    }
 
@@ -364,8 +341,7 @@ EOB
 <?xml version="1.0"?>
 <svg width="$totalwidth" height="$ht"
      xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"$load
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+     xmlns:xlink="http://www.w3.org/1999/xlink"$load>
   <metadata>
     <!--
         Copyright 2004-2005, G. Wade Johnson
@@ -437,19 +413,6 @@ EOB
     <path id="sprite" d="M0,0 Q$dx2,$dy2 0,$self->{dy} Q$dx2,$dy2 $self->{dx},$self->{dy} Q$dx2,$dy2 $self->{dx},0 Q$dx2,$dy2 0,0"/>
 @{[$self->wall_definitions()]}
 $script
-    <script type="text/ecmascript">
-      function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
-      function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
-    </script>
   </defs>
 $background
 $mazeout->{maze}

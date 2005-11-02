@@ -49,8 +49,7 @@ __DATA__
 <?xml version="1.0"?>
 <svg width="50" height="110"
      xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+     xmlns:xlink="http://www.w3.org/1999/xlink">
   <metadata>
     <!--
         Copyright 2004-2005, G. Wade Johnson
@@ -125,19 +124,6 @@ __DATA__
     <path id="xsl" d="M0,0  l5,10"/>
 
 
-    <script type="text/ecmascript">
-      function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
-      function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
-    </script>
   </defs>
   <rect id="mazebg" x="0" y="0" width="50" height="110"/>
 

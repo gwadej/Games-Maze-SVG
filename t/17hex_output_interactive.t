@@ -146,7 +146,6 @@ __DATA__
       board[11] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
       board[12] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
     </script>
-
     <script type="text/ecmascript">
       function push( evt )
        {
@@ -160,6 +159,7 @@ __DATA__
            btn.removeAttributeNS( null, "opacity" );
        }
     </script>
+
   </defs>
   <rect id="mazebg" x="0" y="0" width="80" height="150"/>
 

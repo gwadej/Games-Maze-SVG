@@ -2,6 +2,7 @@
 
 use Test::More tests => 5;
 use Test::MockModule;
+#use Test::LongString;
 
 use Games::Maze::SVG;
 
@@ -12,7 +13,7 @@ my $gmaze = Test::MockModule->new( 'Games::Maze' );
 
 my $rectgrid = 
 
-my $output = do { local $/ = undef; <DATA>; };
+my $template = do { local $/ = undef; <DATA>; };
 
 $gmaze->mock(
     make => sub {},
@@ -32,14 +33,37 @@ EOM
 # Default constructor.
 my $maze = Games::Maze::SVG->new( 'Rect' );
 
+my $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
+    <path id="ur" d="M0,5  Q5,5 5,10"/>
+    <path id="ll" d="M5,0  Q5,5 10,5"/>
+    <path id="lr" d="M0,5  Q5,5 5,0"/>
+    <path id="h"  d="M0,5  h10"/>
+    <path id="v"  d="M5,0  v10"/>
+    <path id="l"  d="M0,5  h5"/>
+    <path id="r"  d="M5,5  h5"/>
+    <path id="t"  d="M5,0  v5"/>
+    <path id="d"  d="M5,5  v5"/>
+    <path id="tr" d="M5,0  Q5,5 10,5 Q5,5 5,10"/>
+    <path id="tl" d="M5,0  Q5,5 0,5  Q5,5 5,10"/>
+    <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
+    <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
+    <path id="cross"
+                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
+} );
+
+#is_string( $maze->toString(), $output, "Full transform works." );
 is( $maze->toString(), $output, "Full transform works." );
 
 #open( my $fh, '>rect1.svg' ) or die;
 #print $fh $maze->toString();
 
+# ---- Bevel ----
+# Because of the outside edge effects, I can't use the template in the
+# same way.
 
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'bevel' );
+
 like( $maze->toString(),
       qr{    <path id="ul" d="M5,10.1 v-.1 l5,-5 h.1"/>
     <path id="ur" d="M-.1,5 h.1 l5,5 v.1"/>
@@ -72,10 +96,9 @@ like( $maze->toString(),
     <path id="otd" d="M0,5 l5,5 l5,-5"/>},
     "Full transform, bevel wall style." );
 
-$maze = Games::Maze::SVG->new( 'Rect' );
-$maze->set_wall_form( 'roundcorners' );
-like( $maze->toString(),
-      qr{    <path id="ul" d="M5,10 Q5,5 10,5"/>
+# ---- Round Corners ----
+
+$output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
     <path id="ur" d="M0,5  Q5,5 5,10"/>
     <path id="ll" d="M5,0  Q5,5 10,5"/>
     <path id="lr" d="M0,5  Q5,5 5,0"/>
@@ -89,13 +112,16 @@ like( $maze->toString(),
     <path id="tl" d="M5,0  v10 M0,5 h5"/>
     <path id="tu" d="M0,5  h10 M5,0 v5"/>
     <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>},
-    "Full transform, roundcorners wall style." );
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>
+} );
 
 $maze = Games::Maze::SVG->new( 'Rect' );
-$maze->set_wall_form( 'round' );
-like( $maze->toString(),
-      qr{    <path id="ul" d="M5,10 Q5,5 10,5"/>
+$maze->set_wall_form( 'roundcorners' );
+is( $maze->toString(), $output, "Full transform, roundcorners wall style." );
+
+# ---- Round ----
+
+$output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
     <path id="ur" d="M0,5  Q5,5 5,10"/>
     <path id="ll" d="M5,0  Q5,5 10,5"/>
     <path id="lr" d="M0,5  Q5,5 5,0"/>
@@ -110,14 +136,17 @@ like( $maze->toString(),
     <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
     <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
     <path id="cross"
-                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>},
-    "Full transform, round wall style." );
-
+                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
+} );
 
 $maze = Games::Maze::SVG->new( 'Rect' );
-$maze->set_wall_form( 'straight' );
-like( $maze->toString(),
-      qr{    <path id="ul" d="M5,10 v-5 h5"/>
+$maze->set_wall_form( 'round' );
+is( $maze->toString(), $output, "Full transform, round wall style." );
+
+
+# ---- Straight ----
+
+$output = resolve_template( qq{    <path id="ul" d="M5,10 v-5 h5"/>
     <path id="ur" d="M0,5  h5  v5"/>
     <path id="ll" d="M5,0  v5  h5"/>
     <path id="lr" d="M0,5  h5  v-5"/>
@@ -131,17 +160,34 @@ like( $maze->toString(),
     <path id="tl" d="M5,0  v10 M0,5 h5"/>
     <path id="tu" d="M0,5  h10 M5,0 v5"/>
     <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>},
-    "Full transform, straight wall style." );
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>
+} );
 
+$maze = Games::Maze::SVG->new( 'Rect' );
+$maze->set_wall_form( 'straight' );
+is( $maze->toString(), $output, "Full transform, straight wall style." );
 
+#
+# Convert the template into a complete svg page.
+#
+# walldefs  a string containing the wall piece definitions
+#
+# Returns the complete output.
+sub resolve_template
+{
+    my $walldefs = shift;
+    my $output = $template;
+    
+    $output =~ s/\{\{walldefs\}\}/$walldefs/sm;
+    
+    $output;
+}
 
 __DATA__
 <?xml version="1.0"?>
 <svg width="70" height="90"
      xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+     xmlns:xlink="http://www.w3.org/1999/xlink">
   <metadata>
     <!--
         Copyright 2004-2005, G. Wade Johnson
@@ -211,36 +257,7 @@ __DATA__
         </feMerge>
      </filter>
     <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
-    <path id="ul" d="M5,10 Q5,5 10,5"/>
-    <path id="ur" d="M0,5  Q5,5 5,10"/>
-    <path id="ll" d="M5,0  Q5,5 10,5"/>
-    <path id="lr" d="M0,5  Q5,5 5,0"/>
-    <path id="h"  d="M0,5  h10"/>
-    <path id="v"  d="M5,0  v10"/>
-    <path id="l"  d="M0,5  h5"/>
-    <path id="r"  d="M5,5  h5"/>
-    <path id="t"  d="M5,0  v5"/>
-    <path id="d"  d="M5,5  v5"/>
-    <path id="tr" d="M5,0  Q5,5 10,5 Q5,5 5,10"/>
-    <path id="tl" d="M5,0  Q5,5 0,5  Q5,5 5,10"/>
-    <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
-    <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
-    <path id="cross"
-                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
-
-    <script type="text/ecmascript">
-      function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
-      function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
-    </script>
+{{walldefs}}
   </defs>
   <rect id="mazebg" x="0" y="0" width="70" height="90"/>
 
