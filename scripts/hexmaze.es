@@ -26,6 +26,8 @@ function initialize( board_, start_, end_, delta_ )
 
   reset_sprite();
   remove_msg();
+
+  make_visible( "exit" );  
  }
 
 function reset_sprite()
@@ -213,3 +215,12 @@ function restart()
   show_sprite();
   sprite.setAttributeNS( null, "visibility", "visible" );
  }
+
+function make_visible( name )
+{
+    var elem = document.getElementById( name );
+     if(null != elem)
+     {
+          elem.setAttributeNS( null, "visibility", "visible" );
+     }
+}
