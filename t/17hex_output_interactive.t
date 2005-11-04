@@ -89,6 +89,7 @@ __DATA__
 
     </rdf:RDF>
   </metadata>
+
   <defs>
     <style type="text/css">
       path    { stroke: black; fill: none; }

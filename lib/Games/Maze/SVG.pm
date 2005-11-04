@@ -44,6 +44,42 @@ my %crumbstyles = (
 		   none => "visibility:hidden;",
                   );
 
+my $license = <<'EOL';
+  <metadata>
+    <!--
+        Copyright 2004-2005, G. Wade Johnson
+	Some rights reserved.
+    -->
+    <rdf:RDF xmlns="http://web.resource.org/cc/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <Work rdf:about="">
+       <dc:title>SVG Maze</dc:title>
+       <dc:date>2005</dc:date>
+       <dc:description>An SVG-based Game</dc:description>
+       <dc:creator><Agent>
+	  <dc:title>G. Wade Johnson</dc:title>
+       </Agent></dc:creator>
+       <dc:rights><Agent>
+	  <dc:title>G. Wade Johnson</dc:title>
+       </Agent></dc:rights>
+       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Interactive" />
+       <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
+    </Work>
+
+    <License rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
+       <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
+       <permits rdf:resource="http://web.resource.org/cc/Distribution" />
+       <requires rdf:resource="http://web.resource.org/cc/Notice" />
+       <requires rdf:resource="http://web.resource.org/cc/Attribution" />
+       <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+       <requires rdf:resource="http://web.resource.org/cc/ShareAlike" />
+    </License>
+
+    </rdf:RDF>
+  </metadata>
+EOL
+
 =head1 FUNCTIONS
 
 =cut
@@ -342,39 +378,7 @@ EOB
 <svg width="$totalwidth" height="$ht"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"$load>
-  <metadata>
-    <!--
-        Copyright 2004-2005, G. Wade Johnson
-	Some rights reserved.
-    -->
-    <rdf:RDF xmlns="http://web.resource.org/cc/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <Work rdf:about="">
-       <dc:title>SVG Maze</dc:title>
-       <dc:date>2005</dc:date>
-       <dc:description>An SVG-based Game</dc:description>
-       <dc:creator><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
-       </Agent></dc:creator>
-       <dc:rights><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
-       </Agent></dc:rights>
-       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Interactive" />
-       <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
-    </Work>
-
-    <License rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
-       <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
-       <permits rdf:resource="http://web.resource.org/cc/Distribution" />
-       <requires rdf:resource="http://web.resource.org/cc/Notice" />
-       <requires rdf:resource="http://web.resource.org/cc/Attribution" />
-       <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
-       <requires rdf:resource="http://web.resource.org/cc/ShareAlike" />
-    </License>
-
-    </rdf:RDF>
-  </metadata>
+$license
   <defs>
     <style type="text/css">
       path    { stroke: black; fill: none; }
@@ -575,39 +579,7 @@ __DATA__
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"{{load}}
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
-  <metadata>
-    <!--
-        Copyright 2004-2005, G. Wade Johnson
-	Some rights reserved.
-    -->
-    <rdf:RDF xmlns="http://web.resource.org/cc/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <Work rdf:about="">
-       <dc:title>SVG Maze</dc:title>
-       <dc:date>2005</dc:date>
-       <dc:description>An SVG-based Game</dc:description>
-       <dc:creator><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
-       </Agent></dc:creator>
-       <dc:rights><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
-       </Agent></dc:rights>
-       <dc:type rdf:resource="http://purl.org/dc/dcmitype/Interactive" />
-       <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
-    </Work>
-
-    <License rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
-       <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
-       <permits rdf:resource="http://web.resource.org/cc/Distribution" />
-       <requires rdf:resource="http://web.resource.org/cc/Notice" />
-       <requires rdf:resource="http://web.resource.org/cc/Attribution" />
-       <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
-       <requires rdf:resource="http://web.resource.org/cc/ShareAlike" />
-    </License>
-
-    </rdf:RDF>
-  </metadata>
+{{license}}
   <defs>
     <style type="text/css">
       path    { stroke: black; fill: none; }
