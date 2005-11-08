@@ -300,9 +300,9 @@ Returns a hash of wall forms.
 
 sub get_wall_forms
 {
- local $/ = "\n===\n";
- chomp( my @list = <DATA> );
- @list;
+    local $/ = "\n===\n";
+    chomp( my @list = <DATA> );
+    @list;
 }
 
 =back

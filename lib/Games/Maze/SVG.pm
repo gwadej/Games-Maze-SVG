@@ -166,11 +166,11 @@ Returns a reference to self for chaining.
 =cut
 
 sub  set_interactive
- {
-  my $self = shift;
-  $self->{interactive} = 1;
-  $self;
- }
+{
+    my $self = shift;
+    $self->{interactive} = 1;
+    $self;
+}
 
 
 =item set_breadcrumb
@@ -251,9 +251,10 @@ sub  toString
       dx2 => sub { $_[0]->{dx}/2; },
       dy2 => sub { $_[0]->{dy}/2; },
       totalwidth => '',
-      heig => '',
+      height => '',
       width => '',
       load => '',
+      license => $license,
       sprite_color => 'orange',
       crumb_style => $self->get_crumbstyle(),
       mazebg_color => '#ffc', # '#9cc'; # '#fc0'
@@ -266,7 +267,7 @@ sub  toString
       maze => '',
       crumb => '',
       sprite_use => '',
-      direction_panel => '',
+      control_panel => '',
   };
   
   my ($dx2, $dy2) = ($self->{dx}/2, $self->{dy}/2);
@@ -520,28 +521,28 @@ sub _fill_out_template
 #
 # returns a string containing the SVG for the maze description.
 sub  _just_maze
- {
-  my $dx   = shift;
-  my $dy   = shift;
-  my $rows = shift;
+{
+    my $dx   = shift;
+    my $dy   = shift;
+    my $rows = shift;
 
-  my $output = '';
-  my ($maxx,$y) = (0,0);
+    my $output = '';
+    my ($maxx,$y) = (0,0);
 
-  foreach my $r (@{$rows})
-   {
-    my $x = 0;
-    foreach my $c (@{$r})
-     {
-      $output .= qq{  <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c;
-      $x += $dx;
-     }
-    $y += $dy;
-    $maxx = $x if $maxx < $x;
-   }
+    foreach my $r (@{$rows})
+    {
+        my $x = 0;
+        foreach my $c (@{$r})
+        {
+            $output .= qq{  <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c;
+            $x += $dx;
+        }
+        $y += $dy;
+        $maxx = $x if $maxx < $x;
+    }
 
-  { width=>$maxx, height=>$y, maze=>$output };
- }
+    { width=>$maxx, height=>$y, maze=>$output };
+}
 
 =back
 
@@ -636,6 +637,5 @@ __DATA__
 {{maze}}
 {{crumb}}
 {{sprite_use}}
-{{direction_panel}}
+{{control_panel}}
 </svg>
-
