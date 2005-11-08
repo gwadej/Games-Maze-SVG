@@ -296,8 +296,8 @@ sub  toString
     $self->transform_grid( \@rows );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
-    ($xp, $yp) = (3*($maze->{entry}->[0]-1)+2, 2*($maze->{entry}->[1]-1) );
-    ($xe, $ye) = (3*($maze->{exit}->[0]-1)+2, 2*($maze->{exit}->[1])+1 );
+    ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
+    ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
     if($self->is_hex_shaped())
     {
         ($xsign, $ysign) = (($xe+1)*$self->{dx},($ye+3)*$self->{dy});
@@ -312,8 +312,8 @@ sub  toString
     $self->transform_grid( \@rows, $self->{wallform} );
     $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
-    ($xp, $yp) = (2*($maze->{entry}->[0]-1)+1, 2*($maze->{entry}->[1]-1) );
-    ($xe, $ye) = (2*($maze->{exit}->[0]-1)+1, 2*($maze->{exit}->[1]) );
+    ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
+    ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
     ($xsign, $ysign) = (($xe+0.5)*$self->{dx},($ye+2)*$self->{dy});
    }
 
