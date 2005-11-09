@@ -239,81 +239,82 @@ Method that converts the current maze into an SVG string.
 
 sub  toString
 {
-  my $self = shift;
-  my $maze = Games::Maze->new( %{$self->{mazeparms}} );
+    my $self = shift;
+    my $maze = Games::Maze->new( %{$self->{mazeparms}} );
 
-  my $output = '';
-  $maze->make();
-  my @rows = map { [ split //, $_ ] }
-                 split( /\n/, $maze->to_ascii() );
+    my $output = '';
+    $maze->make();
+    my @rows = map { [ split //, $_ ] }
+                   split( /\n/, $maze->to_ascii() );
 
-  $self->{replaceables} = {
-      dx2 => sub { $_[0]->dx()/2; },
-      dy2 => sub { $_[0]->dy()/2; },
-      totalwidth => '',
-      height => '',
-      width => '',
-      load => '',
-      license => $license,
-      sprite_color => 'orange',
-      crumb_style => $self->get_crumbstyle(),
-      mazebg_color => '#ffc', # '#9cc'; # '#fc0'
-      panel_color => '#ccc',
-      sprite_def => '',
-      wall_definitions => '',
-      script => '',
-      script_type => 'text/ecmascript',
-      background => '',
-      maze => '',
-      crumb => '',
-      sprite_use => '',
-      control_panel => '',
-  };
-  
-  my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
-  my $script = '';
-  my $sprite = '';
-  my $crumb  = '';
-  my $color  = {
-                mazebg => '#ffc', # '#9cc'; # '#fc0'
-                panel  => '#ccc',
-                crumb  => '#f3f',
-                sprite => 'orange',
-		button => '#ccf',
-               };
+    $self->{replaceables} = {
+	dx2 => sub { $_[0]->dx()/2; },
+	dy2 => sub { $_[0]->dy()/2; },
+	totalwidth => '',
+	height => '',
+	width => '',
+	load => '',
+	license => $license,
+	sprite_color => 'orange',
+	crumb_style => $self->get_crumbstyle(),
+	mazebg_color => '#ffc', # '#9cc'; # '#fc0'
+	panel_color => '#ccc',
+	sprite_def => '',
+	wall_definitions => '',
+	script => '',
+	script_type => 'text/ecmascript',
+	background => '',
+	maze => '',
+	crumb => '',
+	sprite_use => '',
+	control_panel => '',
+    };
 
-  my $crumbstyle = $self->get_crumbstyle();
+    my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
+    my $script = '';
+    my $sprite = '';
+    my $crumb  = '';
+    my $color  = {
+                  mazebg => '#ffc', # '#9cc'; # '#fc0'
+                  panel  => '#ccc',
+                  crumb  => '#f3f',
+                  sprite => 'orange',
+		  button => '#ccf',
+        	 };
 
-  $self->transform_grid( \@rows, $self->{wallform} );
-  my $mazeout = _just_maze( $self->dx(), $self->dy(), \@rows );
-  my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
-  my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
-  my ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
+    my $crumbstyle = $self->get_crumbstyle();
 
-  my $totalwidth = $mazeout->{width};
-  my $ht         = $mazeout->{height} + SIGN_HEIGHT;
-  my $panelwidth = 250;
-  my $background =
-      qq{  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>\n};
-  my $load = '';
+    $self->transform_grid( \@rows, $self->{wallform} );
+    my $mazeout = _just_maze( $self->dx(), $self->dy(), \@rows );
 
-  if($self->{interactive})
-   {
-    $script  = qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
+    my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
+    my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
+    my ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
 
-    my $board = $self->make_board_array( \@rows );
+    my $totalwidth = $mazeout->{width};
+    my $ht         = $mazeout->{height} + SIGN_HEIGHT;
+    my $panelwidth = 250;
+    my $background =
+	qq{  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>\n};
+    my $load = '';
 
-    $script .= qq{    <script type="text/ecmascript">\n}
-              .qq{      var board = new Array();\n};
-    my $i = 0;
-    foreach my $row (@{$board})
-     {
-      $script .= qq{      board[$i] = new Array(}
-                 . join( ', ', @{$row} )
-	         . qq{ );\n};
-      $i++;
-     }
-    $script .= <<'EOS';
+    if($self->{interactive})
+    {
+        $script  = qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
+
+        my $board = $self->make_board_array( \@rows );
+
+        $script .= qq{    <script type="text/ecmascript">\n}
+                  .qq{      var board = new Array();\n};
+        my $i = 0;
+        foreach my $row (@{$board})
+        {
+	    $script .= qq{      board[$i] = new Array(}
+                       . join( ', ', @{$row} )
+	               . qq{ );\n};
+	    $i++;
+        }
+        $script .= <<'EOS';
     </script>
     <script type="text/ecmascript">
       function push( evt )
@@ -329,25 +330,25 @@ sub  toString
        }
     </script>
 EOS
-    $self->_set_replacement( 'script', $script );
+        $self->_set_replacement( 'script', $script );
 
-    $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
-    $crumb = qq{  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>};
-    $self->_set_replacement( 'sprite_use', $sprite );
-    $self->_set_replacement( 'crumb', $crumb );
+        $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
+        $crumb = qq{  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>};
+        $self->_set_replacement( 'sprite_use', $sprite );
+        $self->_set_replacement( 'crumb', $crumb );
 
-    $background = <<"EOB";
+        $background = <<"EOB";
   <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
 EOB
-    $self->_set_replacement( 'background', $background );
+        $self->_set_replacement( 'background', $background );
 
-    $totalwidth += $panelwidth;
-    $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
+        $totalwidth += $panelwidth;
+        $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
-    $self->_set_replacement( 'load', $load );
-   }
+        $self->_set_replacement( 'load', $load );
+     }
 
-  $output .= <<"EOH";
+    $output .= <<"EOH";
 <?xml version="1.0"?>
 <svg width="$totalwidth" height="$ht"
      xmlns="http://www.w3.org/2000/svg"
@@ -398,11 +399,11 @@ $crumb
 $sprite
 EOH
 
-  if($self->{interactive})
-   {
-    my $xrect = $mazeout->{width} + 20;
-    my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
-    $output .= <<"EOB";
+    if($self->{interactive})
+    {
+        my $xrect = $mazeout->{width} + 20;
+        my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
+        $output .= <<"EOB";
   <rect x="$mazeout->{width}" y="0" width="$panelwidth" height="$ht"
         class="panel"/>
 
@@ -426,8 +427,8 @@ EOH
   </g>
   <text id="solvedmsg" x="$cx" y="$cy" opacity="1.0">Solved!</text>
 EOB
-   }
-  $output . "\n</svg>\n";
+    }
+    $output . "\n</svg>\n";
 }
 
 
