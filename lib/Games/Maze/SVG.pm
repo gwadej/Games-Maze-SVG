@@ -284,14 +284,6 @@ sub  toString
 
   my $crumbstyle = $self->get_crumbstyle();
 
-  if($self->is_hex())
-   {
-    $self->{dx} /= 2;
-    $dx2 /= 2;
-    
-    $self->_set_replacement( 'dx', $self->dx() / 2 );
-   }
-
   $self->transform_grid( \@rows, $self->{wallform} );
   my $mazeout = _just_maze( $self->dx(), $self->dy(), \@rows );
   my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );

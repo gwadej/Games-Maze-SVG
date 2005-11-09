@@ -385,11 +385,25 @@ sub convert_sign_position
     my $self = shift;
     my ($x, $y) = @_;
 
-    $x = ($x+1)*$self->{dx};
-    $y = ($y+3)*$self->{dy};
+    $x = ($x+1)*$self->dx();
+    $y = ($y+3)*$self->dy();
 
     ($x, $y);
 }
+
+=item dx
+
+Returns the delta X value for building this maze.
+
+=cut
+
+sub dx
+{
+    my $self = shift;
+
+    $self->{dx}/2;
+}
+
 
 =back
 

@@ -450,8 +450,8 @@ sub convert_sign_position
     my $self = shift;
     my ($x, $y) = @_;
 
-    $x = ($x+0.5)*$self->{dx};
-    $y = ($y+2)*$self->{dy};
+    $x = ($x+0.5)*$self->dx();
+    $y = ($y+2)*$self->dy();
 
     ($x, $y);
 }
