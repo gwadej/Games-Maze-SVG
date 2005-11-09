@@ -300,11 +300,11 @@ sub  toString
     ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
     if($self->is_hex_shaped())
     {
-        ($xsign, $ysign) = (($xe+1)*$self->{dx},($ye+3)*$self->{dy});
+        ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
     }
-    else
+    else	
     {
-        ($xsign, $ysign) = ($xe*$self->{dx},($ye+2)*$self->{dy});
+        ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
     }
    }
   else
@@ -314,7 +314,7 @@ sub  toString
 
     ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
     ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
-    ($xsign, $ysign) = (($xe+0.5)*$self->{dx},($ye+2)*$self->{dy});
+    ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
    }
 
   my $totalwidth = $mazeout->{width};

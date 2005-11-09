@@ -428,6 +428,34 @@ sub convert_end_position
     ($x, $y);
 }
 
+=item convert_sign_position
+
+Convert the supplied x and y coordinates into the appropriate real coordinates
+for a the position of the exit sign.
+
+=over 4
+
+=item $x x coord from the maze
+
+=item $y y coord from the maze
+
+=back
+
+returns a two element list containing (x, y).
+
+=cut
+
+sub convert_sign_position
+{
+    my $self = shift;
+    my ($x, $y) = @_;
+
+    $x = ($x+0.5)*$self->{dx};
+    $y = ($y+2)*$self->{dy};
+
+    ($x, $y);
+}
+
 =back
 
 =head1 AUTHOR
