@@ -283,8 +283,6 @@ sub  toString
                };
 
   my $crumbstyle = $self->get_crumbstyle();
-  my $mazeout;
-  my ($xp, $yp, $xe, $ye, $xsign, $ysign);
 
   if($self->is_hex())
    {
@@ -292,30 +290,13 @@ sub  toString
     $dx2 /= 2;
     
     $self->_set_replacement( 'dx', $self->{dx} / 2 );
-
-    $self->transform_grid( \@rows );
-    $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
-
-    ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
-    ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
-    if($self->is_hex_shaped())
-    {
-        ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
-    }
-    else	
-    {
-        ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
-    }
    }
-  else
-   {
-    $self->transform_grid( \@rows, $self->{wallform} );
-    $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
 
-    ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
-    ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
-    ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
-   }
+  $self->transform_grid( \@rows, $self->{wallform} );
+  my $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
+  my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
+  my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
+  my ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
 
   my $totalwidth = $mazeout->{width};
   my $ht         = $mazeout->{height} + SIGN_HEIGHT;
