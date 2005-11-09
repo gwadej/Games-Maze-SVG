@@ -346,7 +346,7 @@ EOB
         $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
         $self->_set_replacement( 'load', $load );
-     }
+    }
 
     $output .= <<"EOH";
 <?xml version="1.0"?>
@@ -580,8 +580,7 @@ __DATA__
 <?xml version="1.0"?>
 <svg width="{{totalwidth}}" height="{{height}}"
      xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"{{load}}
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+     xmlns:xlink="http://www.w3.org/1999/xlink"{{load}}>
 {{license}}
   <defs>
     <style type="text/css">
@@ -621,19 +620,6 @@ __DATA__
 {{sprite_def}}
 {{wall_definitions}}
 {{script}}
-    <script type="{{script_type}}">
-      function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
-      function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
-    </script>
   </defs>
 {{background}}
 {{maze}}
