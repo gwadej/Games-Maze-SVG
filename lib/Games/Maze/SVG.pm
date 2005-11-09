@@ -248,8 +248,8 @@ sub  toString
                  split( /\n/, $maze->to_ascii() );
 
   $self->{replaceables} = {
-      dx2 => sub { $_[0]->{dx}/2; },
-      dy2 => sub { $_[0]->{dy}/2; },
+      dx2 => sub { $_[0]->dx()/2; },
+      dy2 => sub { $_[0]->dy()/2; },
       totalwidth => '',
       height => '',
       width => '',
@@ -270,7 +270,7 @@ sub  toString
       control_panel => '',
   };
   
-  my ($dx2, $dy2) = ($self->{dx}/2, $self->{dy}/2);
+  my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
   my $script = '';
   my $sprite = '';
   my $crumb  = '';
@@ -289,11 +289,11 @@ sub  toString
     $self->{dx} /= 2;
     $dx2 /= 2;
     
-    $self->_set_replacement( 'dx', $self->{dx} / 2 );
+    $self->_set_replacement( 'dx', $self->dx() / 2 );
    }
 
   $self->transform_grid( \@rows, $self->{wallform} );
-  my $mazeout = _just_maze( $self->{dx}, $self->{dy}, \@rows );
+  my $mazeout = _just_maze( $self->dx(), $self->dy(), \@rows );
   my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
   my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
   my ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
@@ -350,7 +350,7 @@ EOB
     $self->_set_replacement( 'background', $background );
 
     $totalwidth += $panelwidth;
-    $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:$self->{dx}, y:$self->{dy}} )"
+    $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
     $self->_set_replacement( 'load', $load );
    }
@@ -396,7 +396,7 @@ $license
          <feMergeNode in="SourceGraphic"/>
         </feMerge>
      </filter>
-    <path id="sprite" d="M0,0 Q$dx2,$dy2 0,$self->{dy} Q$dx2,$dy2 $self->{dx},$self->{dy} Q$dx2,$dy2 $self->{dx},0 Q$dx2,$dy2 0,0"/>
+    <path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>
 @{[$self->wall_definitions()]}
 $script
   </defs>
@@ -523,6 +523,34 @@ sub  _just_maze
     }
 
     { width=>$maxx, height=>$y, maze=>$output };
+}
+
+
+=item dx
+
+Returns the delta X value for building this maze.
+
+=cut
+
+sub dx
+{
+    my $self = shift;
+
+    $self->{dx};
+}
+
+
+=item dy
+
+Returns the delta Y value for building this maze.
+
+=cut
+
+sub dy
+{
+    my $self = shift;
+
+    $self->{dy};
 }
 
 =back
