@@ -300,36 +300,7 @@ sub  toString
 
     if($self->{interactive})
     {
-        $script  = qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
-
-        my $board = $self->make_board_array( \@rows );
-
-        $script .= qq{    <script type="text/ecmascript">\n}
-                  .qq{      var board = new Array();\n};
-        my $i = 0;
-        foreach my $row (@{$board})
-        {
-	    $script .= qq{      board[$i] = new Array(}
-                       . join( ', ', @{$row} )
-	               . qq{ );\n};
-	    $i++;
-        }
-        $script .= <<'EOS';
-    </script>
-    <script type="text/ecmascript">
-      function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
-      function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
-    </script>
-EOS
+        $script = $self->build_all_script( \@rows );
         $self->_set_replacement( 'script', $script );
 
         $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
@@ -401,10 +372,97 @@ EOH
 
     if($self->{interactive})
     {
-        my $xrect = $mazeout->{width} + 20;
+        $output .= $self->build_control_panel( $mazeout->{width}, $mazeout->{height} );
+
         my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
-        $output .= <<"EOB";
-  <rect x="$mazeout->{width}" y="0" width="$panelwidth" height="$ht"
+        $output .= <<EOB;
+  <g transform="translate($xsign,$ysign)" class="sign">
+    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+    <text x="0" y="4">Exit</text>
+  </g>
+  <text id="solvedmsg" x="$cx" y="$cy" opacity="1.0">Solved!</text>
+EOB
+    }
+    $output . "\n</svg>\n";
+}
+
+
+=item build_all_script
+
+Generate the full set of script sections for the maze.
+
+=over 4
+
+=item $rows reference to an array of rows.
+
+=back
+
+=cut
+
+sub build_all_script
+{
+    my $self = shift;
+    my $rows = shift;
+    
+    my $script  = qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
+
+    my $board = $self->make_board_array( $rows );
+
+    $script .= qq{    <script type="text/ecmascript">\n}
+              .qq{      var board = new Array();\n};
+    my $i = 0;
+    foreach my $row (@{$board})
+    {
+	$script .= qq{      board[$i] = new Array(}
+                   . join( ', ', @{$row} )
+	           . qq{ );\n};
+	$i++;
+    }
+    $script .= <<'EOS';
+    </script>
+    <script type="text/ecmascript">
+      function push( evt )
+       {
+        var btn = evt.getCurrentTarget();
+	btn.setAttributeNS( null, "opacity", "0.5" );
+       }
+      function release( evt )
+       {
+        var btn = evt.getCurrentTarget();
+	if("" != btn.getAttributeNS( null, "opacity" ))
+           btn.removeAttributeNS( null, "opacity" );
+       }
+    </script>
+EOS
+
+   $script;
+}
+
+
+
+=item build_control_panel
+
+Create the displayable control panel
+
+=over 4
+
+=item $startx the starting x coordinate for the panel
+
+=back
+
+=cut
+
+sub build_control_panel
+{
+    my $self = shift;
+    my $startx = shift;
+    my $height = shift;
+    my $totalheight = $height + SIGN_HEIGHT;
+    my $panelwidth = 250;
+
+    my $xrect = $startx + 20;
+    my $output .= <<"EOB";
+  <rect x="$startx" y="0" width="$panelwidth" height="$totalheight"
         class="panel"/>
 
   <g onclick="restart()" transform="translate($xrect,20)"
@@ -421,14 +479,7 @@ EOH
     <text x="0" y="80">The mouse must remain over the</text>
     <text x="0" y="100">maze for the keys to work.</text>
   </g>
-  <g transform="translate($xsign,$ysign)" class="sign">
-    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
-    <text x="0" y="4">Exit</text>
-  </g>
-  <text id="solvedmsg" x="$cx" y="$cy" opacity="1.0">Solved!</text>
 EOB
-    }
-    $output . "\n</svg>\n";
 }
 
 
