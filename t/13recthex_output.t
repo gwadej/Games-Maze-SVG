@@ -5,7 +5,7 @@ use Test::MockModule;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use MazeTestUtils;
-#use Test::LongString;
+use Test::LongString;
 
 use Games::Maze::SVG;
 
@@ -19,7 +19,7 @@ my $rectgrid =
 my $output = do { local $/ = undef; <DATA>; };
 
 $gmaze->mock(
-    make => sub {},
+    make => sub { my $self = shift; $self->{entry} = [2,1]; $self->{exit} = [6,8]; },
     to_ascii => sub { normalize_maze( <<'EOM' ); },
  __    __    
 /  \__/  \
@@ -41,8 +41,8 @@ my $maze = Games::Maze::SVG->new( 'RectHex' );
 #open( my $fh, '>recthex1.svg' ) or die;
 #print $fh $maze->toString();
 
-is( $maze->toString(), $output, "Full transform works." );
-#is_string( $maze->toString(), $output, "Full transform works." );
+#is( $maze->toString(), $output, "Full transform works." );
+is_string( $maze->toString(), $output, "Full transform works." );
 
 
 __DATA__
@@ -180,6 +180,7 @@ __DATA__
   <use x="30" y="70" xlink:href="#xsr"/>
 
 
+  <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
 
 
 </svg>

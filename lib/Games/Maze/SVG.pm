@@ -367,7 +367,8 @@ $script
 $background
 $mazeout->{maze}
 $crumb
-$sprite
+  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
+
 EOH
 
     if($self->{interactive})

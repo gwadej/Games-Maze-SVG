@@ -2,7 +2,7 @@
 
 use Test::More tests => 5;
 use Test::MockModule;
-#use Test::LongString;
+use Test::LongString;
 
 use Games::Maze::SVG;
 
@@ -16,7 +16,7 @@ my $rectgrid =
 my $template = do { local $/ = undef; <DATA>; };
 
 $gmaze->mock(
-    make => sub {},
+    make => sub { my $self = shift; $self->{entry} = [2,1]; $self->{exit} = [6,8]; },
     to_ascii => sub { <<EOM },
 :--:  :--:--:
 |  |        |
@@ -51,8 +51,8 @@ my $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
                   d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
 } );
 
-#is_string( $maze->toString(), $output, "Full transform works." );
-is( $maze->toString(), $output, "Full transform works." );
+is_string( $maze->toString(), $output, "Full transform works." );
+#is( $maze->toString(), $output, "Full transform works." );
 
 #open( my $fh, '>rect1.svg' ) or die;
 #print $fh $maze->toString();
@@ -117,7 +117,8 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
 
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'roundcorners' );
-is( $maze->toString(), $output, "Full transform, roundcorners wall style." );
+#is( $maze->toString(), $output, "Full transform, roundcorners wall style." );
+is_string( $maze->toString(), $output, "Full transform, roundcorners wall style." );
 
 # ---- Round ----
 
@@ -141,7 +142,8 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
 
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'round' );
-is( $maze->toString(), $output, "Full transform, round wall style." );
+#is( $maze->toString(), $output, "Full transform, round wall style." );
+is_string( $maze->toString(), $output, "Full transform, round wall style." );
 
 
 # ---- Straight ----
@@ -165,7 +167,8 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 v-5 h5"/>
 
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'straight' );
-is( $maze->toString(), $output, "Full transform, straight wall style." );
+#is( $maze->toString(), $output, "Full transform, straight wall style." );
+is_string( $maze->toString(), $output, "Full transform, straight wall style." );
 
 #
 # Convert the template into a complete svg page.
@@ -304,6 +307,7 @@ __DATA__
   <use x="60" y="60" xlink:href="#lr"/>
 
 
+  <use id="me" x="3" y="0" xlink:href="#sprite" visibility="hidden"/>
 
 
 </svg>
