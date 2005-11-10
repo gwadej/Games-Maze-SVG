@@ -266,13 +266,11 @@ sub  toString
 	background => '',
 	maze => '',
 	crumb => '',
-	sprite_use => '',
 	control_panel => '',
     };
 
     my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
     my $script = '';
-    my $sprite = '';
     my $crumb  = '';
     my $color  = {
                   mazebg => '#ffc', # '#9cc'; # '#fc0'
@@ -303,9 +301,7 @@ sub  toString
         $script = $self->build_all_script( \@rows );
         $self->_set_replacement( 'script', $script );
 
-        $sprite = qq{  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>\n};
         $crumb = qq{  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>};
-        $self->_set_replacement( 'sprite_use', $sprite );
         $self->_set_replacement( 'crumb', $crumb );
 
         $background = <<"EOB";
