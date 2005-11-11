@@ -271,7 +271,6 @@ sub  toString
 	starty => 0,
     };
 
-    my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
     my $script = '';
     my $crumb  = '';
     my $color  = {
@@ -296,6 +295,7 @@ sub  toString
     my $panelwidth = 250;
     my $load = '';
     my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
+    my $sprite_def = $self->create_sprite();
 
     if($self->{interactive})
     {
@@ -349,7 +349,7 @@ $license
          <feMergeNode in="SourceGraphic"/>
         </feMerge>
      </filter>
-    <path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>
+$sprite_def
 @{[$self->wall_definitions()]}
 $script
   </defs>
@@ -469,6 +469,21 @@ sub build_control_panel
     <text x="0" y="100">maze for the keys to work.</text>
   </g>
 EOB
+}
+
+
+=item create_sprite
+
+Create the sprite definition for includion in the SVG.
+
+=cut
+
+sub  create_sprite
+{
+    my $self = shift;
+    my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
+
+    qq|    <path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>|;
 }
 
 
