@@ -2,7 +2,7 @@
 
 use Test::More tests => 1;
 use Test::MockModule;
-#use Test::LongString;
+use Test::LongString;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use MazeTestUtils;
@@ -46,8 +46,8 @@ $maze->set_interactive();
 #open( my $fh, '>hex1.svg' ) or die;
 #print $fh $maze->toString();
 
-#is_string( $maze->toString(), $output, "Full transform works." );
-is( $maze->toString(), $output, "Full transform works." );
+is_string( $maze->toString(), $output, "Full transform works." );
+#is( $maze->toString(), $output, "Full transform works." );
 
 __DATA__
 <?xml version="1.0"?>
@@ -264,6 +264,12 @@ __DATA__
   <polyline id="crumb" class="crumbs" stroke="#f3f" points="5,0"/>
   <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
 
+  <g transform="translate(90,200)" class="sign">
+    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+    <text x="0" y="4">Exit</text>
+  </g>
+  <text id="solvedmsg" x="40" y="100" opacity="0">Solved!</text>
+
   <rect x="80" y="0" width="250" height="150"
         class="panel"/>
 
@@ -281,10 +287,5 @@ __DATA__
     <text x="0" y="80">The mouse must remain over the</text>
     <text x="0" y="100">maze for the keys to work.</text>
   </g>
-  <g transform="translate(90,200)" class="sign">
-    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
-    <text x="0" y="4">Exit</text>
-  </g>
-  <text id="solvedmsg" x="40" y="100" opacity="1.0">Solved!</text>
 
 </svg>

@@ -231,5 +231,10 @@ __DATA__
   <polyline id="crumb" class="crumbs" stroke="#f3f" points="5,0"/>
   <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
 
+  <g transform="translate(90,200)" class="sign">
+    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+    <text x="0" y="4">Exit</text>
+  </g>
+  <text id="solvedmsg" x="40" y="100" opacity="0">Solved!</text>
 
 </svg>

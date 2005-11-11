@@ -335,6 +335,12 @@ __DATA__
   <polyline id="crumb" class="crumbs" stroke="#f3f" points="3,-2"/>
   <use id="me" x="3" y="-2" xlink:href="#sprite" visibility="hidden"/>
 
+  <g transform="translate(35,120)" class="sign">
+    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+    <text x="0" y="4">Exit</text>
+  </g>
+  <text id="solvedmsg" x="35" y="70" opacity="0">Solved!</text>
+
   <rect x="70" y="0" width="250" height="90"
         class="panel"/>
 
@@ -352,10 +358,5 @@ __DATA__
     <text x="0" y="80">The mouse must remain over the</text>
     <text x="0" y="100">maze for the keys to work.</text>
   </g>
-  <g transform="translate(35,120)" class="sign">
-    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
-    <text x="0" y="4">Exit</text>
-  </g>
-  <text id="solvedmsg" x="35" y="70" opacity="1.0">Solved!</text>
 
 </svg>

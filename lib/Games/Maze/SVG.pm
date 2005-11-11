@@ -295,6 +295,7 @@ sub  toString
     my $ht         = $mazeout->{height} + SIGN_HEIGHT;
     my $panelwidth = 250;
     my $load = '';
+    my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
 
     if($self->{interactive})
     {
@@ -358,22 +359,20 @@ $mazeout->{maze}
   <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
   <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
 
-EOH
-
-    if($self->{interactive})
-    {
-        $output .= $self->build_control_panel( $mazeout->{width}, $mazeout->{height} );
-
-        my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
-        $output .= <<EOB;
   <g transform="translate($xsign,$ysign)" class="sign">
     <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
     <text x="0" y="4">Exit</text>
   </g>
   <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
-EOB
+
+EOH
+
+    if($self->{interactive})
+    {
+        $output .= $self->build_control_panel( $mazeout->{width}, $mazeout->{height} )
+	        . "\n";
     }
-    $output . "\n</svg>\n";
+    $output . "</svg>\n";
 }
 
 
