@@ -179,7 +179,7 @@ __DATA__
   <use x="25" y="70" xlink:href="#xh"/>
   <use x="30" y="70" xlink:href="#xsr"/>
 
-
+  <polyline id="crumb" class="crumbs" stroke="#f3f" points="5,0"/>
   <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
 
 

@@ -306,7 +306,7 @@ __DATA__
   <use x="50" y="60" xlink:href="#h"/>
   <use x="60" y="60" xlink:href="#lr"/>
 
-
+  <polyline id="crumb" class="crumbs" stroke="#f3f" points="3,0"/>
   <use id="me" x="3" y="0" xlink:href="#sprite" visibility="hidden"/>
 
 

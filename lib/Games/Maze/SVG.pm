@@ -267,6 +267,8 @@ sub  toString
 	maze => '',
 	crumb => '',
 	control_panel => '',
+	startx => 0,
+	starty => 0,
     };
 
     my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
@@ -300,9 +302,6 @@ sub  toString
     {
         $script = $self->build_all_script( \@rows );
         $self->_set_replacement( 'script', $script );
-
-        $crumb = qq{  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>};
-        $self->_set_replacement( 'crumb', $crumb );
 
         $background = <<"EOB";
   <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
@@ -362,7 +361,7 @@ $script
   </defs>
 $background
 $mazeout->{maze}
-$crumb
+  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
   <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
 
 EOH
@@ -671,7 +670,7 @@ __DATA__
   </defs>
 {{background}}
 {{maze}}
-{{crumb}}
-{{sprite_use}}
+  <polyline id="crumb" class="crumbs" stroke="{{crumb_color}}" points="{{startx}},{{starty}}"/>
+  <use id="me" x="{{startx}}" y="{{starty}}" xlink:href="#sprite" visibility="hidden"/>
 {{control_panel}}
 </svg>
