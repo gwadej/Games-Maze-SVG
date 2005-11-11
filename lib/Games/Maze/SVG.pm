@@ -36,6 +36,7 @@ Games::Maze::SVG uses the Games::Maze module to create mazes in SVG.
 use constant DELTA_X     => 10;
 use constant DELTA_Y     => 10;
 use constant SIGN_HEIGHT => 20;
+use constant PANEL_WIDTH => 250;
 
 my %crumbstyles = (
                    dash => "stroke-width:1; stroke-dasharray:5,3;",
@@ -259,8 +260,8 @@ sub  toString
 	crumb_style => $self->get_crumbstyle(),
 	mazebg_color => '#ffc', # '#9cc'; # '#fc0'
 	panel_color => '#ccc',
-	sprite_def => '',
-	wall_definitions => '',
+	sprite_def => sub { $_[0]->create_sprite(); },
+	wall_definitions => sub { $_[0]->wall_definitions(); },
 	script => '',
 	script_type => 'text/ecmascript',
 	background => '',
@@ -269,6 +270,8 @@ sub  toString
 	control_panel => '',
 	startx => 0,
 	starty => 0,
+	cx => 0,
+	cy => 0,
     };
 
     my $script = '';
@@ -291,10 +294,12 @@ sub  toString
     my ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
 
     my $totalwidth = $mazeout->{width};
-    my $ht         = $mazeout->{height} + SIGN_HEIGHT;
-    my $panelwidth = 250;
+    my $height     = $mazeout->{height} + SIGN_HEIGHT;
+    $self->_set_replacement( 'height', $height );
     my $load = '';
     my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
+    $self->_set_replacement( 'cx', $cx );
+    $self->_set_replacement( 'cx', $cy );
     my $sprite_def = $self->create_sprite();
 
     if($self->{interactive})
@@ -302,15 +307,16 @@ sub  toString
         $script = $self->build_all_script( \@rows );
         $self->_set_replacement( 'script', $script );
 
-        $totalwidth += $panelwidth;
+        $totalwidth += PANEL_WIDTH;
         $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
         $self->_set_replacement( 'load', $load );
     }
+    $self->_set_replacement( 'totalwidth', $totalwidth );
 
     $output .= <<"EOH";
 <?xml version="1.0"?>
-<svg width="$totalwidth" height="$ht"
+<svg width="$totalwidth" height="$height"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"$load>
 $license
@@ -353,7 +359,7 @@ $sprite_def
 @{[$self->wall_definitions()]}
 $script
   </defs>
-  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
+  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$height"/>
 
 $mazeout->{maze}
   <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
@@ -447,7 +453,7 @@ sub build_control_panel
     my $startx = shift;
     my $height = shift;
     my $totalheight = $height + SIGN_HEIGHT;
-    my $panelwidth = 250;
+    my $panelwidth = PANEL_WIDTH;
 
     my $xrect = $startx + 20;
     my $output .= <<"EOB";
