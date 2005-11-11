@@ -294,19 +294,12 @@ sub  toString
     my $totalwidth = $mazeout->{width};
     my $ht         = $mazeout->{height} + SIGN_HEIGHT;
     my $panelwidth = 250;
-    my $background =
-	qq{  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>\n};
     my $load = '';
 
     if($self->{interactive})
     {
         $script = $self->build_all_script( \@rows );
         $self->_set_replacement( 'script', $script );
-
-        $background = <<"EOB";
-  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
-EOB
-        $self->_set_replacement( 'background', $background );
 
         $totalwidth += $panelwidth;
         $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
@@ -359,7 +352,8 @@ $license
 @{[$self->wall_definitions()]}
 $script
   </defs>
-$background
+  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
+
 $mazeout->{maze}
   <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
   <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
@@ -668,7 +662,8 @@ __DATA__
 {{wall_definitions}}
 {{script}}
   </defs>
-{{background}}
+  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
+
 {{maze}}
   <polyline id="crumb" class="crumbs" stroke="{{crumb_color}}" points="{{startx}},{{starty}}"/>
   <use id="me" x="{{startx}}" y="{{starty}}" xlink:href="#sprite" visibility="hidden"/>
