@@ -370,7 +370,7 @@ EOH
     <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
     <text x="0" y="4">Exit</text>
   </g>
-  <text id="solvedmsg" x="$cx" y="$cy" opacity="1.0">Solved!</text>
+  <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
 EOB
     }
     $output . "\n</svg>\n";
