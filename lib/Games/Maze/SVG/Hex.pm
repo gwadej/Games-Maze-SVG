@@ -5,6 +5,7 @@ package Games::Maze::SVG::Hex;
 
 use base Games::Maze::SVG;
 
+use Carp;
 use Games::Maze;
 use strict;
 
@@ -169,7 +170,7 @@ sub  set_wall_form
     else
     {
         my $forms = join( ", ", sort keys %Walls );
-        die "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
+        croak "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
     }
     $self;
 }
@@ -264,7 +265,7 @@ sub transform_grid
         {
 	    if(defined $rows->[$r]->[$c])
 	    {
-        	die "Missing block for '$rows->[$r]->[$c]'.\n"
+        	croak "Missing block for '$rows->[$r]->[$c]'.\n"
 	                	    unless exists $HexBlocks{$rows->[$r]->[$c]};
         	$out[$r]->[$c] = $HexBlocks{$rows->[$r]->[$c]};
 	    }

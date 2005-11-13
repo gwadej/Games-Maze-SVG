@@ -5,6 +5,7 @@ package Games::Maze::SVG::Rect;
 
 use base Games::Maze::SVG;
 
+use Carp;
 use Games::Maze;
 use strict;
 
@@ -192,7 +193,7 @@ sub  set_wall_form
     else
     {
         my $forms = join( ", ", sort keys %Walls );
-        die "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
+        croak "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
     }
     $self;
 }
@@ -302,7 +303,7 @@ sub  transform_grid
 			. ($r==0 ? $sp : $rows->[$r-1]->[$c]) # up neighbor
 	        	. ($rows->[$r+1] ? $rows->[$r+1]->[$c] : $sp); # down neighbor
 		# convert the signature into the block name
-		die "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
+		croak "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
 		$out[$r]->[$c] = $Blocks{$sig};
 	    }
 	}

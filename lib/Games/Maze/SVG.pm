@@ -3,6 +3,7 @@
 
 package Games::Maze::SVG;
 
+use Carp;
 use Games::Maze;
 use Games::Maze::SVG::Rect;
 use Games::Maze::SVG::RectHex;
@@ -196,7 +197,7 @@ sub  set_breadcrumb
 
     return unless defined $bcs;
 
-    die "Unrecognized breadcrumb style '$bcs'.\n"
+    croak "Unrecognized breadcrumb style '$bcs'.\n"
       unless exists $crumbstyles{$bcs};
     $self->{crumb} = $bcs;
     $self->{crumbstyle} = $crumbstyles{$bcs};
