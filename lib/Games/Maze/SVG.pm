@@ -244,7 +244,6 @@ sub  toString
     my $self = shift;
     my $maze = Games::Maze->new( %{$self->{mazeparms}} );
 
-    my $output = '';
     $maze->make();
     my @rows = map { [ split //, $_ ] }
                    split( /\n/, $maze->to_ascii() );
@@ -283,8 +282,7 @@ sub  toString
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
     }
 
-    $output .= <<"EOH";
-<?xml version="1.0"?>
+    my $output .= <<"EOH";
 <svg width="$totalwidth" height="$height"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"$load>
@@ -347,7 +345,7 @@ EOH
         $output .= $self->build_control_panel( $mazeout->{width}, $mazeout->{height} )
 	        . "\n";
     }
-    $output . "</svg>\n";
+    qq{<?xml version="1.0"?>\n} .$output . "</svg>\n";
 }
 
 
