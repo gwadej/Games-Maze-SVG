@@ -192,7 +192,7 @@ sub make_board_array
     {
         push @board, [ map { $_ ? ($_ eq 'xh' ? -1 : 1) : 0 } @{$row} ];
     }
-    
+
     \@board;
 }
 

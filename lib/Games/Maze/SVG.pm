@@ -248,32 +248,6 @@ sub  toString
     my @rows = map { [ split //, $_ ] }
                    split( /\n/, $maze->to_ascii() );
 
-    $self->{replaceables} = {
-	dx2 => sub { $_[0]->dx()/2; },
-	dy2 => sub { $_[0]->dy()/2; },
-	totalwidth => '',
-	height => '',
-	width => '',
-	load => '',
-	license => $license,
-	sprite_color => 'orange',
-	crumb_style => $self->get_crumbstyle(),
-	mazebg_color => '#ffc', # '#9cc'; # '#fc0'
-	panel_color => '#ccc',
-	sprite_def => sub { $_[0]->create_sprite(); },
-	wall_definitions => sub { $_[0]->wall_definitions(); },
-	script => '',
-	script_type => 'text/ecmascript',
-	background => '',
-	maze => '',
-	crumb => '',
-	control_panel => '',
-	startx => 0,
-	starty => 0,
-	cx => 0,
-	cy => 0,
-    };
-
     my $script = '';
     my $crumb  = '';
     my $color  = {
@@ -295,24 +269,18 @@ sub  toString
 
     my $totalwidth = $mazeout->{width};
     my $height     = $mazeout->{height} + SIGN_HEIGHT;
-    $self->_set_replacement( 'height', $height );
     my $load = '';
     my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
-    $self->_set_replacement( 'cx', $cx );
-    $self->_set_replacement( 'cx', $cy );
     my $sprite_def = $self->create_sprite();
 
     if($self->{interactive})
     {
         $script = $self->build_all_script( \@rows );
-        $self->_set_replacement( 'script', $script );
 
         $totalwidth += PANEL_WIDTH;
         $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
-        $self->_set_replacement( 'load', $load );
     }
-    $self->_set_replacement( 'totalwidth', $totalwidth );
 
     $output .= <<"EOH";
 <?xml version="1.0"?>
@@ -494,60 +462,6 @@ sub  create_sprite
 
 
 #
-#  Fill in the replaceable parameter
-#
-#  name string naming parameter to be replaced
-#  value value of replacement text
-#
-#  return reference to self for chaining.
-#
-sub _set_replacement
-{
-    my $self = shift;
-
-    $self->{replaceables}->{shift()} = shift;
-    
-    $self;
-}
-
-
-#
-#  Generate replacement text.
-#
-#  name name of parameter to retrieve.
-#
-#  returns the string associated with the name.
-sub _get_replacement
-{
-    my $self = shift;
-    my $name = shift;
-
-    if(ref $self->{replaceables}->{$name})
-    {
-        $self->{replaceables}->{$name}->( $self, $name );
-    }
-    else
-    {
-        $self->{replaceables}->{$name};
-    }
-}
-
-
-sub _fill_out_template
-{
-    my $self = shift;
-    my $template = shift;
-    
-    $template =~ s[\{\{(\w+)\}\}]
-                  [
-		    exists $self->{replaceables}->{$1}
-		    ? $self->_get_replacement( $1 )
-		    : "{{$1}}"
-		  ]gems;
-}
-
-
-#
 # Generates just the maze portion of the SVG.
 #
 # $dx - The size of the tiles in the X direction.
@@ -637,55 +551,3 @@ under the same terms as Perl itself.
 
 1;
 
-__DATA__
-<?xml version="1.0"?>
-<svg width="{{totalwidth}}" height="{{height}}"
-     xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"{{load}}>
-{{license}}
-  <defs>
-    <style type="text/css">
-      path    { stroke: black; fill: none; }
-      polygon { stroke: black; fill: grey; }
-      #sprite { stroke: grey; stroke-width:0.2; fill: {{sprite_color}}; }
-      .crumbs { fill:none; {{crumb_style}} }
-      #mazebg { fill:{{mazebg_color}}; stroke:none; }
-      .panel  { fill:{{panel_color}}; stroke:none; }
-      .button {
-                 cursor: pointer;
-              }
-      text { font-family: sans-serif; }
-      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
-                  }
-      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
-      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-      .sign rect {  fill:red; stroke:none; }
-      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
-                 }
-    </style>
-     <filter id="bevel">
-       <feFlood flood-color="#ccf" result="lite-flood"/>
-       <feFlood flood-color="#006" result="dark-flood"/>
-       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
-                    result="lighter"/>
-       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
-       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
-                    result="darker"/>
-       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
-       <feMerge>
-         <feMergeNode in="lightedge"/>
-         <feMergeNode in="darkedge"/>
-         <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-     </filter>
-{{sprite_def}}
-{{wall_definitions}}
-{{script}}
-  </defs>
-  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$ht"/>
-
-{{maze}}
-  <polyline id="crumb" class="crumbs" stroke="{{crumb_color}}" points="{{startx}},{{starty}}"/>
-  <use id="me" x="{{startx}}" y="{{starty}}" xlink:href="#sprite" visibility="hidden"/>
-{{control_panel}}
-</svg>
