@@ -84,24 +84,6 @@ __DATA__
     </rdf:RDF>
   </metadata>
 
-  <defs>
-     <filter id="bevel">
-       <feFlood flood-color="#ccf" result="lite-flood"/>
-       <feFlood flood-color="#006" result="dark-flood"/>
-       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
-                    result="lighter"/>
-       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
-       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
-                    result="darker"/>
-       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
-       <feMerge>
-         <feMergeNode in="lightedge"/>
-         <feMergeNode in="darkedge"/>
-         <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-     </filter>
-
-  </defs>
   <svg x="0" y="0" width="50" height="110"
        viewBox="0 0 50 110">
     <defs>
@@ -111,14 +93,7 @@ __DATA__
 	#sprite { stroke: grey; stroke-width:0.2; fill: orange; }
 	.crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
 	#mazebg { fill:#ffc; stroke:none; }
-	.panel  { fill:#ccc; stroke:none; }
-	.button {
-                   cursor: pointer;
-        	}
 	text { font-family: sans-serif; }
-	rect.button { fill: #33f; stroke: none; filter: url(#bevel);
-                    }
-	text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.sign rect {  fill:red; stroke:none; }
 	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;

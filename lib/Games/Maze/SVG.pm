@@ -248,7 +248,6 @@ sub  toString
     my @rows = map { [ split //, $_ ] }
                    split( /\n/, $maze->to_ascii() );
 
-    my $script = '';
     my $crumb  = '';
     my $color  = {
                   mazebg => '#ffc', # '#9cc'; # '#fc0'
@@ -267,27 +266,36 @@ sub  toString
     my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
     my ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
 
-    my $totalwidth = $mazeout->{width};
+    my $width = $mazeout->{width};
     my $height     = $mazeout->{height} + SIGN_HEIGHT;
-    my $load = '';
     my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
     my $sprite_def = $self->create_sprite();
 
+    my $output = qq{<?xml version="1.0"?>\n} ;
+
     if($self->{interactive})
     {
-        $script = $self->build_all_script( \@rows );
+        my $script = $self->build_all_script( \@rows );
 
-        $totalwidth += PANEL_WIDTH;
-        $load = qq[\n     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)"];
-    }
-
-    my $output .= <<"EOH";
-<svg width="$totalwidth" height="$height"
+        $width += PANEL_WIDTH;
+        $output .= <<"EOH";
+<svg width="$width" height="$height"
      xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"$load>
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
+     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
 $license
   <defs>
+     <style type="text/css">
+	text { font-family: sans-serif; }
+	.panel  { fill:$color->{panel}; stroke:none; }
+	.button {
+                   cursor: pointer;
+        	}
+	rect.button { fill: #33f; stroke: none; filter: url(#bevel);
+                    }
+	text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
+     </style>
      <filter id="bevel">
        <feFlood flood-color="#ccf" result="lite-flood"/>
        <feFlood flood-color="#006" result="dark-flood"/>
@@ -305,6 +313,19 @@ $license
      </filter>
 $script
   </defs>
+EOH
+    }
+    else
+    {
+        $output .= <<"EOH";
+<svg width="$width" height="$height"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+$license
+EOH
+    }
+
+    $output .= <<"EOH";
   <svg x="0" y="0" width="$mazeout->{width}" height="$height"
        viewBox="0 0 $mazeout->{width} $height">
     <defs>
@@ -314,14 +335,7 @@ $script
 	#sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
 	.crumbs { fill:none; $crumbstyle }
 	#mazebg { fill:$color->{mazebg}; stroke:none; }
-	.panel  { fill:$color->{panel}; stroke:none; }
-	.button {
-                   cursor: pointer;
-        	}
 	text { font-family: sans-serif; }
-	rect.button { fill: #33f; stroke: none; filter: url(#bevel);
-                    }
-	text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.sign rect {  fill:red; stroke:none; }
 	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
@@ -346,10 +360,9 @@ EOH
 
     if($self->{interactive})
     {
-        $output .= $self->build_control_panel( $mazeout->{width}, $mazeout->{height} )
-	        . "\n";
+        $output .= $self->build_control_panel( $mazeout->{width}, $mazeout->{height} );
     }
-    qq{<?xml version="1.0"?>\n} .$output . "</svg>\n";
+    $output . "</svg>\n";
 }
 
 
