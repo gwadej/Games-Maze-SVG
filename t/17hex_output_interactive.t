@@ -91,25 +91,6 @@ __DATA__
   </metadata>
 
   <defs>
-    <style type="text/css">
-      path    { stroke: black; fill: none; }
-      polygon { stroke: black; fill: grey; }
-      #sprite { stroke: grey; stroke-width:0.2; fill: orange; }
-      .crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
-      #mazebg { fill:#ffc; stroke:none; }
-      .panel  { fill:#ccc; stroke:none; }
-      .button {
-                 cursor: pointer;
-              }
-      text { font-family: sans-serif; }
-      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
-                  }
-      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
-      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-      .sign rect {  fill:red; stroke:none; }
-      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
-                 }
-    </style>
      <filter id="bevel">
        <feFlood flood-color="#ccf" result="lite-flood"/>
        <feFlood flood-color="#006" result="dark-flood"/>
@@ -125,11 +106,6 @@ __DATA__
          <feMergeNode in="SourceGraphic"/>
         </feMerge>
      </filter>
-    <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
-    <path id="xh"  d="M0,10 h5"/>
-    <path id="xsr" d="M0,10 l5,-10"/>
-    <path id="xsl" d="M0,0  l5,10"/>
-
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
     <script type="text/ecmascript">
       var board = new Array();
@@ -160,6 +136,34 @@ __DATA__
            btn.removeAttributeNS( null, "opacity" );
        }
     </script>
+
+  </defs>
+  <svg x="0" y="0" width="80" height="150"
+       viewBox="0 0 80 150">
+     <defs>
+    <style type="text/css">
+      path    { stroke: black; fill: none; }
+      polygon { stroke: black; fill: grey; }
+      #sprite { stroke: grey; stroke-width:0.2; fill: orange; }
+      .crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
+      #mazebg { fill:#ffc; stroke:none; }
+      .panel  { fill:#ccc; stroke:none; }
+      .button {
+                 cursor: pointer;
+              }
+      text { font-family: sans-serif; }
+      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
+                  }
+      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
+      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
+      .sign rect {  fill:red; stroke:none; }
+      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
+                 }
+    </style>
+    <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
+    <path id="xh"  d="M0,10 h5"/>
+    <path id="xsr" d="M0,10 l5,-10"/>
+    <path id="xsl" d="M0,0  l5,10"/>
 
   </defs>
   <rect id="mazebg" x="0" y="0" width="80" height="150"/>
@@ -269,7 +273,7 @@ __DATA__
     <text x="0" y="4">Exit</text>
   </g>
   <text id="solvedmsg" x="40" y="100" opacity="0">Solved!</text>
-
+  </svg>
   <rect x="80" y="0" width="250" height="150"
         class="panel"/>
 

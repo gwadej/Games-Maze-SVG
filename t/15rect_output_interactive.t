@@ -2,7 +2,7 @@
 
 use Test::More tests => 5;
 use Test::MockModule;
-#use Test::LongString;
+use Test::LongString;
 
 use Games::Maze::SVG;
 
@@ -50,8 +50,8 @@ my $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
 my $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_interactive();
 
-is( $maze->toString(), $output, "Full transform, default wall style." );
-#is_string( $maze->toString(), $output, "Full transform, default wall style." );
+#is( $maze->toString(), $output, "Full transform, default wall style." );
+is_string( $maze->toString(), $output, "Full transform, default wall style." );
 
 #open( my $fh, '>rect1.svg' ) or die;
 #print $fh $maze->toString();
@@ -117,8 +117,8 @@ $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'roundcorners' );
 $maze->set_interactive();
 my $got = $maze->toString();
-is( $maze->toString(), $output, "Full transform, roundcorners wall style." );
-#is_string( $got, $output, "Full transform, roundcorners wall style." );
+#is( $maze->toString(), $output, "Full transform, roundcorners wall style." );
+is_string( $got, $output, "Full transform, roundcorners wall style." );
 
 # ---- Round ----
 
@@ -142,8 +142,8 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'round' );
 $maze->set_interactive();
-is( $maze->toString(), $output, "Full transform, round wall style." );
-#is_string( $maze->toString(), $output, "Full transform, round wall style." );
+#is( $maze->toString(), $output, "Full transform, round wall style." );
+is_string( $maze->toString(), $output, "Full transform, round wall style." );
 
 # ---- Straight ----
 
@@ -166,8 +166,8 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 v-5 h5"/>
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'straight' );
 $maze->set_interactive();
-is( $maze->toString(), $output, "Full transform, straight wall style." );
-#is_string( $maze->toString(), $output, "Full transform, straight wall style." );
+#is( $maze->toString(), $output, "Full transform, straight wall style." );
+is_string( $maze->toString(), $output, "Full transform, straight wall style." );
 
 #
 # Convert the template into a complete svg page.
@@ -227,25 +227,6 @@ __DATA__
   </metadata>
 
   <defs>
-    <style type="text/css">
-      path    { stroke: black; fill: none; }
-      polygon { stroke: black; fill: grey; }
-      #sprite { stroke: grey; stroke-width:0.2; fill: orange; }
-      .crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
-      #mazebg { fill:#ffc; stroke:none; }
-      .panel  { fill:#ccc; stroke:none; }
-      .button {
-                 cursor: pointer;
-              }
-      text { font-family: sans-serif; }
-      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
-                  }
-      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
-      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-      .sign rect {  fill:red; stroke:none; }
-      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
-                 }
-    </style>
      <filter id="bevel">
        <feFlood flood-color="#ccf" result="lite-flood"/>
        <feFlood flood-color="#006" result="dark-flood"/>
@@ -261,8 +242,6 @@ __DATA__
          <feMergeNode in="SourceGraphic"/>
         </feMerge>
      </filter>
-    <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
-{{walldefs}}
     <script type="text/ecmascript" xlink:href="scripts/rectmaze.es"/>
     <script type="text/ecmascript">
       var board = new Array();
@@ -288,6 +267,31 @@ __DATA__
        }
     </script>
 
+  </defs>
+  <svg x="0" y="0" width="70" height="90"
+       viewBox="0 0 70 90">
+     <defs>
+    <style type="text/css">
+      path    { stroke: black; fill: none; }
+      polygon { stroke: black; fill: grey; }
+      #sprite { stroke: grey; stroke-width:0.2; fill: orange; }
+      .crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
+      #mazebg { fill:#ffc; stroke:none; }
+      .panel  { fill:#ccc; stroke:none; }
+      .button {
+                 cursor: pointer;
+              }
+      text { font-family: sans-serif; }
+      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
+                  }
+      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
+      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
+      .sign rect {  fill:red; stroke:none; }
+      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
+                 }
+    </style>
+    <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
+{{walldefs}}
   </defs>
   <rect id="mazebg" x="0" y="0" width="70" height="90"/>
 
@@ -340,7 +344,7 @@ __DATA__
     <text x="0" y="4">Exit</text>
   </g>
   <text id="solvedmsg" x="35" y="70" opacity="0">Solved!</text>
-
+  </svg>
   <rect x="70" y="0" width="250" height="90"
         class="panel"/>
 
