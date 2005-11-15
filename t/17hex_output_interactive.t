@@ -148,7 +148,7 @@ __DATA__
     </script>
 
   </defs>
-  <svg x="0" y="0" width="80" height="150"
+  <svg x="250" y="0" width="80" height="150"
        viewBox="0 0 80 150">
     <defs>
       <style type="text/css">
@@ -277,17 +277,17 @@ __DATA__
     </g>
     <text id="solvedmsg" x="40" y="100" opacity="0">Solved!</text>
   </svg>
-  <rect x="80" y="0" width="250" height="150"
+  <rect x="0" y="0" width="250" height="150"
         class="panel"/>
 
-  <g onclick="restart()" transform="translate(100,20)"
+  <g onclick="restart()" transform="translate(20,20)"
      onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
     <rect x="0" y="0" width="50" height="20" rx="5" ry="5"
           class="button"/>
     <text x="25" y="15" class="button">Begin</text>
   </g>
   
-  <g class="instruct" transform="translate(100,70)">
+  <g class="instruct" transform="translate(20,70)">
     <text x="0" y="0">Click Begin button to start</text>
     <text x="0" y="30">Use the arrow keys to move the sprite</text>
     <text x="0" y="50">Hold the shift to move quickly.</text>

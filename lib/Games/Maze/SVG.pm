@@ -313,6 +313,8 @@ $license
      </filter>
 $script
   </defs>
+  <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$mazeout->{width}" height="$height"
+       viewBox="0 0 $mazeout->{width} $height">
 EOH
     }
     else
@@ -322,12 +324,12 @@ EOH
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
 $license
+  <svg x="0" y="0" width="$mazeout->{width}" height="$height"
+       viewBox="0 0 $mazeout->{width} $height">
 EOH
     }
 
     $output .= <<"EOH";
-  <svg x="0" y="0" width="$mazeout->{width}" height="$height"
-       viewBox="0 0 $mazeout->{width} $height">
     <defs>
       <style type="text/css">
 	path    { stroke: black; fill: none; }
@@ -360,7 +362,7 @@ EOH
 
     if($self->{interactive})
     {
-        $output .= $self->build_control_panel( $mazeout->{width}, $mazeout->{height} );
+        $output .= $self->build_control_panel( 0, $mazeout->{height} );
     }
     $output . "</svg>\n";
 }
