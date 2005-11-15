@@ -288,6 +288,26 @@ sub  toString
      xmlns:xlink="http://www.w3.org/1999/xlink"$load>
 $license
   <defs>
+     <filter id="bevel">
+       <feFlood flood-color="#ccf" result="lite-flood"/>
+       <feFlood flood-color="#006" result="dark-flood"/>
+       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
+                    result="lighter"/>
+       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
+       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
+                    result="darker"/>
+       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
+       <feMerge>
+         <feMergeNode in="lightedge"/>
+         <feMergeNode in="darkedge"/>
+         <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+     </filter>
+$script
+  </defs>
+  <svg x="0" y="0" width="$mazeout->{width}" height="$height"
+       viewBox="0 0 $mazeout->{width} $height">
+     <defs>
     <style type="text/css">
       path    { stroke: black; fill: none; }
       polygon { stroke: black; fill: grey; }
@@ -307,24 +327,8 @@ $license
       #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                  }
     </style>
-     <filter id="bevel">
-       <feFlood flood-color="#ccf" result="lite-flood"/>
-       <feFlood flood-color="#006" result="dark-flood"/>
-       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
-                    result="lighter"/>
-       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
-       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
-                    result="darker"/>
-       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
-       <feMerge>
-         <feMergeNode in="lightedge"/>
-         <feMergeNode in="darkedge"/>
-         <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-     </filter>
 $sprite_def
 @{[$self->wall_definitions()]}
-$script
   </defs>
   <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$height"/>
 
@@ -337,7 +341,7 @@ $mazeout->{maze}
     <text x="0" y="4">Exit</text>
   </g>
   <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
-
+  </svg>
 EOH
 
     if($self->{interactive})

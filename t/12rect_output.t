@@ -48,8 +48,7 @@ my $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
     <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
     <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
     <path id="cross"
-                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
-} );
+                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>} );
 
 is_string( $maze->toString(), $output, "Full transform works." );
 #is( $maze->toString(), $output, "Full transform works." );
@@ -112,8 +111,7 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
     <path id="tl" d="M5,0  v10 M0,5 h5"/>
     <path id="tu" d="M0,5  h10 M5,0 v5"/>
     <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>
-} );
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>} );
 
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'roundcorners' );
@@ -137,8 +135,7 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 Q5,5 10,5"/>
     <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
     <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
     <path id="cross"
-                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>
-} );
+                  d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>} );
 
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'round' );
@@ -162,8 +159,7 @@ $output = resolve_template( qq{    <path id="ul" d="M5,10 v-5 h5"/>
     <path id="tl" d="M5,0  v10 M0,5 h5"/>
     <path id="tu" d="M0,5  h10 M5,0 v5"/>
     <path id="td" d="M0,5  h10 M5,5 v5"/>
-    <path id="cross" d="M0,5 h10 M5,0 v10"/>
-} );
+    <path id="cross" d="M0,5 h10 M5,0 v10"/>} );
 
 $maze = Games::Maze::SVG->new( 'Rect' );
 $maze->set_wall_form( 'straight' );
@@ -226,6 +222,26 @@ __DATA__
   </metadata>
 
   <defs>
+     <filter id="bevel">
+       <feFlood flood-color="#ccf" result="lite-flood"/>
+       <feFlood flood-color="#006" result="dark-flood"/>
+       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
+                    result="lighter"/>
+       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
+       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
+                    result="darker"/>
+       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
+       <feMerge>
+         <feMergeNode in="lightedge"/>
+         <feMergeNode in="darkedge"/>
+         <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+     </filter>
+
+  </defs>
+  <svg x="0" y="0" width="70" height="90"
+       viewBox="0 0 70 90">
+     <defs>
     <style type="text/css">
       path    { stroke: black; fill: none; }
       polygon { stroke: black; fill: grey; }
@@ -245,21 +261,6 @@ __DATA__
       #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                  }
     </style>
-     <filter id="bevel">
-       <feFlood flood-color="#ccf" result="lite-flood"/>
-       <feFlood flood-color="#006" result="dark-flood"/>
-       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
-                    result="lighter"/>
-       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
-       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
-                    result="darker"/>
-       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
-       <feMerge>
-         <feMergeNode in="lightedge"/>
-         <feMergeNode in="darkedge"/>
-         <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-     </filter>
     <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
 {{walldefs}}
   </defs>
@@ -314,5 +315,5 @@ __DATA__
     <text x="0" y="4">Exit</text>
   </g>
   <text id="solvedmsg" x="35" y="70" opacity="0">Solved!</text>
-
+  </svg>
 </svg>
