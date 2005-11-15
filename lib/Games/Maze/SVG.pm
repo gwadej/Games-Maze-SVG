@@ -307,40 +307,40 @@ $script
   </defs>
   <svg x="0" y="0" width="$mazeout->{width}" height="$height"
        viewBox="0 0 $mazeout->{width} $height">
-     <defs>
-    <style type="text/css">
-      path    { stroke: black; fill: none; }
-      polygon { stroke: black; fill: grey; }
-      #sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
-      .crumbs { fill:none; $crumbstyle }
-      #mazebg { fill:$color->{mazebg}; stroke:none; }
-      .panel  { fill:$color->{panel}; stroke:none; }
-      .button {
-                 cursor: pointer;
-              }
-      text { font-family: sans-serif; }
-      rect.button { fill: #33f; stroke: none; filter: url(#bevel);
-                  }
-      text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
-      .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-      .sign rect {  fill:red; stroke:none; }
-      #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
-                 }
-    </style>
+    <defs>
+      <style type="text/css">
+	path    { stroke: black; fill: none; }
+	polygon { stroke: black; fill: grey; }
+	#sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
+	.crumbs { fill:none; $crumbstyle }
+	#mazebg { fill:$color->{mazebg}; stroke:none; }
+	.panel  { fill:$color->{panel}; stroke:none; }
+	.button {
+                   cursor: pointer;
+        	}
+	text { font-family: sans-serif; }
+	rect.button { fill: #33f; stroke: none; filter: url(#bevel);
+                    }
+	text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
+	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
+	.sign rect {  fill:red; stroke:none; }
+	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
+                   }
+      </style>
 $sprite_def
 @{[$self->wall_definitions()]}
-  </defs>
-  <rect id="mazebg" x="0" y="0" width="$mazeout->{width}" height="$height"/>
+    </defs>
+    <rect id="mazebg" x="0" y="0" width="100%" height="100%"/>
 
 $mazeout->{maze}
-  <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
-  <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
+    <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
+    <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
 
-  <g transform="translate($xsign,$ysign)" class="sign">
-    <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
-    <text x="0" y="4">Exit</text>
-  </g>
-  <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
+    <g transform="translate($xsign,$ysign)" class="sign">
+      <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+      <text x="0" y="4">Exit</text>
+    </g>
+    <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
   </svg>
 EOH
 
@@ -460,7 +460,8 @@ sub  create_sprite
     my $self = shift;
     my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
 
-    qq|    <path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>|;
+    qq|      | .
+    qq|<path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>|;
 }
 
 
@@ -486,7 +487,7 @@ sub  _just_maze
         my $x = 0;
         foreach my $c (@{$r})
         {
-            $output .= qq{  <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c;
+            $output .= qq{    <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c;
             $x += $dx;
         }
         $y += $dy;

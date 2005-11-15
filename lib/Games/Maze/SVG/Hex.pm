@@ -440,6 +440,6 @@ under the same terms as Perl itself.
 __DATA__
 straight
 ===
-    <path id="xh"  d="M0,10 h5"/>
-    <path id="xsr" d="M0,10 l5,-10"/>
-    <path id="xsl" d="M0,0  l5,10"/>
+      <path id="xh"  d="M0,10 h5"/>
+      <path id="xsr" d="M0,10 l5,-10"/>
+      <path id="xsl" d="M0,0  l5,10"/>
