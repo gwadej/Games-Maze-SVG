@@ -441,24 +441,26 @@ sub build_control_panel
     my $totalheight = $height + SIGN_HEIGHT;
     my $panelwidth = PANEL_WIDTH;
 
-    my $xrect = $startx + 20;
+    my $offset = 20;
     my $output .= <<"EOB";
-  <rect x="$startx" y="0" width="$panelwidth" height="$totalheight"
-        class="panel"/>
+  <g id="control_panel" transform="translate($startx,0)">
+    <rect x="0" y="0" width="$panelwidth" height="$totalheight"
+          class="panel"/>
 
-  <g onclick="restart()" transform="translate($xrect,20)"
-     onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-    <rect x="0" y="0" width="50" height="20" rx="5" ry="5"
-          class="button"/>
-    <text x="25" y="15" class="button">Begin</text>
-  </g>
-  
-  <g class="instruct" transform="translate($xrect,70)">
-    <text x="0" y="0">Click Begin button to start</text>
-    <text x="0" y="30">Use the arrow keys to move the sprite</text>
-    <text x="0" y="50">Hold the shift to move quickly.</text>
-    <text x="0" y="80">The mouse must remain over the</text>
-    <text x="0" y="100">maze for the keys to work.</text>
+    <g onclick="restart()" transform="translate($offset,20)"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="50" height="20" rx="5" ry="5"
+            class="button"/>
+      <text x="25" y="15" class="button">Begin</text>
+    </g>
+
+    <g class="instruct" transform="translate($offset,70)">
+      <text x="0" y="0">Click Begin button to start</text>
+      <text x="0" y="30">Use the arrow keys to move the sprite</text>
+      <text x="0" y="50">Hold the shift to move quickly.</text>
+      <text x="0" y="80">The mouse must remain over the</text>
+      <text x="0" y="100">maze for the keys to work.</text>
+    </g>
   </g>
 EOB
 }
