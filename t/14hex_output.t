@@ -88,6 +88,26 @@ __DATA__
   </metadata>
 
   <defs>
+     <filter id="bevel">
+       <feFlood flood-color="#ccf" result="lite-flood"/>
+       <feFlood flood-color="#006" result="dark-flood"/>
+       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
+                    result="lighter"/>
+       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
+       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
+                    result="darker"/>
+       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
+       <feMerge>
+         <feMergeNode in="lightedge"/>
+         <feMergeNode in="darkedge"/>
+         <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+     </filter>
+
+  </defs>
+  <svg x="0" y="0" width="80" height="150"
+       viewBox="0 0 80 150">
+     <defs>
     <style type="text/css">
       path    { stroke: black; fill: none; }
       polygon { stroke: black; fill: grey; }
@@ -107,26 +127,10 @@ __DATA__
       #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                  }
     </style>
-     <filter id="bevel">
-       <feFlood flood-color="#ccf" result="lite-flood"/>
-       <feFlood flood-color="#006" result="dark-flood"/>
-       <feComposite operator="in" in="lite-flood" in2="SourceAlpha"
-                    result="lighter"/>
-       <feOffset in="lighter" result="lightedge" dx="-1" dy="-1"/>
-       <feComposite operator="in" in="dark-flood" in2="SourceAlpha"
-                    result="darker"/>
-       <feOffset in="darker" result="darkedge" dx="1" dy="1"/>
-       <feMerge>
-         <feMergeNode in="lightedge"/>
-         <feMergeNode in="darkedge"/>
-         <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-     </filter>
     <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
     <path id="xh"  d="M0,10 h5"/>
     <path id="xsr" d="M0,10 l5,-10"/>
     <path id="xsl" d="M0,0  l5,10"/>
-
 
   </defs>
   <rect id="mazebg" x="0" y="0" width="80" height="150"/>
@@ -236,5 +240,5 @@ __DATA__
     <text x="0" y="4">Exit</text>
   </g>
   <text id="solvedmsg" x="40" y="100" opacity="0">Solved!</text>
-
+  </svg>
 </svg>
