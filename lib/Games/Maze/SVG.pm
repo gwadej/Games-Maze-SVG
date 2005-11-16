@@ -264,14 +264,17 @@ sub  toString
 
     my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
     my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
-    my ($xsign, $ysign) = $self->convert_sign_position( $xe, $ye );
+    my ($xenter, $yenter) = $self->convert_sign_position( $xp, $yp );
+    $yenter -= SIGN_HEIGHT + 10;
+    my ($xexit, $yexit) = $self->convert_sign_position( $xe, $ye );
 
     my $width = $mazeout->{width};
-    my $height     = $mazeout->{height} + SIGN_HEIGHT;
+    my $height     = $mazeout->{height} + 2 * SIGN_HEIGHT;
     my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
     my $sprite_def = $self->create_sprite();
 
     my $output = qq{<?xml version="1.0"?>\n} ;
+    my $offset = - SIGN_HEIGHT;
 
     if($self->{interactive})
     {
@@ -314,7 +317,7 @@ $license
 $script
   </defs>
   <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$mazeout->{width}" height="$height"
-       viewBox="0 0 $mazeout->{width} $height">
+       viewBox="0 $offset $mazeout->{width} $height">
 EOH
     }
     else
@@ -325,7 +328,7 @@ EOH
      xmlns:xlink="http://www.w3.org/1999/xlink">
 $license
   <svg x="0" y="0" width="$mazeout->{width}" height="$height"
-       viewBox="0 0 $mazeout->{width} $height">
+       viewBox="0 $offset $mazeout->{width} $height">
 EOH
     }
 
@@ -339,20 +342,25 @@ EOH
 	#mazebg { fill:$color->{mazebg}; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-	.sign rect {  fill:red; stroke:none; }
+	.exit rect {  fill:red; stroke:none; }
+	.entry rect {  fill:green; stroke:none; }
 	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                    }
       </style>
 $sprite_def
 @{[$self->wall_definitions()]}
     </defs>
-    <rect id="mazebg" x="0" y="0" width="100%" height="100%"/>
+    <rect id="mazebg" x="0" y="$offset" width="100%" height="100%"/>
 
 $mazeout->{maze}
     <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
     <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
 
-    <g transform="translate($xsign,$ysign)" class="sign">
+    <g transform="translate($xenter,$yenter)" class="entry sign">
+      <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+      <text x="0" y="4">Entry</text>
+    </g>
+    <g transform="translate($xexit,$yexit)" class="exit sign">
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
       <text x="0" y="4">Exit</text>
     </g>
@@ -362,7 +370,7 @@ EOH
 
     if($self->{interactive})
     {
-        $output .= $self->build_control_panel( 0, $mazeout->{height} );
+        $output .= $self->build_control_panel( 0, $height );
     }
     $output . "</svg>\n";
 }
@@ -438,13 +446,12 @@ sub build_control_panel
     my $self = shift;
     my $startx = shift;
     my $height = shift;
-    my $totalheight = $height + SIGN_HEIGHT;
     my $panelwidth = PANEL_WIDTH;
 
     my $offset = 20;
     my $output .= <<"EOB";
   <g id="control_panel" transform="translate($startx,0)">
-    <rect x="0" y="0" width="$panelwidth" height="$totalheight"
+    <rect x="0" y="0" width="$panelwidth" height="$height"
           class="panel"/>
 
     <g onclick="restart()" transform="translate($offset,20)"
@@ -571,4 +578,3 @@ under the same terms as Perl itself.
 =cut
 
 1;
-
