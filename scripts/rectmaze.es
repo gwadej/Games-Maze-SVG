@@ -33,7 +33,7 @@ function initialize( board_, start_, end_, delta_ )
 function reset_sprite()
  {
   curr     = {x:start.x, y:start.y};
-  crumbpts = (start.x*delta.x + delta.x/2) + ",0";
+  crumbpts = (start.x*delta.x + delta.x/2) + "," + start.y*delta.y;
  }
 
 function unshift(evt)
