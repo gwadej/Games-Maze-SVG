@@ -219,9 +219,9 @@ __DATA__
     <polyline id="crumb" class="crumbs" stroke="#f3f" points="11,-2"/>
     <use id="me" x="11" y="-2" xlink:href="#sprite" visibility="hidden"/>
 
-    <g transform="translate(55,-30)" class="entry sign">
-      <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
-      <text x="0" y="4">Entry</text>
+    <g transform="translate(55,0)" class="entry sign">
+      <rect x="-16" y="-38" width="35" height="16" rx="3" ry="3"/>
+      <text x="2" y="-26">Entry</text>
     </g>
     <g transform="translate(55,130)" class="exit sign">
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>

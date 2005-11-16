@@ -103,7 +103,6 @@ sub  new
 {
     my $class = shift;
     
-    my $shape = shift || 'Rect';
     my $obj = 
     {
     	Games::Maze::SVG::init_object(),

@@ -265,7 +265,6 @@ sub  toString
     my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
     my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
     my ($xenter, $yenter) = $self->convert_sign_position( $xp, $yp );
-    $yenter -= SIGN_HEIGHT + 10;
     my ($xexit, $yexit) = $self->convert_sign_position( $xe, $ye );
 
     my $width = $mazeout->{width};
@@ -357,8 +356,8 @@ $mazeout->{maze}
     <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
 
     <g transform="translate($xenter,$yenter)" class="entry sign">
-      <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
-      <text x="0" y="4">Entry</text>
+      <rect x="-16" y="-38" width="35" height="16" rx="3" ry="3"/>
+      <text x="2" y="-26">Entry</text>
     </g>
     <g transform="translate($xexit,$yexit)" class="exit sign">
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
@@ -547,33 +546,6 @@ sub dy
     my $self = shift;
 
     $self->{dy};
-}
-
-=item convert_entry_sign_position
-
-Convert the supplied x and y coordinates into the appropriate real coordinates
-for a the position of the entry sign.
-
-=over 4
-
-=item $x x coord from the maze
-
-=item $y y coord from the maze
-
-=back
-
-returns a two element list containing (x, y).
-
-=cut
-
-
-sub convert_entry_sign_position
-{
-    my $self = shift;
-    
-    my ($x, $y) = $self->convert_sign_position( @_ );
-    
-    ($x, $y - 1.5*(SIGN_HEIGHT));
 }
 
 =back
