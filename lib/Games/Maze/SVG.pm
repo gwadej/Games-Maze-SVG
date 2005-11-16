@@ -549,6 +549,33 @@ sub dy
     $self->{dy};
 }
 
+=item convert_entry_sign_position
+
+Convert the supplied x and y coordinates into the appropriate real coordinates
+for a the position of the entry sign.
+
+=over 4
+
+=item $x x coord from the maze
+
+=item $y y coord from the maze
+
+=back
+
+returns a two element list containing (x, y).
+
+=cut
+
+
+sub convert_entry_sign_position
+{
+    my $self = shift;
+    
+    my ($x, $y) = $self->convert_sign_position( @_ );
+    
+    ($x, $y - 1.5*(SIGN_HEIGHT));
+}
+
 =back
 
 =head1 AUTHOR
@@ -559,7 +586,7 @@ G. Wade Johnson, C<< <wade@anomaly.org> >>
 
 Please report any bugs or feature requests to
 C<bug-maze-svg1@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Maze-SVG1>.
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Game-Maze-SVG>.
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
 

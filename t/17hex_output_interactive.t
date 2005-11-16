@@ -51,7 +51,7 @@ is_string( $maze->toString(), $output, "Full transform works." );
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="330" height="150"
+<svg width="330" height="170"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      onload="initialize( board, {x:5, y:0}, {x:17, y:17}, {x:5, y:10} )"
@@ -148,8 +148,8 @@ __DATA__
     </script>
 
   </defs>
-  <svg x="250" y="0" width="80" height="150"
-       viewBox="0 0 80 150">
+  <svg x="250" y="0" width="80" height="170"
+       viewBox="0 -20 80 170">
     <defs>
       <style type="text/css">
 	path    { stroke: black; fill: none; }
@@ -159,7 +159,8 @@ __DATA__
 	#mazebg { fill:#ffc; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-	.sign rect {  fill:red; stroke:none; }
+	.exit rect {  fill:red; stroke:none; }
+	.entry rect {  fill:green; stroke:none; }
 	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                    }
       </style>
@@ -169,7 +170,7 @@ __DATA__
       <path id="xsl" d="M0,0  l5,10"/>
 
     </defs>
-    <rect id="mazebg" x="0" y="0" width="100%" height="100%"/>
+    <rect id="mazebg" x="0" y="-20" width="100%" height="100%"/>
 
     <use x="35" y="0" xlink:href="#xh"/>
     <use x="40" y="0" xlink:href="#xh"/>
@@ -271,14 +272,18 @@ __DATA__
     <polyline id="crumb" class="crumbs" stroke="#f3f" points="5,0"/>
     <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
 
-    <g transform="translate(90,200)" class="sign">
+    <g transform="translate(30,0)" class="entry sign">
+      <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+      <text x="0" y="4">Entry</text>
+    </g>
+    <g transform="translate(90,200)" class="exit sign">
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
       <text x="0" y="4">Exit</text>
     </g>
     <text id="solvedmsg" x="40" y="100" opacity="0">Solved!</text>
   </svg>
   <g id="control_panel" transform="translate(0,0)">
-    <rect x="0" y="0" width="250" height="150"
+    <rect x="0" y="0" width="250" height="170"
           class="panel"/>
 
     <g onclick="restart()" transform="translate(20,20)"

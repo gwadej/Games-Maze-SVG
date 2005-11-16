@@ -416,7 +416,7 @@ G. Wade Johnson, C<< <wade@anomaly.org> >>
 
 Please report any bugs or feature requests to
 C<bug-maze-svg1@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Maze-SVG1>.
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Game-Maze-SVG>.
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
 

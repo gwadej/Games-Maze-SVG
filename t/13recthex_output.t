@@ -47,7 +47,7 @@ is_string( $maze->toString(), $output, "Full transform works." );
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="50" height="110"
+<svg width="50" height="130"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
   <metadata>
@@ -84,8 +84,8 @@ __DATA__
     </rdf:RDF>
   </metadata>
 
-  <svg x="0" y="0" width="50" height="110"
-       viewBox="0 0 50 110">
+  <svg x="0" y="0" width="50" height="130"
+       viewBox="0 -20 50 130">
     <defs>
       <style type="text/css">
 	path    { stroke: black; fill: none; }
@@ -95,7 +95,8 @@ __DATA__
 	#mazebg { fill:#ffc; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-	.sign rect {  fill:red; stroke:none; }
+	.exit rect {  fill:red; stroke:none; }
+	.entry rect {  fill:green; stroke:none; }
 	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                    }
       </style>
@@ -105,7 +106,7 @@ __DATA__
       <path id="xsl" d="M0,0  l5,10"/>
 
     </defs>
-    <rect id="mazebg" x="0" y="0" width="100%" height="100%"/>
+    <rect id="mazebg" x="0" y="-20" width="100%" height="100%"/>
 
     <use x="5" y="0" xlink:href="#xh"/>
     <use x="10" y="0" xlink:href="#xh"/>
@@ -161,7 +162,11 @@ __DATA__
     <polyline id="crumb" class="crumbs" stroke="#f3f" points="5,0"/>
     <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
 
-    <g transform="translate(85,190)" class="sign">
+    <g transform="translate(25,-10)" class="entry sign">
+      <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
+      <text x="0" y="4">Entry</text>
+    </g>
+    <g transform="translate(85,190)" class="exit sign">
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
       <text x="0" y="4">Exit</text>
     </g>
