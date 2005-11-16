@@ -109,14 +109,6 @@ and straight.
 String describing the breadcrumb design. Legal values are dash,
 dot, line, and none
 
-=item dx
-
-The size of the tiles in the X direction.
-
-=item dy
-
-The size of the tiles in the Y direction.
-
 =item dir
 
 Directory in which to find the ecmascript for the maze interactivity. Should
@@ -131,6 +123,13 @@ sub  new
     my $class = shift;
     
     my $shape = shift || 'Rect';
+    
+    my %params = @_;
+    
+    if(exists $params{crumb} and !exists $crumbstyles{$params{crumb}})
+    {
+        croak "Unrecognized breadcrumb style '$params{crumb}'.\n"
+    }
 
     return Games::Maze::SVG::Rect->new( @_ )    if 'Rect' eq $shape;
     return Games::Maze::SVG::RectHex->new( @_ ) if 'RectHex' eq $shape;
@@ -264,6 +263,7 @@ sub  toString
 
     my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
     my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
+    # TODO: entry does not work particularly well on Hex.
     my ($xenter, $yenter) = $self->convert_sign_position( $xp, $yp );
     my ($xexit, $yexit) = $self->convert_sign_position( $xe, $ye );
 

@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 15;
+use Test::More tests => 13;
 
 use Games::Maze::SVG;
 
@@ -26,10 +26,8 @@ is( $maze->{dy}, 10, "delta y defaults correctly" );
 is( $maze->{dir}, 'scripts/', "directory defaults correctly" );
 
 $maze = Games::Maze::SVG->new( 'RectHex',
-   crumb => 'dot', dx => 15, dy => 13, dir => '/svg/'
+   crumb => 'dot', dir => '/svg/'
 );
 
 is( $maze->{crumb}, 'dot', "crumb style set correctly" );
-is( $maze->{dx}, 15, "delta x set correctly" );
-is( $maze->{dy}, 13, "delta y set correctly" );
 is( $maze->{dir}, '/svg/', "directory set correctly" );

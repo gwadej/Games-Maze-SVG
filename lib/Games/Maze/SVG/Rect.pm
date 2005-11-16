@@ -71,13 +71,6 @@ my %Blocks = ( ': - |' => 'ul',  ':-  |' => 'ur',
 
 my %Walls = get_wall_forms();
 
-my %crumbstyles = (
-                   dash => "stroke-width:1; stroke-dasharray:5,3;",
-                   dot  => "stroke-width:2; stroke-dasharray:2,6;",
-                   line => "stroke-width:1;",
-		   none => "visibility:hidden;",
-                  );
-
 =head1 FUNCTIONS
 
 =cut
@@ -104,14 +97,6 @@ and straight.
 String describing the breadcrumb design. Legal values are dash,
 dot, line, and none
 
-=item dx
-
-The size of the tiles in the X direction.
-
-=item dy
-
-The size of the tiles in the Y direction.
-
 =item dir
 
 Directory in which to find the ecmascript for the maze interactivity. Should
@@ -131,6 +116,12 @@ sub  new
 	wallform  => 'round',
 	@_,
     };
+
+    if(!exists $Walls{$obj->{wallform}})
+    {
+        my $forms = join( ", ", sort keys %Walls );
+        croak "\n'$Walls{wallform}' is not a valid wall form.\nTry one of: $forms\n\n";
+    }
 
     $obj->{mazeparms}->{cell} = 'Quad';
     $obj->{mazeparms}->{form} = 'Rectangle';

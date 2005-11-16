@@ -48,13 +48,6 @@ my %HexBlocks = (
 
 my %Walls = get_wall_forms();
 
-my %crumbstyles = (
-                   dash => "stroke-width:1; stroke-dasharray:5,3;",
-                   dot  => "stroke-width:2; stroke-dasharray:2,6;",
-                   line => "stroke-width:1;",
-		   none => "visibility:hidden;",
-                  );
-
 =head1 FUNCTIONS
 
 =cut
@@ -108,6 +101,12 @@ sub  new
     	Games::Maze::SVG::init_object(),
 	@_,
     };
+    
+    if(!exists $Walls{$obj->{wallform}})
+    {
+        my $forms = join( ", ", sort keys %Walls );
+        croak "\n'$Walls{wallform}' is not a valid wall form.\nTry one of: $forms\n\n";
+    }
 
     $obj->{mazeparms}->{cell} = 'Hex';
     $obj->{mazeparms}->{form} = 'Hexagon';

@@ -28,5 +28,4 @@ foreach my $crumb (keys %crumbstyles)
 
 throws_ok { $maze->set_breadcrumb( "xyzzy" ); } 
           qr/Unrecognized breadcrumb style 'xyzzy'/,
-	  "Bad crumbs stopped.";
-
+          "Bad crumbs stopped.";

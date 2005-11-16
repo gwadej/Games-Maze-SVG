@@ -1,6 +1,7 @@
 #!perl -T
 
-use Test::More tests => 16;
+use Test::More tests => 15;
+use Test::Exception;
 
 use Games::Maze::SVG;
 
@@ -26,11 +27,13 @@ is( $maze->{dy}, 10, "delta y defaults correctly" );
 is( $maze->{dir}, 'scripts/', "directory defaults correctly" );
 
 $maze = Games::Maze::SVG->new( 'Rect',
-   wallform => 'bevel', crumb => 'dot', dx => 15, dy => 13, dir => '/svg/'
+   wallform => 'bevel', crumb => 'dot', dir => '/svg/'
 );
 
 is( $maze->{wallform}, 'bevel', "wall form set correctly" );
 is( $maze->{crumb}, 'dot', "crumb style set correctly" );
-is( $maze->{dx}, 15, "delta x set correctly" );
-is( $maze->{dy}, 13, "delta y set correctly" );
 is( $maze->{dir}, '/svg/', "directory set correctly" );
+
+throws_ok { $maze = Games::Maze::SVG->new( 'Rect', crumb => "xyzzy" ); } 
+          qr/Unrecognized breadcrumb style 'xyzzy'/,
+          "Bad crumbs stopped.";
