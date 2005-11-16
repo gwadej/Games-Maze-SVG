@@ -34,8 +34,6 @@ Games::Maze::SVG uses the Games::Maze module to create mazes in SVG.
 
 =cut
 
-use constant DELTA_X     => 10;
-use constant DELTA_Y     => 10;
 use constant SIGN_HEIGHT => 20;
 use constant PANEL_WIDTH => 250;
 
@@ -152,8 +150,6 @@ sub init_object
         mazeparms => {},
 	wallform  => 'straight',
 	crumb     => 'dash',
-	dx        => DELTA_X,
-	dy        => DELTA_Y,
 	dir       => 'scripts/',
     );
 }

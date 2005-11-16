@@ -110,6 +110,8 @@ sub  new
     $obj->{mazeparms}->{cell} = 'Hex';
     $obj->{mazeparms}->{form} = 'Rectangle';
     $obj->{scriptname} = "hexmaze.es";
+    $obj->{dx} = DELTA_X;
+    $obj->{dy} = DELTA_Y;
 
     bless $obj;
 }

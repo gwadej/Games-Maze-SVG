@@ -126,6 +126,8 @@ sub  new
     $obj->{mazeparms}->{cell} = 'Quad';
     $obj->{mazeparms}->{form} = 'Rectangle';
     $obj->{scriptname} = "rectmaze.es";
+    $obj->{dx} = DELTA_X;
+    $obj->{dy} = DELTA_Y;
 
     bless $obj;
 }

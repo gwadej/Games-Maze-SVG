@@ -95,13 +95,13 @@ either be relative, or in URL form.
 sub  new
 {
     my $class = shift;
-    
+
     my $obj = 
     {
     	Games::Maze::SVG::init_object(),
 	@_,
     };
-    
+
     if(!exists $Walls{$obj->{wallform}})
     {
         my $forms = join( ", ", sort keys %Walls );
@@ -111,6 +111,8 @@ sub  new
     $obj->{mazeparms}->{cell} = 'Hex';
     $obj->{mazeparms}->{form} = 'Hexagon';
     $obj->{scriptname} = "hexmaze.es";
+    $obj->{dx} = DELTA_X;
+    $obj->{dy} = DELTA_Y;
 
     bless $obj;
 }
