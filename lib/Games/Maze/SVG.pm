@@ -255,7 +255,7 @@ sub  toString
     my $crumbstyle = $self->get_crumbstyle();
 
     $self->transform_grid( \@rows, $self->{wallform} );
-    my $mazeout = _just_maze( $self->dx(), $self->dy(), \@rows );
+    $self->_just_maze( \@rows );
 
     my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
     my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
@@ -263,9 +263,9 @@ sub  toString
     my ($xenter, $yenter) = $self->convert_sign_position( $xp, $yp );
     my ($xexit, $yexit) = $self->convert_sign_position( $xe, $ye );
 
-    my $width = $mazeout->{width};
-    my $height     = $mazeout->{height} + 2 * SIGN_HEIGHT;
-    my ($cx,$cy) = ($mazeout->{width}/2, (35+$mazeout->{height}/2));
+    my $width = $self->{width};
+    my $height = $self->{height} + 2 * SIGN_HEIGHT;
+    my ($cx,$cy) = ($self->{width}/2, (35+$self->{height}/2));
     my $sprite_def = $self->create_sprite();
 
     my $output = qq{<?xml version="1.0"?>\n} ;
@@ -312,8 +312,8 @@ $license
      </filter>
 $script
   </defs>
-  <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$mazeout->{width}" height="$height"
-       viewBox="0 $offset $mazeout->{width} $height">
+  <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$self->{width}" height="$height"
+       viewBox="0 $offset $self->{width} $height">
 EOH
     }
     else
@@ -323,8 +323,8 @@ EOH
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
 $license
-  <svg x="0" y="0" width="$mazeout->{width}" height="$height"
-       viewBox="0 $offset $mazeout->{width} $height">
+  <svg x="0" y="0" width="$self->{width}" height="$height"
+       viewBox="0 $offset $self->{width} $height">
 EOH
     }
 
@@ -348,7 +348,7 @@ $sprite_def
     </defs>
     <rect id="mazebg" x="0" y="$offset" width="100%" height="100%"/>
 
-$mazeout->{maze}
+$self->{mazeout}
     <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xme,$yme"/>
     <use id="me" x="$xme" y="$yme" xlink:href="#sprite" visibility="hidden"/>
 
@@ -495,8 +495,9 @@ sub  create_sprite
 # returns a string containing the SVG for the maze description.
 sub  _just_maze
 {
-    my $dx   = shift;
-    my $dy   = shift;
+    my $self = shift;
+    my $dx   = $self->dx();
+    my $dy   = $self->dy();
     my $rows = shift;
 
     my $output = '';
@@ -514,7 +515,11 @@ sub  _just_maze
         $maxx = $x if $maxx < $x;
     }
 
-    { width=>$maxx, height=>$y, maze=>$output };
+    $self->{width} = $maxx;
+    $self->{height} = $y;
+    $self->{mazeout} = $output;
+
+    $self;
 }
 
 

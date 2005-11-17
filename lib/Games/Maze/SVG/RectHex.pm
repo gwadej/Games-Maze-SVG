@@ -197,39 +197,6 @@ sub make_board_array
 }
 
 
-#
-# Generates just the maze portion of the SVG.
-#
-# $dx - The size of the tiles in the X direction.
-# $dy - The size of the tiles in the Y direction.
-# $rows - Reference to an array of row data.
-#
-# returns a string containing the SVG for the maze description.
-sub  _just_maze
- {
-  my $dx   = shift;
-  my $dy   = shift;
-  my $rows = shift;
-
-  my $output = '';
-  my ($maxx,$y) = (0,0);
-
-  foreach my $r (@{$rows})
-   {
-    my $x = 0;
-    foreach my $c (@{$r})
-     {
-      $output .= qq{  <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c;
-      $x += $dx;
-     }
-    $y += $dy;
-    $maxx = $x if $maxx < $x;
-   }
-
-  { width=>$maxx, height=>$y, maze=>$output };
- }
-
-
 =item transform_grid
 
 Convert the hexagonal grid from ascii format to SVG definition
