@@ -270,6 +270,7 @@ sub  toString
 
     my $output = qq{<?xml version="1.0"?>\n} ;
     my $offset = - SIGN_HEIGHT;
+    my ($xme, $yme) = ($xp*$self->dx(), $yp*$self->dy());
 
     if($self->{interactive})
     {
@@ -348,8 +349,8 @@ $sprite_def
     <rect id="mazebg" x="0" y="$offset" width="100%" height="100%"/>
 
 $mazeout->{maze}
-    <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xp,$yp"/>
-    <use id="me" x="$xp" y="$yp" xlink:href="#sprite" visibility="hidden"/>
+    <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xme,$yme"/>
+    <use id="me" x="$xme" y="$yme" xlink:href="#sprite" visibility="hidden"/>
 
     <g transform="translate($xenter,$yenter)" class="entry sign">
       <rect x="-16" y="-38" width="35" height="16" rx="3" ry="3"/>

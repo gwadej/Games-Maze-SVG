@@ -159,8 +159,8 @@ __DATA__
     <use x="25" y="70" xlink:href="#xh"/>
     <use x="30" y="70" xlink:href="#xsr"/>
 
-    <polyline id="crumb" class="crumbs" stroke="#f3f" points="5,0"/>
-    <use id="me" x="5" y="0" xlink:href="#sprite" visibility="hidden"/>
+    <polyline id="crumb" class="crumbs" stroke="#f3f" points="25,0"/>
+    <use id="me" x="25" y="0" xlink:href="#sprite" visibility="hidden"/>
 
     <g transform="translate(25,20)" class="entry sign">
       <rect x="-16" y="-38" width="35" height="16" rx="3" ry="3"/>
