@@ -45,7 +45,7 @@ my %HexBlocks = (
 		  '\\' => 'xsl',
                 );
 
-my %Walls = get_wall_forms();
+my %Walls = _get_wall_forms();
 
 =head1 FUNCTIONS
 
@@ -258,15 +258,13 @@ sub wall_definitions
     $Walls{$self->{wallform}}
 }
 
-=item get_wall_forms
+# _get_wall_forms
+#
+#Extract the wall forms from the DATA file handle.
+#
+#Returns a hash of wall forms.
 
-Extract the wall forms from the DATA file handle.
-
-Returns a hash of wall forms.
-
-=cut
-
-sub get_wall_forms
+sub _get_wall_forms
 {
     local $/ = "\n===\n";
     chomp( my @list = <DATA> );
