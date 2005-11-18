@@ -327,7 +327,7 @@ sub convert_end_position
     my ($x, $y) = @_;
 
     $x = 3*($x-1)+2;
-    $y = 2*$y+1;
+    $y = 2*($y-1)+3;
 
     ($x, $y);
 }
@@ -354,8 +354,24 @@ sub convert_sign_position
     my $self = shift;
     my ($x, $y) = @_;
 
-    $x = ($x+1)*$self->dx();
-    $y = ($y+3)*$self->dy();
+    $x *= $self->dx();
+    $y *= $self->dy();
+
+    # left or right
+    if($x < $self->{width}/2)
+    {
+        $x -= $self->dx();
+    }
+    else
+    {
+        $x += $self->dx();
+    }
+
+    # adjust bottom
+    if($y > $self->{height}/2)
+    {
+        $y += 3*$self->dy();
+    }
 
     ($x, $y);
 }

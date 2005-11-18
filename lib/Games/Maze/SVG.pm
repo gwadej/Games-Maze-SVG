@@ -353,8 +353,8 @@ $self->{mazeout}
     <use id="me" x="$xme" y="$yme" xlink:href="#sprite" visibility="hidden"/>
 
     <g transform="translate($xenter,$yenter)" class="entry sign">
-      <rect x="-16" y="-38" width="35" height="16" rx="3" ry="3"/>
-      <text x="2" y="-26">Entry</text>
+      <rect x="-16" y="-8" width="35" height="16" rx="3" ry="3"/>
+      <text x="2" y="4">Entry</text>
     </g>
     <g transform="translate($xexit,$yexit)" class="exit sign">
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
