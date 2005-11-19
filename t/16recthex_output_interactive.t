@@ -242,39 +242,43 @@ __DATA__
       <text x="25" y="15" class="button">Begin</text>
     </g>
 
-    <g onclick="maze_up()" transform="translate(160,20)"
-       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
-            class="button"/>
-      <polygon points="10,5 5,15 15,15" class="button"/>
-    </g>
+    <g transform="translate(120,20)">
+      <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
+          fill="none" stroke-width="0.5" stroke="black"/>
+      <g onclick="maze_up()" transform="translate(22,0)"
+	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+              class="button"/>
+	<polygon points="10,5 5,15 15,15" class="button"/>
+      </g>
 
-    <g onclick="maze_left()" transform="translate(135,45)"
-       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
-            class="button"/>
-      <polygon points="5,10 15,5 15,15" class="button"/>
-    </g>
+      <g onclick="maze_left()" transform="translate(0,22)"
+	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+              class="button"/>
+	<polygon points="5,10 15,5 15,15" class="button"/>
+      </g>
 
-    <g onclick="maze_right()" transform="translate(185,45)"
-       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
-            class="button"/>
-      <polygon points="15,10 5,5 5,15" class="button"/>
-    </g>
+      <g onclick="maze_right()" transform="translate(44,22)"
+	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+              class="button"/>
+	<polygon points="15,10 5,5 5,15" class="button"/>
+      </g>
 
-    <g onclick="maze_down()" transform="translate(160,70)"
-       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
-            class="button"/>
-      <polygon points="10,15 5,5 15,5" class="button"/>
-    </g>
+      <g onclick="maze_down()" transform="translate(22,44)"
+	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+              class="button"/>
+	<polygon points="10,15 5,5 15,5" class="button"/>
+      </g>
 
-    <g onclick="maze_reset()" transform="translate(160,45)"
-       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
-            class="button"/>
-      <polygon points="5,5 5,15 15,15 15,5" class="button"/>
+      <g onclick="maze_reset()" transform="translate(22,22)"
+	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+              class="button"/>
+	<polygon points="5,5 5,15 15,15 15,5" class="button"/>
+      </g>
     </g>
 
     <g class="instruct" transform="translate(20,150)">
