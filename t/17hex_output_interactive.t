@@ -101,6 +101,7 @@ __DATA__
                     }
 	.button text { text-anchor:middle; fill:#fff; font-weight:bold; }
 	.button polygon { fill:white; stroke:none; }
+	.ctrllabel { text-anchor:middle; font-weight:bold; }
      </style>
      <filter id="bevel">
        <feFlood flood-color="#ccf" result="lite-flood"/>
@@ -297,6 +298,8 @@ __DATA__
     <g transform="translate(120,20)">
       <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
           fill="none" stroke-width="0.5" stroke="black"/>
+      <text x="34" y="-5" class="ctrllabel">Move View</text>
+
       <g onclick="maze_up()" transform="translate(22,0)" class="button"
 	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
 	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
