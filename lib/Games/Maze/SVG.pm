@@ -294,6 +294,7 @@ $license
 	rect.button { fill: #33f; stroke: none; filter: url(#bevel);
                     }
 	text.button { text-anchor:middle; fill:#fff; font-weight:bold; }
+	polygon.button { fill:silver; stroke:none; }
      </style>
      <filter id="bevel">
        <feFlood flood-color="#ccf" result="lite-flood"/>
@@ -313,7 +314,7 @@ $license
 $script
   </defs>
   <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$self->{width}" height="$height"
-       viewBox="0 $offset $self->{width} $height">
+       viewBox="0 $offset $self->{width} $height" id="maze">
 EOH
     }
     else
@@ -324,7 +325,7 @@ EOH
      xmlns:xlink="http://www.w3.org/1999/xlink">
 $license
   <svg x="0" y="0" width="$self->{width}" height="$height"
-       viewBox="0 $offset $self->{width} $height">
+       viewBox="0 $offset $self->{width} $height" id="maze">
 EOH
     }
 
@@ -389,7 +390,8 @@ sub build_all_script
     my $self = shift;
     my $rows = shift;
     
-    my $script  = qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
+    my $script  = qq{    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>\n};
+    $script  .= qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
 
     my $board = $self->make_board_array( $rows );
 
@@ -457,12 +459,49 @@ sub build_control_panel
       <text x="25" y="15" class="button">Begin</text>
     </g>
 
-    <g class="instruct" transform="translate($offset,70)">
+    <g onclick="maze_up()" transform="translate(160,20)"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+            class="button"/>
+      <polygon points="10,5 5,15 15,15" class="button"/>
+    </g>
+
+    <g onclick="maze_left()" transform="translate(135,45)"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+            class="button"/>
+      <polygon points="5,10 15,5 15,15" class="button"/>
+    </g>
+
+    <g onclick="maze_right()" transform="translate(185,45)"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+            class="button"/>
+      <polygon points="15,10 5,5 5,15" class="button"/>
+    </g>
+
+    <g onclick="maze_down()" transform="translate(160,70)"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+            class="button"/>
+      <polygon points="10,15 5,5 15,5" class="button"/>
+    </g>
+
+    <g onclick="maze_reset()" transform="translate(160,45)"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="20" height="20" rx="5" ry="5"
+            class="button"/>
+      <polygon points="5,5 5,15 15,15 15,5" class="button"/>
+    </g>
+
+    <g class="instruct" transform="translate($offset,150)">
       <text x="0" y="0">Click Begin button to start</text>
-      <text x="0" y="30">Use the arrow keys to move the sprite</text>
-      <text x="0" y="50">Hold the shift to move quickly.</text>
-      <text x="0" y="80">The mouse must remain over the</text>
-      <text x="0" y="100">maze for the keys to work.</text>
+      <text x="0" y="30">Use arrow buttons to shift the maze</text>
+      <text x="0" y="50">Center button restores position</text>
+      <text x="0" y="80">Use the arrow keys to move the sprite</text>
+      <text x="0" y="100">Hold the shift to move quickly.</text>
+      <text x="0" y="130">The mouse must remain over the</text>
+      <text x="0" y="150">maze for the keys to work.</text>
     </g>
   </g>
 EOB

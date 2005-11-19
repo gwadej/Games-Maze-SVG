@@ -85,7 +85,7 @@ __DATA__
   </metadata>
 
   <svg x="0" y="0" width="50" height="130"
-       viewBox="0 -20 50 130">
+       viewBox="0 -20 50 130" id="maze">
     <defs>
       <style type="text/css">
 	path    { stroke: black; fill: none; }
