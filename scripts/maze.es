@@ -18,7 +18,7 @@ var shifted = false;
 var maze;
 var origin;
 var size;
-var saves = new Array();
+var saves = [];
 
 function initialize( board_, start_, end_, delta_ )
 {
@@ -40,7 +40,7 @@ function reset_sprite()
 {
     curr     = {x:start.x, y:start.y};
     crumbpts = (start.x*delta.x + delta.x/2) + "," + start.y*delta.y;
-    saves = new Array();
+    saves = [];
 }
 
 function unshift(evt)
@@ -195,9 +195,7 @@ catch(ex)
  */
 try
 {
-    var arr = new Array();
-    arr[0] = 1;
-    arr[1] = 2;
+    var arr = [ 1, 2 ];
     arr.pop();
 }
 catch(ex)

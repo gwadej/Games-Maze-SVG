@@ -24,13 +24,16 @@ function move_sprite(evt)
     case 39: // right
        while(move_right() && shifted);
        break;
-    case 66: // 'b'
+    case 98: // 'b'
+    case 66: // 'B'
        restart();
        return;
-    case 83: // 's'
+    case 115: // 's'
+    case 83: // 'S'
        save_position();
        return;
-    case 82: // 'r'
+    case 114: // 'r'
+    case 82: // 'R'
        restore_position();
        return;
     default:
