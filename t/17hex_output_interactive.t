@@ -167,6 +167,7 @@ __DATA__
 	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                    }
       </style>
+      <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
       <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
       <path id="xh"  d="M0,10 h5"/>
       <path id="xsr" d="M0,10 l5,-10"/>

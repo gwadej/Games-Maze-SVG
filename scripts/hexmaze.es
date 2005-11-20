@@ -28,6 +28,12 @@ function move_sprite(evt)
        while((move_right()||move_upright()||move_dnright()) && shifted)
            show_sprite();
        break;
+    case 83: // 's'
+       save_position();
+       return;
+    case 82: // 'r'
+       restore_position();
+       return;
     default:
        return;
    }

@@ -345,6 +345,7 @@ EOH
 	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
                    }
       </style>
+      <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
 $sprite_def
 @{[$self->wall_definitions()]}
     </defs>

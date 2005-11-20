@@ -27,6 +27,12 @@ function move_sprite(evt)
     case 66: // 'b'
        restart();
        return;
+    case 83: // 's'
+       save_position();
+       return;
+    case 82: // 'r'
+       restore_position();
+       return;
     default:
        return;
    }
