@@ -15,11 +15,11 @@ Games::Maze::SVG::Hex - Build hexagonal mazes in SVG.
 
 =head1 VERSION
 
-Version 0.1
+Version 0.3
 
 =cut
 
-our $VERSION = 0.1;
+our $VERSION = 0.3;
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ SVG.
 
 =cut
 
-use constant DELTA_X     => 10;
+use constant DELTA_X     => 5;
 use constant DELTA_Y     => 10;
 use constant SIGN_HEIGHT => 20;
 
@@ -373,20 +373,6 @@ sub convert_sign_position
 
     ($x, $y);
 }
-
-=item dx
-
-Returns the delta X value for building this maze.
-
-=cut
-
-sub dx
-{
-    my $self = shift;
-
-    $self->{dx}/2;
-}
-
 
 =back
 

@@ -15,11 +15,11 @@ Games::Maze::SVG::Rect - Build rectangular mazes in SVG.
 
 =head1 VERSION
 
-Version 0.1
+Version 0.3
 
 =cut
 
-our $VERSION = 0.1;
+our $VERSION = 0.3;
 
 =head1 SYNOPSIS
 
