@@ -1,10 +1,6 @@
 #!perl
 
-use Test::More tests => 20;
-use Test::MockModule;
-use FindBin;
-use lib "$FindBin::Bin/lib";
-use MazeTestUtils;
+use Test::More tests => 21;
 
 use Games::Maze::SVG;
 
@@ -12,6 +8,8 @@ use strict;
 use warnings;
 
 my $maze = Games::Maze::SVG->new( 'Hex' );
+
+can_ok( $maze, qw/convert_start_position convert_end_position convert_sign_position/);
 
 my ($x, $y) = $maze->convert_start_position( 1, 1 );
 is( $x, 2, "start origin x is correct" );
