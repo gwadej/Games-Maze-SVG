@@ -34,7 +34,6 @@ Games::Maze::SVG::RectHex uses the Games::Maze module to create mazes in SVG.
 
 use constant DELTA_X     => 5;
 use constant DELTA_Y     => 10;
-use constant SIGN_HEIGHT => 20;
 
 # ----------------
 #  Shape transformation tables
