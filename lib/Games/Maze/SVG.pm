@@ -517,7 +517,7 @@ EOF
 
 =item create_sprite
 
-Create the sprite definition for includion in the SVG.
+Create the sprite definition for inclusion in the SVG.
 
 =cut
 
