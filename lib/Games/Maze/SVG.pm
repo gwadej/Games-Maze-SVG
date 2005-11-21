@@ -464,36 +464,14 @@ sub build_control_panel
       <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
           fill="none" stroke-width="0.5" stroke="black"/>
       <text x="34" y="-5" class="ctrllabel">Move View</text>
+EOB
+    $output .= _create_view_button( 'maze_up',    22,  0, '10,5 5,15 15,15' );
+    $output .= _create_view_button( 'maze_left',   0, 22, '5,10 15,5 15,15' );
+    $output .= _create_view_button( 'maze_right', 44, 22, '15,10 5,5 5,15' );
+    $output .= _create_view_button( 'maze_down',  22, 44, '10,15 5,5 15,5' );
+    $output .= _create_view_button( 'maze_reset', 22, 22, '7,7 7,13 13,13 13,7' );
 
-      <g onclick="maze_up()" transform="translate(22,0)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="10,5 5,15 15,15"/>
-      </g>
-
-      <g onclick="maze_left()" transform="translate(0,22)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="5,10 15,5 15,15"/>
-      </g>
-
-      <g onclick="maze_right()" transform="translate(44,22)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="15,10 5,5 5,15"/>
-      </g>
-
-      <g onclick="maze_down()" transform="translate(22,44)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="10,15 5,5 15,5"/>
-      </g>
-
-      <g onclick="maze_reset()" transform="translate(22,22)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="7,7 7,13 13,13 13,7"/>
-      </g>
+    $output .= <<"EOB";
     </g>
 
     <g class="instruct" transform="translate($offset,150)">
@@ -507,6 +485,33 @@ sub build_control_panel
     </g>
   </g>
 EOB
+}
+
+
+# _create_view_button
+#
+#  $function - function name to call
+#  $x - x-coordinate of the button
+#  $y - y-coordinate of the button
+#  $icon - list of points for the icon
+
+sub _create_view_button
+{
+    my $fn = shift;
+    my $x = shift;
+    my $y = shift;
+    my $icon = shift;
+
+    my $output = <<"EOF";
+
+      <g onclick="$fn()" transform="translate($x,$y)" class="button"
+	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
+	<polygon points="$icon"/>
+      </g>
+EOF
+
+    $output;
 }
 
 

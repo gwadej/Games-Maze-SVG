@@ -420,7 +420,7 @@ sub convert_sign_position
     }
     else
     {
-        $y -= $self->dx();
+        $y -= $self->dy();
     }
 
     ($x, $y);

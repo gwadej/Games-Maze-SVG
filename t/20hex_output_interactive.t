@@ -14,8 +14,6 @@ use warnings;
 
 my $gmaze = Test::MockModule->new( 'Games::Maze' );
 
-my $rectgrid = 
-
 my $output = do { local $/ = undef; <DATA>; };
 
 $gmaze->mock(

@@ -356,13 +356,13 @@ sub convert_sign_position
     $y *= $self->dy();
 
     # left or right
-    if($x < $self->{width}/2)
+    if($x > $self->{width}/2)
     {
-        $x -= $self->dx();
+        $x += $self->dx();
     }
     else
     {
-        $x += $self->dx();
+        $x -= $self->dx();
     }
 
     # adjust bottom
