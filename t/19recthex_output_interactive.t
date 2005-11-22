@@ -48,7 +48,7 @@ is_string( $maze->toString(), $output, "Full transform works." );
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="300" height="130"
+<svg width="320" height="130"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      onload="initialize( board, {x:11, y:-2}, {x:11, y:11}, {x:5, y:10} )"
@@ -144,8 +144,8 @@ __DATA__
     </script>
 
   </defs>
-  <svg x="250" y="0" width="50" height="130"
-       viewBox="0 -20 50 130" id="maze">
+  <svg x="250" y="0" width="70" height="130"
+       viewBox="-10 -20 70 130" id="maze">
     <defs>
       <style type="text/css">
 	path    { stroke: black; fill: none; }
@@ -167,7 +167,7 @@ __DATA__
       <path id="xsl" d="M0,0  l5,10"/>
 
     </defs>
-    <rect id="mazebg" x="0" y="-20" width="100%" height="100%"/>
+    <rect id="mazebg" x="-10" y="-20" width="100%" height="100%"/>
 
     <use x="5" y="0" xlink:href="#xh"/>
     <use x="10" y="0" xlink:href="#xh"/>

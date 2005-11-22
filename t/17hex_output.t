@@ -50,7 +50,7 @@ is_string( $maze->toString(), $output, "Full transform works." );
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="80" height="170"
+<svg width="100" height="170"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
   <metadata>
@@ -87,8 +87,8 @@ __DATA__
     </rdf:RDF>
   </metadata>
 
-  <svg x="0" y="0" width="80" height="170"
-       viewBox="0 -20 80 170" id="maze">
+  <svg x="0" y="0" width="100" height="170"
+       viewBox="-10 -20 100 170" id="maze">
     <defs>
       <style type="text/css">
 	path    { stroke: black; fill: none; }
@@ -110,7 +110,7 @@ __DATA__
       <path id="xsl" d="M0,0  l5,10"/>
 
     </defs>
-    <rect id="mazebg" x="0" y="-20" width="100%" height="100%"/>
+    <rect id="mazebg" x="-10" y="-20" width="100%" height="100%"/>
 
     <use x="35" y="0" xlink:href="#xh"/>
     <use x="40" y="0" xlink:href="#xh"/>

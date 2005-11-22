@@ -35,6 +35,7 @@ Games::Maze::SVG uses the Games::Maze module to create mazes in SVG.
 =cut
 
 use constant SIGN_HEIGHT => 20;
+use constant SIDE_MARGIN => 10;
 use constant PANEL_WIDTH => 250;
 
 my %crumbstyles = (
@@ -262,22 +263,23 @@ sub  toString
     my ($xenter, $yenter) = $self->convert_sign_position( $xp, $yp );
     my ($xexit, $yexit) = $self->convert_sign_position( $xe, $ye );
 
-    my $width = $self->{width};
+    my $width = $self->{width} + 2 * SIDE_MARGIN;
     my $height = $self->{height} + 2 * SIGN_HEIGHT;
     my ($cx,$cy) = ($self->{width}/2, (35+$self->{height}/2));
     my $sprite_def = $self->create_sprite();
 
     my $output = qq{<?xml version="1.0"?>\n} ;
-    my $offset = - SIGN_HEIGHT;
+    my $offsety = - SIGN_HEIGHT;
+    my $offsetx = - SIDE_MARGIN;
     my ($xme, $yme) = ($xp*$self->dx(), $yp*$self->dy());
 
     if($self->{interactive})
     {
         my $script = $self->build_all_script( \@rows );
 
-        $width += PANEL_WIDTH;
+        my $totalwidth = $width + PANEL_WIDTH;
         $output .= <<"EOH";
-<svg width="$width" height="$height"
+<svg width="$totalwidth" height="$height"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
@@ -313,8 +315,8 @@ $license
      </filter>
 $script
   </defs>
-  <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$self->{width}" height="$height"
-       viewBox="0 $offset $self->{width} $height" id="maze">
+  <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$width" height="$height"
+       viewBox="$offsetx $offsety $width $height" id="maze">
 EOH
     }
     else
@@ -324,8 +326,8 @@ EOH
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
 $license
-  <svg x="0" y="0" width="$self->{width}" height="$height"
-       viewBox="0 $offset $self->{width} $height" id="maze">
+  <svg x="0" y="0" width="$width" height="$height"
+       viewBox="$offsetx $offsety $width $height" id="maze">
 EOH
     }
 
@@ -348,7 +350,7 @@ EOH
 $sprite_def
 @{[$self->wall_definitions()]}
     </defs>
-    <rect id="mazebg" x="0" y="$offset" width="100%" height="100%"/>
+    <rect id="mazebg" x="$offsetx" y="$offsety" width="100%" height="100%"/>
 
 $self->{mazeout}
     <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xme,$yme"/>

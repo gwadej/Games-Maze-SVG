@@ -189,7 +189,7 @@ sub resolve_template
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="320" height="110"
+<svg width="340" height="110"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      onload="initialize( board, {x:3, y:-2}, {x:3, y:10}, {x:10, y:10} )"
@@ -283,8 +283,8 @@ __DATA__
     </script>
 
   </defs>
-  <svg x="250" y="0" width="70" height="110"
-       viewBox="0 -20 70 110" id="maze">
+  <svg x="250" y="0" width="90" height="110"
+       viewBox="-10 -20 90 110" id="maze">
     <defs>
       <style type="text/css">
 	path    { stroke: black; fill: none; }
@@ -303,7 +303,7 @@ __DATA__
       <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
 {{walldefs}}
     </defs>
-    <rect id="mazebg" x="0" y="-20" width="100%" height="100%"/>
+    <rect id="mazebg" x="-10" y="-20" width="100%" height="100%"/>
 
     <use x="0" y="0" xlink:href="#ul"/>
     <use x="10" y="0" xlink:href="#h"/>
