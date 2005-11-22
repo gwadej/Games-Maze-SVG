@@ -111,28 +111,28 @@ function make_visible( name )
 function maze_up()
 {
     var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[1] = +box[1] - 25;
+    box[1] = +box[1] + 25;
     maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
 }
 
 function maze_down()
 {
     var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[1] = +box[1] + 25;
+    box[1] = +box[1] - 25;
     maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
 }
 
 function maze_left()
 {
     var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[0] = +box[0] - 25;
+    box[0] = +box[0] + 25;
     maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
 }
 
 function maze_right()
 {
     var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[0] = +box[0] + 25;
+    box[0] = +box[0] - 25;
     maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
 }
 

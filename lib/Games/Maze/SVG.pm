@@ -259,7 +259,6 @@ sub  toString
 
     my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
     my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
-    # TODO: entry does not work particularly well on Hex.
     my ($xenter, $yenter) = $self->convert_sign_position( $xp, $yp );
     my ($xexit, $yexit) = $self->convert_sign_position( $xe, $ye );
 
@@ -392,7 +391,7 @@ sub build_all_script
     my $self = shift;
     my $rows = shift;
     
-    my $script  = qq{    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>\n};
+    my $script = qq{    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>\n};
     $script  .= qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
 
     my $board = $self->make_board_array( $rows );
@@ -453,17 +452,14 @@ sub build_control_panel
   <g id="control_panel" transform="translate($startx,0)">
     <rect x="0" y="0" width="$panelwidth" height="$height"
           class="panel"/>
-
-    <g onclick="restart()" transform="translate($offset,20)" class="button"
-       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-      <rect x="0" y="0" width="50" height="20" rx="5" ry="5"/>
-      <text x="25" y="15">Begin</text>
-    </g>
+EOB
+    $output .= _create_text_button( 'restart', $offset, 20, 50, 20, 'Begin' );
+    $output .= <<"EOB";
 
     <g transform="translate(120,20)">
       <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
           fill="none" stroke-width="0.5" stroke="black"/>
-      <text x="34" y="-5" class="ctrllabel">Move View</text>
+      <text x="34" y="-5" class="ctrllabel">Move Maze</text>
 EOB
     $output .= _create_view_button( 'maze_up',    22,  0, '10,5 5,15 15,15' );
     $output .= _create_view_button( 'maze_left',   0, 22, '5,10 15,5 15,15' );
@@ -485,6 +481,40 @@ EOB
     </g>
   </g>
 EOB
+}
+
+
+# _create_text_button
+#
+#  $function - function name to call
+#  $x - x-coordinate of the button
+#  $y - y-coordinate of the button
+#  $width - width of the button
+#  $height - height of the button
+#  $text - text to be displayed on the button
+
+sub _create_text_button
+{
+    my $fn = shift;
+    my $x = shift;
+    my $y = shift;
+    my $width = shift;
+    my $height = shift;
+    my $text = shift;
+
+    my $tx = $width/2;
+    my $ty = $height/2 + 5;
+
+    my $output = <<"EOF";
+
+    <g onclick="$fn()" transform="translate($x,$y)" class="button"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="$width" height="$height" rx="5" ry="5"/>
+      <text x="$tx" y="$ty">Begin</text>
+    </g>
+EOF
+
+    $output;
 }
 
 
