@@ -1,7 +1,6 @@
 #!perl -T
 
 use Test::More tests => 10;
-use Test::Exception;
 
 use Games::Maze::SVG;
 
@@ -26,6 +25,5 @@ foreach my $crumb (keys %crumbstyles)
     is( $maze->get_crumbstyle(), $crumbstyles{$crumb}, " ... to $crumb" );
 }
 
-throws_ok { $maze->set_breadcrumb( "xyzzy" ); } 
-          qr/Unrecognized breadcrumb style 'xyzzy'/,
-          "Bad crumbs stopped.";
+eval { $maze->set_breadcrumb( "xyzzy" ); };
+like( $@, qr/Unrecognized breadcrumb style 'xyzzy'/, "Bad crumbs stopped." );

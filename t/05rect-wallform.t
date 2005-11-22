@@ -1,7 +1,6 @@
 #!perl -T
 
 use Test::More tests => 10;
-use Test::Exception;
 
 use Games::Maze::SVG;
 
@@ -20,7 +19,7 @@ foreach my $form (qw/straight round roundcorners bevel/)
     is( $maze->{wallform}, $form, " ... to $form" );
 }
 
-throws_ok { $maze->set_wall_form( "xyzzy" ); } 
-          qr/'xyzzy' is not a valid wall form/,
-	  "Bad form stopped.";
+
+eval { $maze->set_wall_form( "xyzzy" ); };
+like( $@, qr/'xyzzy' is not a valid wall form/, "Bad form stopped." );
 
