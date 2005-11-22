@@ -454,6 +454,12 @@ sub build_control_panel
           class="panel"/>
 EOB
     $output .= _create_text_button( 'restart', $offset, 20, 50, 20, 'Begin' );
+    $output .= _create_text_button(
+        'save_position', $offset, 45, 50, 20, 'Save'
+    );
+    $output .= _create_text_button(
+        'restore_position', $offset, 70, 50, 20, 'Back'
+    );
     $output .= <<"EOB";
 
     <g transform="translate(120,20)">
@@ -472,12 +478,14 @@ EOB
 
     <g class="instruct" transform="translate($offset,150)">
       <text x="0" y="0">Click Begin button to start</text>
-      <text x="0" y="30">Use arrow buttons to shift the maze</text>
-      <text x="0" y="50">Center button restores position</text>
-      <text x="0" y="80">Use the arrow keys to move the sprite</text>
-      <text x="0" y="100">Hold the shift to move quickly.</text>
-      <text x="0" y="130">The mouse must remain over the</text>
-      <text x="0" y="150">maze for the keys to work.</text>
+      <text x="0" y="30">Use the arrow keys to move the sprite</text>
+      <text x="0" y="50">Hold the shift to move quickly.</text>
+      <text x="0" y="70">The mouse must remain over the</text>
+      <text x="0" y="90">maze for the keys to work.</text>
+      <text x="0" y="120">Use arrow buttons to shift the maze</text>
+      <text x="0" y="140">Center button restores position</text>
+      <text x="0" y="160">Save button saves current position</text>
+      <text x="0" y="180">Back button restores last position</text>
     </g>
   </g>
 EOB
@@ -510,7 +518,7 @@ sub _create_text_button
     <g onclick="$fn()" transform="translate($x,$y)" class="button"
        onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
       <rect x="0" y="0" width="$width" height="$height" rx="5" ry="5"/>
-      <text x="$tx" y="$ty">Begin</text>
+      <text x="$tx" y="$ty">$text</text>
     </g>
 EOF
 

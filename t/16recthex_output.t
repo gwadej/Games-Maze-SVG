@@ -5,7 +5,7 @@ use Test::MockModule;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use MazeTestUtils;
-use Test::LongString;
+use TestString;
 
 use Games::Maze::SVG;
 

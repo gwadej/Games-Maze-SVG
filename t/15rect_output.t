@@ -1,8 +1,10 @@
-#!perl -T
+#!perl
 
 use Test::More tests => 5;
 use Test::MockModule;
-use Test::LongString;
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use TestString;
 
 use Games::Maze::SVG;
 

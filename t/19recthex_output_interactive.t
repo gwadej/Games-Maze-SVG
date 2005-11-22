@@ -5,7 +5,7 @@ use Test::MockModule;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use MazeTestUtils;
-use Test::LongString;
+use TestString;
 
 use Games::Maze::SVG;
 
@@ -243,6 +243,18 @@ __DATA__
       <text x="25" y="15">Begin</text>
     </g>
 
+    <g onclick="save_position()" transform="translate(20,45)" class="button"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="50" height="20" rx="5" ry="5"/>
+      <text x="25" y="15">Save</text>
+    </g>
+
+    <g onclick="restore_position()" transform="translate(20,70)" class="button"
+       onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+      <rect x="0" y="0" width="50" height="20" rx="5" ry="5"/>
+      <text x="25" y="15">Back</text>
+    </g>
+
     <g transform="translate(120,20)">
       <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
           fill="none" stroke-width="0.5" stroke="black"/>
@@ -281,12 +293,14 @@ __DATA__
 
     <g class="instruct" transform="translate(20,150)">
       <text x="0" y="0">Click Begin button to start</text>
-      <text x="0" y="30">Use arrow buttons to shift the maze</text>
-      <text x="0" y="50">Center button restores position</text>
-      <text x="0" y="80">Use the arrow keys to move the sprite</text>
-      <text x="0" y="100">Hold the shift to move quickly.</text>
-      <text x="0" y="130">The mouse must remain over the</text>
-      <text x="0" y="150">maze for the keys to work.</text>
+      <text x="0" y="30">Use the arrow keys to move the sprite</text>
+      <text x="0" y="50">Hold the shift to move quickly.</text>
+      <text x="0" y="70">The mouse must remain over the</text>
+      <text x="0" y="90">maze for the keys to work.</text>
+      <text x="0" y="120">Use arrow buttons to shift the maze</text>
+      <text x="0" y="140">Center button restores position</text>
+      <text x="0" y="160">Save button saves current position</text>
+      <text x="0" y="180">Back button restores last position</text>
     </g>
   </g>
 </svg>
