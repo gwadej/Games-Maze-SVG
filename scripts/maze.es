@@ -9,7 +9,6 @@ var xlinkns = 'http://www.w3.org/1999/xlink';
 var start;
 var end;
 var delta;
-var end;
 var board;
 var crumbpts;
 var sprite;
@@ -30,16 +29,22 @@ function initialize( board_, start_, end_, delta_ )
     sprite = document.getElementById( "me" );
     crumb  = document.getElementById( "crumb" );
     maze   = document.getElementById( "maze" );
-    origin = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
+    origin = maze.getAttributeNS( null, "viewBox" );
 
     reset_sprite();
     remove_msg();
 }
 
+function create_crumb_point( x, y )
+{
+    return (x*delta.x+delta.x/2)
+           +  "," + (y*delta.y+delta.y/2);
+}
+
 function reset_sprite()
 {
     curr     = {x:start.x, y:start.y};
-    crumbpts = (start.x*delta.x + delta.x/2) + "," + start.y*delta.y;
+    crumbpts = create_crumb_point( start.x, start.y );
     saves = [];
 }
 
@@ -79,8 +84,7 @@ function show_sprite()
     sprite.setAttributeNS( null, "x", (curr.x*delta.x) );
     sprite.setAttributeNS( null, "y", (curr.y*delta.y) );
 
-    crumbpts += " " + (curr.x*delta.x+delta.x/2)
-             +  "," + (curr.y*delta.y+delta.y/2);
+    crumbpts += " " + create_crumb_point( curr.x, curr.y );
     crumb.setAttributeNS( null, "points", crumbpts );
 }
 
@@ -108,37 +112,36 @@ function make_visible( name )
     }
 }
 
-function maze_up()
+function maze_move( index, offset )
 {
     var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[1] = +box[1] + 25;
+    box[index] = +box[index] + offset;
     maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
+}
+
+function maze_up()
+{
+    maze_move( 1, 25 );
 }
 
 function maze_down()
 {
-    var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[1] = +box[1] - 25;
-    maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
+    maze_move( 1, -25 );
 }
 
 function maze_left()
 {
-    var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[0] = +box[0] + 25;
-    maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
+    maze_move( 0, 25 );
 }
 
 function maze_right()
 {
-    var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[0] = +box[0] - 25;
-    maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
+    maze_move( 0, -25 );
 }
 
 function maze_reset()
 {
-    maze.setAttributeNS( null, "viewBox", origin.join( ' ' ) );
+    maze.setAttributeNS( null, "viewBox", origin );
 }
 
 function save_position()

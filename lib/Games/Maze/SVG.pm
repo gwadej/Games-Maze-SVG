@@ -272,6 +272,7 @@ sub  toString
     my $offsety = - SIGN_HEIGHT;
     my $offsetx = - SIDE_MARGIN;
     my ($xme, $yme) = ($xp*$self->dx(), $yp*$self->dy());
+    my ($xcrumb, $ycrumb) = ($xme+$self->dx()/2, $yme+$self->dy()/2);
 
     if($self->{interactive})
     {
@@ -353,7 +354,7 @@ $sprite_def
     <rect id="mazebg" class="mazebg" x="$offsetx" y="$offsety" width="100%" height="100%"/>
 
 $self->{mazeout}
-    <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xme,$yme"/>
+    <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xcrumb,$ycrumb"/>
     <use id="me" x="$xme" y="$yme" xlink:href="#sprite" visibility="hidden"/>
 
     <g transform="translate($xenter,$yenter)" class="entry sign">
