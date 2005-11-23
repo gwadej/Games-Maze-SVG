@@ -338,7 +338,7 @@ EOH
 	polygon { stroke: black; fill: grey; }
 	#sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
 	.crumbs { fill:none; $crumbstyle }
-	#mazebg { fill:$color->{mazebg}; stroke:none; }
+	.mazebg { fill:$color->{mazebg}; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
@@ -350,7 +350,7 @@ EOH
 $sprite_def
 @{[$self->wall_definitions()]}
     </defs>
-    <rect id="mazebg" x="$offsetx" y="$offsety" width="100%" height="100%"/>
+    <rect id="mazebg" class="mazebg" x="$offsetx" y="$offsety" width="100%" height="100%"/>
 
 $self->{mazeout}
     <polyline id="crumb" class="crumbs" stroke="$color->{crumb}" points="$xme,$yme"/>
@@ -457,14 +457,14 @@ sub build_control_panel
 EOB
     $output .= _create_text_button( 'restart', $offset, 20, 50, 20, 'Begin' );
     $output .= _create_text_button(
-        'save_position', $offset, 45, 50, 20, 'Save'
+        'save_position', $offset+60, 20, 50, 20, 'Save'
     );
     $output .= _create_text_button(
-        'restore_position', $offset, 70, 50, 20, 'Back'
+        'restore_position', $offset+120, 20, 50, 20, 'Back'
     );
     $output .= <<"EOB";
 
-    <g transform="translate(120,20)">
+    <g transform="translate(20,65)">
       <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
           fill="none" stroke-width="0.5" stroke="black"/>
       <text x="34" y="-5" class="ctrllabel">Move Maze</text>
@@ -475,10 +475,21 @@ EOB
     $output .= _create_view_button( 'maze_down',  22, 44, '10,15 5,5 15,5' );
     $output .= _create_view_button( 'maze_reset', 22, 22, '7,7 7,13 13,13 13,7' );
 
+=begin COMMENT
+
+    $output .= <<"EOB";
+    </g>
+    <g transform="translate(110, 50)">
+      <rect width="82" height="82" x="-1" y="-1" fill="gray" stroke-width="1" stroke="black"/>
+EOB
+    $output .= $self->_create_thumbnail();
+
+=cut
+
     $output .= <<"EOB";
     </g>
 
-    <g class="instruct" transform="translate($offset,150)">
+    <g class="instruct" transform="translate($offset,165)">
       <text x="0" y="0">Click Begin button to start</text>
       <text x="0" y="30">Use the arrow keys to move the sprite</text>
       <text x="0" y="50">Hold the shift to move quickly.</text>
@@ -491,6 +502,31 @@ EOB
     </g>
   </g>
 EOB
+}
+
+
+
+# _create_thumbnail
+#
+# Create the thumbnail image used to show the player where they are on the
+# larger field.
+#
+sub _create_thumbnail
+{
+    my $self = shift;
+    my ($x, $y, $wid, $ht) = (0,0,80,80);
+    
+    if($self->{width} > $self->{height})
+    {
+        $ht = int(80 * $self->{height} / $self->{width});
+	$y = (80 - $ht) / 2;
+    }
+    else
+    {
+        $wid = int(80 * $self->{width} / $self->{height});
+	$x = (80 - $wid) / 2;
+    }
+    qq{      <rect x="$x" y="$y" width="$wid" height="$ht" class="mazebg"/>\n};
 }
 
 

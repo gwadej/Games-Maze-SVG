@@ -157,7 +157,7 @@ __DATA__
 	polygon { stroke: black; fill: grey; }
 	#sprite { stroke: grey; stroke-width:0.2; fill: orange; }
 	.crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
-	#mazebg { fill:#ffc; stroke:none; }
+	.mazebg { fill:#ffc; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
@@ -172,7 +172,7 @@ __DATA__
       <path id="xsl" d="M0,0  l5,10"/>
 
     </defs>
-    <rect id="mazebg" x="-10" y="-20" width="100%" height="100%"/>
+    <rect id="mazebg" class="mazebg" x="-10" y="-20" width="100%" height="100%"/>
 
     <use x="35" y="0" xlink:href="#xh"/>
     <use x="40" y="0" xlink:href="#xh"/>
@@ -294,19 +294,19 @@ __DATA__
       <text x="25" y="15">Begin</text>
     </g>
 
-    <g onclick="save_position()" transform="translate(20,45)" class="button"
+    <g onclick="save_position()" transform="translate(80,20)" class="button"
        onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
       <rect x="0" y="0" width="50" height="20" rx="5" ry="5"/>
       <text x="25" y="15">Save</text>
     </g>
 
-    <g onclick="restore_position()" transform="translate(20,70)" class="button"
+    <g onclick="restore_position()" transform="translate(140,20)" class="button"
        onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
       <rect x="0" y="0" width="50" height="20" rx="5" ry="5"/>
       <text x="25" y="15">Back</text>
     </g>
 
-    <g transform="translate(120,20)">
+    <g transform="translate(20,65)">
       <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
           fill="none" stroke-width="0.5" stroke="black"/>
       <text x="34" y="-5" class="ctrllabel">Move Maze</text>
@@ -342,7 +342,7 @@ __DATA__
       </g>
     </g>
 
-    <g class="instruct" transform="translate(20,150)">
+    <g class="instruct" transform="translate(20,165)">
       <text x="0" y="0">Click Begin button to start</text>
       <text x="0" y="30">Use the arrow keys to move the sprite</text>
       <text x="0" y="50">Hold the shift to move quickly.</text>

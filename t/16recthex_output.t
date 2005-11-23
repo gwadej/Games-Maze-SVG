@@ -92,7 +92,7 @@ __DATA__
 	polygon { stroke: black; fill: grey; }
 	#sprite { stroke: grey; stroke-width:0.2; fill: orange; }
 	.crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
-	#mazebg { fill:#ffc; stroke:none; }
+	.mazebg { fill:#ffc; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
@@ -107,7 +107,7 @@ __DATA__
       <path id="xsl" d="M0,0  l5,10"/>
 
     </defs>
-    <rect id="mazebg" x="-10" y="-20" width="100%" height="100%"/>
+    <rect id="mazebg" class="mazebg" x="-10" y="-20" width="100%" height="100%"/>
 
     <use x="5" y="0" xlink:href="#xh"/>
     <use x="10" y="0" xlink:href="#xh"/>
