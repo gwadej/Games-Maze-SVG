@@ -12,24 +12,67 @@ var crumbpts;
 var sprite;
 var crumb;
 var shifted = false;
-var origin;
 var size;
-var saves = [];
 
 var game;
+
+/*
+ * The MazeGame object will maintain the current state of the game and
+ * update the display.
+ */
 
 function MazeGame( start, end )
 {
     this.start = start;
     this.end = end;
+
     this.maze = document.getElementById( "maze" );
     this.origin = this.maze.getAttributeNS( null, "viewBox" );
+
+    this.saves = new Snapshots( this.maze );
 }
 
 MazeGame.prototype.isFinished = function( pt )
 {
     return pt.x == this.end.x && pt.y == this.end.y;
 }
+
+MazeGame.prototype.reset_origin = function()
+{
+    this.maze.setAttributeNS( null, "viewBox", this.origin );
+}
+
+
+/*
+ * The Snapshots object holds and manipulates the stack of snapshot
+ * positions.
+ */
+
+function Snapshots( maze )
+{
+    this.stack = [];
+    this.maze = maze;
+}
+
+Snapshots.prototype.push = function( curr, pos, crumb, mark )
+{
+    this.stack.push( { x: curr.x, y: curr.y, crumb: crumbpts, marker: mark } );
+}
+
+Snapshots.prototype.pop = function()
+{
+    var item = this.stack.pop();
+
+    this.maze.removeChild( item.marker );
+
+    return item;
+}
+
+Snapshots.prototype.empty = function()
+{
+    return 0 == this.stack.length;
+}
+
 
 function initialize( board_, start_, end_, delta_ )
 {
@@ -44,17 +87,16 @@ function initialize( board_, start_, end_, delta_ )
     remove_msg();
 }
 
-function create_crumb_point( x, y )
+function create_crumb_point( pos )
 {
-    return (x*delta.x+delta.x/2)
-           +  "," + (y*delta.y+delta.y/2);
+    return (pos.x*delta.x+delta.x/2)
+           +  "," + (pos.y*delta.y+delta.y/2);
 }
 
 function reset_sprite()
 {
     curr     = {x:game.start.x, y:game.start.y};
-    crumbpts = create_crumb_point( game.start.x, game.start.y );
-    saves = [];
+    crumbpts = create_crumb_point( game.start );
 }
 
 function unshift(evt)
@@ -93,15 +135,15 @@ function show_sprite()
     sprite.setAttributeNS( null, "x", (curr.x*delta.x) );
     sprite.setAttributeNS( null, "y", (curr.y*delta.y) );
 
-    crumbpts += " " + create_crumb_point( curr.x, curr.y );
+    crumbpts += " " + create_crumb_point( curr );
     crumb.setAttributeNS( null, "points", crumbpts );
 }
 
 function restart()
 {
-    for(var i=0;i < saves.length;++i)
+    while(!game.saves.empty())
     {
-        game.maze.removeChild( saves[i].marker );
+        game.saves.pop();
     }
 
     reset_sprite();
@@ -150,7 +192,7 @@ function maze_right()
 
 function maze_reset()
 {
-    game.maze.setAttributeNS( null, "viewBox", game.origin );
+    game.reset_origin();
 }
 
 function save_position()
@@ -161,18 +203,17 @@ function save_position()
     mark.setAttributeNS( xlinkns, 'href', '#savemark' );
     game.maze.appendChild( mark );
 
-    saves.push( { x: curr.x, y: curr.y, crumb: crumbpts, marker: mark } );
+    game.saves.push( curr, crumb, mark );
 }
 
 function restore_position()
 {
     if(saves.length)
     {
-        var saved = saves.pop();
+        var saved = game.saves.pop();
         curr.x = saved.x;
         curr.y = saved.y;
         crumbpts = saved.crumb;
-	game.maze.removeChild( saved.marker );
         show_sprite();
     }
 }
