@@ -54,9 +54,17 @@ function Snapshots( maze )
     this.maze = maze;
 }
 
-Snapshots.prototype.push = function( curr, pos, crumb, mark )
+Snapshots.prototype.push = function( pt, pos, crumbpts )
 {
-    this.stack.push( { x: curr.x, y: curr.y, crumb: crumbpts, marker: mark } );
+    var mark = document.createElementNS( svgns, 'use' );
+
+    mark.setAttributeNS( null, 'x', pos.x );
+    mark.setAttributeNS( null, 'y', pos.y );
+    mark.setAttributeNS( xlinkns, 'href', '#savemark' );
+
+    this.maze.appendChild( mark );
+
+    this.stack.push( { x: pt.x, y: pt.y, crumb: crumbpts, marker: mark } );
 }
 
 Snapshots.prototype.pop = function()
@@ -73,6 +81,14 @@ Snapshots.prototype.empty = function()
     return 0 == this.stack.length;
 }
 
+Snapshots.prototype.clear = function()
+{
+    while(!this.empty())
+    {
+        this.pop();
+    }
+}
+
 
 function initialize( board_, start_, end_, delta_ )
 {
@@ -87,10 +103,17 @@ function initialize( board_, start_, end_, delta_ )
     remove_msg();
 }
 
-function create_crumb_point( pos )
+function calc_crumb_position( pt )
 {
-    return (pos.x*delta.x+delta.x/2)
-           +  "," + (pos.y*delta.y+delta.y/2);
+    return { x: pt.x*delta.x+delta.x/2,
+             y: pt.y*delta.y+delta.y/2
+           };
+}
+
+function create_crumb_point( pt )
+{
+    var pos = calc_crumb_position( pt );
+    return pos.x +  "," + pos.y;
 }
 
 function reset_sprite()
@@ -141,10 +164,7 @@ function show_sprite()
 
 function restart()
 {
-    while(!game.saves.empty())
-    {
-        game.saves.pop();
-    }
+    game.saves.clear();
 
     reset_sprite();
     crumb.setAttributeNS( null, "points", crumbpts );
@@ -197,18 +217,14 @@ function maze_reset()
 
 function save_position()
 {
-    var mark = document.createElementNS( svgns, 'use' );
-    mark.setAttributeNS( null, 'x', curr.x*delta.x+delta.x/2 );
-    mark.setAttributeNS( null, 'y', curr.y*delta.y+delta.y/2 );
-    mark.setAttributeNS( xlinkns, 'href', '#savemark' );
-    game.maze.appendChild( mark );
+    var pos = calc_crumb_position( curr );
 
-    game.saves.push( curr, crumb, mark );
+    game.saves.push( curr, pos, crumbpts );
 }
 
 function restore_position()
 {
-    if(saves.length)
+    if(!game.saves.empty())
     {
         var saved = game.saves.pop();
         curr.x = saved.x;
