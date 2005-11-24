@@ -67,7 +67,7 @@ function move_down()
 
 function move_up()
  {
-  if(curr.y == 0 || board[curr.y-1][curr.x])
+  if(up_blocked())
    {
     return false;
    }
@@ -77,7 +77,7 @@ function move_up()
 
 function move_left()
  {
-  if(curr.x < 0 || board[curr.y][curr.x-1] > 0)
+  if(left_blocked())
    {
     return false;
    }
@@ -87,7 +87,7 @@ function move_left()
 
 function move_right()
  {
-  if(curr.x+1 == board[curr.y].length || board[curr.y][curr.x+1] > 0)
+  if(right_blocked())
    {
     return false;
    }

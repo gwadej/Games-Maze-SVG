@@ -40,6 +40,20 @@ MazeGame.prototype.reset_origin = function()
     this.maze.setAttributeNS( null, "viewBox", this.origin );
 }
 
+MazeGame.prototype.calc_crumb_position = function( pt )
+{
+    return { x: pt.x*this.tile.x+this.tile.x/2,
+             y: pt.y*this.tile.y+this.tile.y/2
+           };
+}
+
+MazeGame.prototype.maze_move = function( index, offset )
+{
+    var box = this.maze.getAttributeNS( null, "viewBox" ).split( ' ' );
+    box[index] = +box[index] + offset;
+    this.maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
+}
+
 
 /*
  * The Snapshots object holds and manipulates the stack of snapshot
@@ -98,13 +112,6 @@ function initialize( board_, start_, end_, tile_ )
     remove_msg();
 }
 
-MazeGame.prototype.calc_crumb_position = function( pt )
-{
-    return { x: pt.x*this.tile.x+this.tile.x/2,
-             y: pt.y*this.tile.y+this.tile.y/2
-           };
-}
-
 function create_crumb_point( pt )
 {
     var pos = game.calc_crumb_position( pt );
@@ -150,8 +157,8 @@ function remove_msg()
 
 MazeGame.prototype.show_sprite = function()
 {
-    this.sprite.setAttributeNS( null, "x", (curr.x*game.tile.x) );
-    this.sprite.setAttributeNS( null, "y", (curr.y*game.tile.y) );
+    this.sprite.setAttributeNS( null, "x", (curr.x*this.tile.x) );
+    this.sprite.setAttributeNS( null, "y", (curr.y*this.tile.y) );
 
     this.crumbpts += " " + create_crumb_point( curr );
     this.crumb.setAttributeNS( null, "points", this.crumbpts );
@@ -178,31 +185,24 @@ function make_visible( name )
     }
 }
 
-function maze_move( index, offset )
-{
-    var box = game.maze.getAttributeNS( null, "viewBox" ).split( ' ' );
-    box[index] = +box[index] + offset;
-    game.maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
-}
-
 function maze_up()
 {
-    maze_move( 1, 25 );
+    game.maze_move( 1, 25 );
 }
 
 function maze_down()
 {
-    maze_move( 1, -25 );
+    game.maze_move( 1, -25 );
 }
 
 function maze_left()
 {
-    maze_move( 0, 25 );
+    game.maze_move( 0, 25 );
 }
 
 function maze_right()
 {
-    maze_move( 0, -25 );
+    game.maze_move( 0, -25 );
 }
 
 function maze_reset()
@@ -228,6 +228,28 @@ function restore_position()
         game.show_sprite();
     }
 }
+
+
+function up_blocked()
+{
+    return (curr.y == 0 || board[curr.y-1][curr.x]);
+}
+
+function left_blocked()
+{
+    return curr.x < 0 || board[curr.y][curr.x-1] > 0;
+}
+
+function right_blocked()
+{
+    return curr.x+1 == board[curr.y].length || board[curr.y][curr.x+1] > 0;
+}
+
+function down_blocked()
+{
+    return curr.y+1 == board.length || board[curr.y+1][curr.x];
+}
+
 
 /*
  * Patch array handling for ASV which is missing these useful methods.
