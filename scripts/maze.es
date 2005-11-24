@@ -6,7 +6,6 @@
 
 var svgns = 'http://www.w3.org/2000/svg';
 var xlinkns = 'http://www.w3.org/1999/xlink';
-var board;
 var shifted = false;
 
 var game;
@@ -16,11 +15,12 @@ var game;
  * update the display.
  */
 
-function MazeGame( start, end, tile )
+function MazeGame( start, end, tile, board )
 {
     this.start = start;
     this.end = end;
     this.tile = tile;
+    this.board = board;
 
     this.maze = document.getElementById( "maze" );
     this.origin = this.maze.getAttributeNS( null, "viewBox" );
@@ -103,10 +103,9 @@ Snapshots.prototype.clear = function()
 
 /***** Standalone functions *******/
 
-function initialize( board_, start_, end_, tile_ )
+function initialize( board, start, end, tile )
 {
-    game = new MazeGame( start_, end_, tile_ );
-    board = board_;
+    game = new MazeGame( start, end, tile, board );
 
     reset_sprite();
     remove_msg();
@@ -232,22 +231,23 @@ function restore_position()
 
 MazeGame.prototype.up_blocked = function( pt )
 {
-    return (pt.y == 0 || board[pt.y-1][pt.x]);
+    return (pt.y == 0 || this.board[pt.y-1][pt.x]);
 }
 
 MazeGame.prototype.left_blocked = function( pt )
 {
-    return pt.x < 0 || board[pt.y][pt.x-1] > 0;
+    return pt.x < 0 || this.board[pt.y][pt.x-1] > 0;
 }
 
 MazeGame.prototype.right_blocked = function( pt )
 {
-    return pt.x+1 == board[pt.y].length || board[pt.y][pt.x+1] > 0;
+    return pt.x+1 == this.board[pt.y].length
+        || this.board[pt.y][pt.x+1] > 0;
 }
 
 MazeGame.prototype.down_blocked = function( pt )
 {
-    return pt.y+1 == board.length || board[pt.y+1][pt.x];
+    return pt.y+1 == this.board.length || this.board[pt.y+1][pt.x];
 }
 
 
