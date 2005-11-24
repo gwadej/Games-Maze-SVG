@@ -346,7 +346,7 @@ __DATA__
     <use x="50" y="60" xlink:href="#h"/>
     <use x="60" y="60" xlink:href="#lr"/>
 
-    <polyline id="crumb" class="crumbs" stroke="#f3f" points="30,-20"/>
+    <polyline id="crumb" class="crumbs" stroke="#f3f" points="35,-15"/>
     <use id="me" x="30" y="-20" xlink:href="#sprite" visibility="hidden"/>
 
     <g transform="translate(35,-30)" class="entry sign">

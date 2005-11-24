@@ -12,7 +12,6 @@ var crumbpts;
 var sprite;
 var crumb;
 var shifted = false;
-var maze;
 var origin;
 var size;
 var saves = [];
@@ -23,6 +22,8 @@ function MazeGame( start, end )
 {
     this.start = start;
     this.end = end;
+    this.maze = document.getElementById( "maze" );
+    this.origin = this.maze.getAttributeNS( null, "viewBox" );
 }
 
 MazeGame.prototype.isFinished = function( pt )
@@ -38,8 +39,6 @@ function initialize( board_, start_, end_, delta_ )
   
     sprite = document.getElementById( "me" );
     crumb  = document.getElementById( "crumb" );
-    maze   = document.getElementById( "maze" );
-    origin = maze.getAttributeNS( null, "viewBox" );
 
     reset_sprite();
     remove_msg();
@@ -102,7 +101,7 @@ function restart()
 {
     for(var i=0;i < saves.length;++i)
     {
-        maze.removeChild( saves[i].marker );
+        game.maze.removeChild( saves[i].marker );
     }
 
     reset_sprite();
@@ -124,9 +123,9 @@ function make_visible( name )
 
 function maze_move( index, offset )
 {
-    var box = maze.getAttributeNS( null, "viewBox" ).split( ' ' );
+    var box = game.maze.getAttributeNS( null, "viewBox" ).split( ' ' );
     box[index] = +box[index] + offset;
-    maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
+    game.maze.setAttributeNS( null, "viewBox", box.join( ' ' ) );
 }
 
 function maze_up()
@@ -151,7 +150,7 @@ function maze_right()
 
 function maze_reset()
 {
-    maze.setAttributeNS( null, "viewBox", origin );
+    game.maze.setAttributeNS( null, "viewBox", game.origin );
 }
 
 function save_position()
@@ -160,7 +159,7 @@ function save_position()
     mark.setAttributeNS( null, 'x', curr.x*delta.x+delta.x/2 );
     mark.setAttributeNS( null, 'y', curr.y*delta.y+delta.y/2 );
     mark.setAttributeNS( xlinkns, 'href', '#savemark' );
-    maze.appendChild( mark );
+    game.maze.appendChild( mark );
 
     saves.push( { x: curr.x, y: curr.y, crumb: crumbpts, marker: mark } );
 }
@@ -173,7 +172,7 @@ function restore_position()
         curr.x = saved.x;
         curr.y = saved.y;
         crumbpts = saved.crumb;
-	maze.removeChild( saved.marker );
+	game.maze.removeChild( saved.marker );
         show_sprite();
     }
 }
