@@ -31,7 +31,7 @@ function move_sprite(evt)
 	default:
 	   return;
     }
-    game.show_sprite();
+    sprite.show();
 
     if(game.isFinished( sprite.curr ))
     {

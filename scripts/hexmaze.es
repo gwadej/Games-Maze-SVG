@@ -32,7 +32,7 @@ function move_sprite(evt)
 	   return;
     }
 
-    game.show_sprite();
+    sprite.show();
     if(game.isFinished( sprite.curr ))
     {
         setTimeout( "finished_msg()", 10 );
