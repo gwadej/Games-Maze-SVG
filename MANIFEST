@@ -11,7 +11,9 @@ MANIFEST
 META.yml			# Will be created by "make dist"
 README
 scripts/hexmaze.es
+scripts/maze.es
 scripts/rectmaze.es
+scripts/sprite.es
 t/00-load.t
 t/01ctor-default.t
 t/02ctor-rect.t
@@ -24,9 +26,19 @@ t/08xform_rect.t
 t/09xform_recthex.t
 t/10xform_hexagon.t
 t/11make_board.t
+t/12rect_convert.t
 t/12rect_output.t
+t/13recthex_convert.t
 t/13recthex_output.t
+t/14hex_convert.t
 t/14hex_output.t
+t/15rect_output.t
+t/16recthex_output.t
+t/17hex_output.t
+t/18rect_output_interactive.t
+t/19recthex_output_interactive.t
+t/20hex_output_interactive.t
 t/lib/MazeTestUtils.pm
+t/lib/TestString.pm
 t/pod-coverage.t
 t/pod.t

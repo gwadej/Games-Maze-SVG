@@ -17,11 +17,11 @@ Games::Maze::SVG - Build mazes in SVG.
 
 =head1 VERSION
 
-Version 0.5
+Version 0.6
 
 =cut
 
-our $VERSION = 0.5;
+our $VERSION = 0.6;
 
 =head1 SYNOPSIS
 
