@@ -394,7 +394,8 @@ sub build_all_script
     my $self = shift;
     my $rows = shift;
     
-    my $script = qq{    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>\n};
+    my $script = qq{    <script type="text/ecmascript" xlink:href="$self->{dir}sprite.es"/>\n};
+    $script  .= qq{    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>\n};
     $script  .= qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
 
     my $board = $self->make_board_array( $rows );
