@@ -230,24 +230,24 @@ function restore_position()
 }
 
 
-function up_blocked()
+MazeGame.prototype.up_blocked = function( pt )
 {
-    return (curr.y == 0 || board[curr.y-1][curr.x]);
+    return (pt.y == 0 || board[pt.y-1][pt.x]);
 }
 
-function left_blocked()
+MazeGame.prototype.left_blocked = function( pt )
 {
-    return curr.x < 0 || board[curr.y][curr.x-1] > 0;
+    return pt.x < 0 || board[pt.y][pt.x-1] > 0;
 }
 
-function right_blocked()
+MazeGame.prototype.right_blocked = function( pt )
 {
-    return curr.x+1 == board[curr.y].length || board[curr.y][curr.x+1] > 0;
+    return pt.x+1 == board[pt.y].length || board[pt.y][pt.x+1] > 0;
 }
 
-function down_blocked()
+MazeGame.prototype.down_blocked = function( pt )
 {
-    return curr.y+1 == board.length || board[curr.y+1][curr.x];
+    return pt.y+1 == board.length || board[pt.y+1][pt.x];
 }
 
 
