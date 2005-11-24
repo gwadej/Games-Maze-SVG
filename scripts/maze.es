@@ -77,8 +77,6 @@ function Sprite( start, tile, game )
 
     this.elem = document.getElementById( "me" );
     this.crumb = document.getElementById( "crumb" );
-    
-    this.reset();
 }
 
 Sprite.prototype.reset = function()
@@ -218,6 +216,8 @@ function initialize( board, start, end, tile )
 {
     game = new MazeGame( start, end, board );
     sprite = new Sprite( start, tile, game );
+    
+    sprite.reset();
 
     remove_msg();
 }
