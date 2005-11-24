@@ -72,12 +72,13 @@ function Sprite( start, tile, game )
     this.start = start;
     this.tile = tile;
     this.game = game;
-    this.curr = start;
 
     this.saves = new Snapshots( this.game.maze );
 
     this.elem = document.getElementById( "me" );
     this.crumb = document.getElementById( "crumb" );
+    
+    this.reset();
 }
 
 Sprite.prototype.reset = function()
@@ -86,7 +87,6 @@ Sprite.prototype.reset = function()
     this.crumbpts = create_crumb_point( this.start );
     this.crumb.setAttributeNS( null, "points", this.crumbpts );
     this.saves.clear();
-
 }
 
 Sprite.prototype.show = function()
@@ -124,6 +124,47 @@ Sprite.prototype.restore = function()
         this.show();
     }
 }
+
+Sprite.prototype.move_down = function()
+{
+    if(this.game.down_blocked( this.curr ))
+    {
+         return false;
+    }
+    this.curr.y++;
+    return true;
+}
+
+Sprite.prototype.move_up = function()
+{
+    if(this.game.up_blocked( this.curr ))
+    {
+        return false;
+    }
+    this.curr.y--;
+    return true;
+}
+
+Sprite.prototype.move_left = function()
+{
+    if(this.game.left_blocked( this.curr ))
+    {
+        return false;
+    }
+    this.curr.x--;
+    return true;
+}
+
+Sprite.prototype.move_right = function()
+{
+    if(this.game.right_blocked( this.curr ))
+    {
+        return false;
+    }
+    this.curr.x++;
+    return true;
+}
+
 
 /*
  * The Snapshots object holds and manipulates the stack of snapshot
@@ -178,7 +219,6 @@ function initialize( board, start, end, tile )
     game = new MazeGame( start, end, board );
     sprite = new Sprite( start, tile, game );
 
-    sprite.reset();
     remove_msg();
 }
 

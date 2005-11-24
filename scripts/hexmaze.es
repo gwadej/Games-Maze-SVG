@@ -13,19 +13,19 @@ function move_sprite(evt)
             shifted = true;
 	    return;
 	case 40: // down
-	   while(move_down() && shifted)
+	   while(sprite.move_down() && shifted)
 	       ;
 	   break;
 	case 38: // up
-	   while(move_up() && shifted)
+	   while(sprite.move_up() && shifted)
 	       ;
 	   break;
 	case 37: // left
-	   while((move_left()||move_upleft()||move_dnleft()) && shifted)
+	   while(move_left() && shifted)
 	       ;
 	   break;
 	case 39: // right
-	   while((move_right()||move_upright()||move_dnright()) && shifted)
+	   while(move_right() && shifted)
 	       ;
 	   break;
 	default:
@@ -39,12 +39,23 @@ function move_sprite(evt)
     }
 }
 
+function move_left()
+{
+    return (sprite.move_left()||sprite.move_upleft()||sprite.move_dnleft());
+}
+
+function move_right()
+{
+    return (sprite.move_right()||sprite.move_upright()||sprite.move_dnright());
+}
+
+
+/* Override for a hex maze */
 MazeGame.prototype.isFinished = function( pt )
 {
     return (pt.x == this.end.x || pt.x+1 == this.end.x) && pt.y == this.end.y;
 }
 
-/* Override for a hex maze */
 MazeGame.prototype.down_blocked = function( pt )
 {
     return pt.y+1 == this.board.length
@@ -84,87 +95,48 @@ MazeGame.prototype.upleft_blocked = function( pt )
 }
 
 
+/* Overrides for a sprite in a hex maze */
 
-function move_down()
+Sprite.prototype.move_dnleft = function()
 {
-    if(game.down_blocked( sprite.curr ))
+    if(this.game.downleft_blocked( this.curr ))
     {
         return false;
     }
-    sprite.curr.y++;
+    this.curr.x--;
+    this.curr.y++;
     return true;
 }
 
-function move_up()
+Sprite.prototype.move_upleft = function()
 {
-    if(game.up_blocked( sprite.curr ))
+    if(this.game.upleft_blocked( this.curr ))
     {
         return false;
     }
-    sprite.curr.y--;
+    this.curr.x--;
+    this.curr.y--;
     return true;
 }
 
-function move_left()
+Sprite.prototype.move_dnright = function()
 {
-    if(game.left_blocked( sprite.curr ))
+    if(this.game.downright_blocked( this.curr ))
     {
         return false;
     }
-    sprite.curr.x--;
+    this.curr.x++;
+    this.curr.y++;
     return true;
 }
 
-function move_right()
+Sprite.prototype.move_upright = function()
 {
-    if(game.right_blocked( sprite.curr ))
+    if(this.game.upright_blocked( this.curr ))
     {
         return false;
     }
-    sprite.curr.x++;
-    return true;
-}
-
-function move_dnleft()
-{
-    if(game.downleft_blocked( sprite.curr ))
-    {
-        return false;
-    }
-    sprite.curr.x--;
-    sprite.curr.y++;
-    return true;
-}
-
-function move_upleft()
-{
-    if(game.upleft_blocked( sprite.curr ))
-    {
-        return false;
-    }
-    sprite.curr.x--;
-    sprite.curr.y--;
-    return true;
-}
-
-function move_dnright()
-{
-    if(game.downright_blocked( sprite.curr ))
-    {
-        return false;
-    }
-    sprite.curr.x++;
-    sprite.curr.y++;
-    return true;
-}
-
-function move_upright()
-{
-    if(game.upright_blocked( sprite.curr ))
-    {
-        return false;
-    }
-    sprite.curr.x++;
-    sprite.curr.y--;
+    this.curr.x++;
+    this.curr.y--;
     return true;
 }

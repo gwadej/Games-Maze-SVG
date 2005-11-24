@@ -13,19 +13,19 @@ function move_sprite(evt)
             shifted = true;
 	    return;
 	case 40: // down
-	   while(move_down() && shifted)
+	   while(sprite.move_down() && shifted)
                ;
 	   break;
 	case 38: // up
-	   while(move_up() && shifted)
+	   while(sprite.move_up() && shifted)
                ;
 	   break;
 	case 37:
-	   while(move_left() && shifted)
+	   while(sprite.move_left() && shifted)
                ;
 	   break;
 	case 39: // right
-	   while(move_right() && shifted)
+	   while(sprite.move_right() && shifted)
                ;
 	   break;
 	default:
@@ -37,44 +37,4 @@ function move_sprite(evt)
     {
         setTimeout( "finished_msg()", 10 );
     }
-}
-
-function move_down()
-{
-    if(game.down_blocked( sprite.curr ))
-    {
-         return false;
-    }
-    sprite.curr.y++;
-    return true;
-}
-
-function move_up()
-{
-    if(game.up_blocked( sprite.curr ))
-    {
-        return false;
-    }
-    sprite.curr.y--;
-    return true;
-}
-
-function move_left()
-{
-    if(game.left_blocked( sprite.curr ))
-    {
-        return false;
-    }
-    sprite.curr.x--;
-    return true;
-}
-
-function move_right()
-{
-    if(game.right_blocked( sprite.curr ))
-    {
-        return false;
-    }
-    sprite.curr.x++;
-    return true;
 }
