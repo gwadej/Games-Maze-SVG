@@ -54,7 +54,7 @@ function Snapshots( maze )
     this.maze = maze;
 }
 
-Snapshots.prototype.push = function( pt, pos, crumbpts )
+Snapshots.prototype.save = function( pt, pos, crumbpts )
 {
     var mark = document.createElementNS( svgns, 'use' );
 
@@ -67,7 +67,7 @@ Snapshots.prototype.push = function( pt, pos, crumbpts )
     this.stack.push( { x: pt.x, y: pt.y, crumb: crumbpts, marker: mark } );
 }
 
-Snapshots.prototype.pop = function()
+Snapshots.prototype.last = function()
 {
     var item = this.stack.pop();
 
@@ -85,10 +85,11 @@ Snapshots.prototype.clear = function()
 {
     while(!this.empty())
     {
-        this.pop();
+        this.last();
     }
 }
 
+/***** Standalone functions *******/
 
 function initialize( board_, start_, end_, delta_ )
 {
@@ -219,14 +220,14 @@ function save_position()
 {
     var pos = calc_crumb_position( curr );
 
-    game.saves.push( curr, pos, crumbpts );
+    game.saves.save( curr, pos, crumbpts );
 }
 
 function restore_position()
 {
     if(!game.saves.empty())
     {
-        var saved = game.saves.pop();
+        var saved = game.saves.last();
         curr.x = saved.x;
         curr.y = saved.y;
         crumbpts = saved.crumb;
