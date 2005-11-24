@@ -33,7 +33,7 @@ function move_sprite(evt)
     }
     game.show_sprite();
 
-    if(game.isFinished( curr ))
+    if(game.isFinished( sprite.curr ))
     {
         setTimeout( "finished_msg()", 10 );
     }
@@ -41,40 +41,40 @@ function move_sprite(evt)
 
 function move_down()
 {
-    if(game.down_blocked( curr ))
+    if(game.down_blocked( sprite.curr ))
     {
          return false;
     }
-    curr.y++;
+    sprite.curr.y++;
     return true;
 }
 
 function move_up()
 {
-    if(game.up_blocked( curr ))
+    if(game.up_blocked( sprite.curr ))
     {
         return false;
     }
-    curr.y--;
+    sprite.curr.y--;
     return true;
 }
 
 function move_left()
 {
-    if(game.left_blocked( curr ))
+    if(game.left_blocked( sprite.curr ))
     {
         return false;
     }
-    curr.x--;
+    sprite.curr.x--;
     return true;
 }
 
 function move_right()
 {
-    if(game.right_blocked( curr ))
+    if(game.right_blocked( sprite.curr ))
     {
         return false;
     }
-    curr.x++;
+    sprite.curr.x++;
     return true;
 }
