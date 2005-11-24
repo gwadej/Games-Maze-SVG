@@ -6,27 +6,23 @@
  */
 
 function move_sprite(evt)
- {
+{
   switch(evt.keyCode)
    {
     case 16:
         shifted = true;
 	return;
     case 40: // down
-       while(move_down() && shifted)
-           show_sprite();
+       while(move_down() && shifted);
        break;
     case 38: // up
-       while(move_up() && shifted)
-           show_sprite();
+       while(move_up() && shifted);
        break;
     case 37: // left
-       while((move_left()||move_upleft()||move_dnleft()) && shifted)
-           show_sprite();
+       while((move_left()||move_upleft()||move_dnleft()) && shifted);
        break;
     case 39: // right
-       while((move_right()||move_upright()||move_dnright()) && shifted)
-           show_sprite();
+       while((move_right()||move_upright()||move_dnright()) && shifted);
        break;
     case 98: // 'b'
     case 66: // 'B'
@@ -43,12 +39,13 @@ function move_sprite(evt)
     default:
        return;
    }
-  show_sprite();
-  if(game.isFinished( curr ))
-   {
-    setTimeout( "finished_msg()", 10 );
-   }
- }
+
+    game.show_sprite();
+    if(game.isFinished( curr ))
+    {
+        setTimeout( "finished_msg()", 10 );
+    }
+}
 
 MazeGame.prototype.isFinished = function( pt )
 {

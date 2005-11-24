@@ -39,7 +39,7 @@ function move_sprite(evt)
     default:
        return;
    }
-  show_sprite();
+    game.show_sprite();
 
     if(game.isFinished( curr ))
     {

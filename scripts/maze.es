@@ -6,13 +6,8 @@
 
 var svgns = 'http://www.w3.org/2000/svg';
 var xlinkns = 'http://www.w3.org/1999/xlink';
-var delta;
 var board;
-var crumbpts;
-var sprite;
-var crumb;
 var shifted = false;
-var size;
 
 var game;
 
@@ -21,13 +16,16 @@ var game;
  * update the display.
  */
 
-function MazeGame( start, end )
+function MazeGame( start, end, tile )
 {
     this.start = start;
     this.end = end;
+    this.tile = tile;
 
     this.maze = document.getElementById( "maze" );
     this.origin = this.maze.getAttributeNS( null, "viewBox" );
+    this.sprite = document.getElementById( "me" );
+    this.crumb  = document.getElementById( "crumb" );
 
     this.saves = new Snapshots( this.maze );
 }
@@ -91,36 +89,32 @@ Snapshots.prototype.clear = function()
 
 /***** Standalone functions *******/
 
-function initialize( board_, start_, end_, delta_ )
+function initialize( board_, start_, end_, tile_ )
 {
-    game = new MazeGame( start_, end_ );
+    game = new MazeGame( start_, end_, tile_ );
     board = board_;
-    delta = delta_;
-  
-    sprite = document.getElementById( "me" );
-    crumb  = document.getElementById( "crumb" );
 
     reset_sprite();
     remove_msg();
 }
 
-function calc_crumb_position( pt )
+MazeGame.prototype.calc_crumb_position = function( pt )
 {
-    return { x: pt.x*delta.x+delta.x/2,
-             y: pt.y*delta.y+delta.y/2
+    return { x: pt.x*this.tile.x+this.tile.x/2,
+             y: pt.y*this.tile.y+this.tile.y/2
            };
 }
 
 function create_crumb_point( pt )
 {
-    var pos = calc_crumb_position( pt );
+    var pos = game.calc_crumb_position( pt );
     return pos.x +  "," + pos.y;
 }
 
 function reset_sprite()
 {
     curr     = {x:game.start.x, y:game.start.y};
-    crumbpts = create_crumb_point( game.start );
+    game.crumbpts = create_crumb_point( game.start );
 }
 
 function unshift(evt)
@@ -154,13 +148,13 @@ function remove_msg()
     }
 }
 
-function show_sprite()
+MazeGame.prototype.show_sprite = function()
 {
-    sprite.setAttributeNS( null, "x", (curr.x*delta.x) );
-    sprite.setAttributeNS( null, "y", (curr.y*delta.y) );
+    this.sprite.setAttributeNS( null, "x", (curr.x*game.tile.x) );
+    this.sprite.setAttributeNS( null, "y", (curr.y*game.tile.y) );
 
-    crumbpts += " " + create_crumb_point( curr );
-    crumb.setAttributeNS( null, "points", crumbpts );
+    this.crumbpts += " " + create_crumb_point( curr );
+    this.crumb.setAttributeNS( null, "points", this.crumbpts );
 }
 
 function restart()
@@ -168,10 +162,10 @@ function restart()
     game.saves.clear();
 
     reset_sprite();
-    crumb.setAttributeNS( null, "points", crumbpts );
+    game.crumb.setAttributeNS( null, "points", game.crumbpts );
 
-    show_sprite();
-    sprite.setAttributeNS( null, "visibility", "visible" );
+    game.show_sprite();
+    game.sprite.setAttributeNS( null, "visibility", "visible" );
 
 }
 
@@ -218,9 +212,9 @@ function maze_reset()
 
 function save_position()
 {
-    var pos = calc_crumb_position( curr );
+    var pos = game.calc_crumb_position( curr );
 
-    game.saves.save( curr, pos, crumbpts );
+    game.saves.save( curr, pos, game.crumbpts );
 }
 
 function restore_position()
@@ -230,8 +224,8 @@ function restore_position()
         var saved = game.saves.last();
         curr.x = saved.x;
         curr.y = saved.y;
-        crumbpts = saved.crumb;
-        show_sprite();
+        game.crumbpts = saved.crumb;
+        game.show_sprite();
     }
 }
 
