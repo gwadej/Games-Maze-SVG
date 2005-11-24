@@ -68,6 +68,19 @@ MazeGame.prototype.downleft_blocked = function( pt )
         || board[pt.y][pt.x-1] == -1;
 }
 
+MazeGame.prototype.upright_blocked = function( pt )
+{
+    return pt.y < 0 || pt.x+1 == board[pt.y-1].length
+    || board[pt.y-1][pt.x+1]
+    || (board[pt.y][pt.x+1] && board[pt.y-1][pt.x]);
+}
+
+MazeGame.prototype.upleft_blocked = function( pt )
+{
+    return pt.x < 0 || pt.y < 0 || board[pt.y-1][pt.x-1]
+     || (board[pt.y][pt.x-1] && board[pt.y-1][pt.x]);
+}
+
 
 
 function move_down()
@@ -122,16 +135,15 @@ function move_dnleft()
 }
 
 function move_upleft()
- {
-  if(curr.x < 0 || curr.y < 0 || board[curr.y-1][curr.x-1]
-     || (board[curr.y][curr.x-1] && board[curr.y-1][curr.x]))
-   {
-    return false;
-   }
-  curr.x--;
-  curr.y--;
-  return true;
- }
+{
+    if(game.upleft_blocked( curr ))
+    {
+        return false;
+    }
+    curr.x--;
+    curr.y--;
+    return true;
+}
 
 function move_dnright()
 {
@@ -145,14 +157,12 @@ function move_dnright()
 }
 
 function move_upright()
- {
-  if(curr.y < 0 || curr.x+1 == board[curr.y-1].length
-    || board[curr.y-1][curr.x+1]
-    || (board[curr.y][curr.x+1] && board[curr.y-1][curr.x]))
-   {
-    return false;
-   }
-  curr.x++;
-  curr.y--;
-  return true;
- }
+{
+    if(game.upright_blocked( curr ))
+    {
+        return false;
+    }
+    curr.x++;
+    curr.y--;
+    return true;
+}
