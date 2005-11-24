@@ -44,11 +44,17 @@ function move_sprite(evt)
        return;
    }
   show_sprite();
-  if((curr.x == end.x || curr.x+1 == end.x)&& curr.y == end.y)
+  if(game.isFinished( curr ))
    {
     setTimeout( "finished_msg()", 10 );
    }
  }
+
+MazeGame.prototype.isFinished = function( pt )
+{
+    return (pt.x == this.end.x || pt.x+1 == this.end.x) && pt.y == this.end.y;
+}
+
 
 function move_down()
  {

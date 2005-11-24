@@ -6,7 +6,7 @@
  */
 
 function move_sprite(evt)
- {
+{
   switch(evt.keyCode)
    {
     case 16: // shift
@@ -40,11 +40,12 @@ function move_sprite(evt)
        return;
    }
   show_sprite();
-  if(curr.x == end.x && curr.y == end.y)
-   {
-    setTimeout( "finished_msg()", 10 );
-   }
- }
+
+    if(game.isFinished( curr ))
+    {
+        setTimeout( "finished_msg()", 10 );
+    }
+}
 
 function move_down()
  {

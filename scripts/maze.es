@@ -6,8 +6,6 @@
 
 var svgns = 'http://www.w3.org/2000/svg';
 var xlinkns = 'http://www.w3.org/1999/xlink';
-var start;
-var end;
 var delta;
 var board;
 var crumbpts;
@@ -19,11 +17,23 @@ var origin;
 var size;
 var saves = [];
 
+var game;
+
+function MazeGame( start, end )
+{
+    this.start = start;
+    this.end = end;
+}
+
+MazeGame.prototype.isFinished = function( pt )
+{
+    return pt.x == this.end.x && pt.y == this.end.y;
+}
+
 function initialize( board_, start_, end_, delta_ )
 {
+    game = new MazeGame( start_, end_ );
     board = board_;
-    start = start_;
-    end   = end_;
     delta = delta_;
   
     sprite = document.getElementById( "me" );
@@ -43,8 +53,8 @@ function create_crumb_point( x, y )
 
 function reset_sprite()
 {
-    curr     = {x:start.x, y:start.y};
-    crumbpts = create_crumb_point( start.x, start.y );
+    curr     = {x:game.start.x, y:game.start.y};
+    crumbpts = create_crumb_point( game.start.x, game.start.y );
     saves = [];
 }
 
