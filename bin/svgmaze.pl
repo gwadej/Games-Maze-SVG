@@ -19,9 +19,6 @@ if($parms{style})
   $shape = 'Hex'     if $pieces[0] eq "Hex";
  }
 
-# Prepare to generate output
-my $build_maze = Games::Maze::SVG->new( $shape, dir => '/svg/');
-
 # extract parameters from command line
 my $desc = eval { get_maze_desc( \%parms ); };
 if($@)
@@ -33,10 +30,13 @@ if($@)
   exit 0;
  }
 
-$build_maze->{mazeparms} = { %{$desc}, %{$build_maze->{mazeparms}} };
-$build_maze->set_wall_form( $parms{walls} ) if $parms{walls};
-$build_maze->set_interactive();
-$build_maze->set_breadcrumb( $parms{crumb} ) if $parms{crumb};
+# Prepare to generate output
+my $build_maze = Games::Maze::SVG->new( $shape, dir => '/svg/', %{$desc} );
+
+#$build_maze->{mazeparms} = { %{$desc}, %{$build_maze->{mazeparms}} };
+#$build_maze->set_wall_form( $parms{walls} ) if $parms{walls};
+#$build_maze->set_interactive();
+#$build_maze->set_breadcrumb( $parms{crumb} ) if $parms{crumb};
 
 my $svg = $build_maze->toString();
 print $q->header( -type => "image/svg+xml", -Content_length => length $svg ),
@@ -54,32 +54,29 @@ sub  get_maze_desc
  {
   my $parms    = shift;
 
-  my $defdims  = [18,24,1];
-  my $defxdims = [12,12,1];
+  my %desc = (
+    cols => $parms->{width} || 12,
+    rows => $parms->{height} || 12,
+    ($parms{walls} ? ( wallform => $parms{walls} ) : ()),
+    interactive => 1,
+    ($parms{crumb} ? ( crumb => $parms{crumb} ) : ()),
+  );
 
-  my $dims = $parms->{hex} ? $defxdims : $defdims;
-  $dims->[0] = $parms->{width} if $parms->{width};
-  $dims->[1] = $parms->{height} if $parms->{height};
-
-  my %desc = ( dimensions => $dims );
-
-#  $desc{cell} = 'Hex'     if ($parms->{cell}||'') eq "hex";
-#  $desc{form} = 'Hexagon' if ($parms->{shape}||'') eq "hex";
   if($parms->{enter})
    {
-    unless($parms->{enter} >= 1 and $parms->{enter} <= $dims->[0])
+    unless($parms->{enter} >= 1 and $parms->{enter} <= $desc{cols})
      {
       die "Starting column out of range.\n";
      } 
-    $desc{entry} = [ $parms->{enter}, 1, 1 ];
+    $desc{startcol} = $parms->{enter};
    }
   if($parms->{exit})
    {
-    unless($parms->{exit} >= 1 and $parms->{exit} <= $dims->[0])
+    unless($parms->{exit} >= 1 and $parms->{exit} <= $desc{cols})
      {
       die "Ending column out of range.\n";
      } 
-    $desc{exit} = [ $parms->{exit}, @{$dims}[1,2] ];
+    $desc{endcol} = $parms->{exit};
    }
 
   (\%desc);

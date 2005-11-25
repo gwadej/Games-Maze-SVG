@@ -32,6 +32,8 @@ Games::Maze::SVG uses the Games::Maze module to create mazes in SVG.
     my $foo = Games::Maze::SVG->new();
     ...
 
+See Games::Maze::SVG::Manual for more information on using the module.
+
 =cut
 
 use constant SIGN_HEIGHT => 20;
@@ -147,12 +149,26 @@ Returns the initial data members as a list.
 
 sub init_object
 {
+    my %parms = @_;
+
+    my %obj =
     (
         mazeparms => {},
 	wallform  => 'straight',
 	crumb     => 'dash',
 	dir       => 'scripts/',
     );
+    $obj{mazeparms}->{dimensions} = [ $parms{cols}||3, $parms{rows}||3, 1 ];
+    $obj{mazeparms}->{entry} = [ $parms{startcol}, 1, 1 ] if $parms{startcol};
+    
+    if($parms{endcol})
+    {
+        $obj{mazeparms}->{exit} = [
+            $parms{endcol}, $obj{mazeparms}->{dimensions}->[1], 1
+        ];
+    }
+
+    %obj;
 }
 
 =item set_interactive

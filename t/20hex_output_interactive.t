@@ -17,7 +17,7 @@ my $gmaze = Test::MockModule->new( 'Games::Maze' );
 my $output = do { local $/ = undef; <DATA>; };
 
 $gmaze->mock(
-    make => sub { my $self = shift; $self->{entry} = [2,1]; $self->{exit} = [6,8]; },
+    make => sub { my $self = shift; $self->{entry} = [2,1,1]; $self->{exit} = [6,8,1]; },
     to_ascii => sub { normalize_maze( <<'EOM' ); },
           __
          /  \__

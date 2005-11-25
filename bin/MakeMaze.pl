@@ -14,12 +14,34 @@ getopts( 'xXSs:e:n:o:f:b:i', \%opts ) || usage();
 
 usage() if @ARGV == 1;
 
+my %parms = (
+    cols => $ARGV[0] || 12,
+    rows => $ARGV[1] || 12,
+    (exists $opts{f} ? ( wallform => $opts{f} ) : ()),
+    interactive => $opts{i},
+    (exists $opts{b} ? ( crumb => $opts{b} ) : ()),
+    (exists $opts{s} ? ( startcol => $opts{s} ) : ()),
+    (exists $opts{e} ? ( endcol => $opts{e} ) : ()),
+);
+
+
 # Prepare to generate output
 my $shape = 'Rect';
 $shape = 'RectHex' if $opts{x};
 $shape = 'Hex' if $opts{X};
-my $build_maze = $opts{S} ? Games::Maze::SVG->new( $shape ) : Games::Maze::Ascii->new();
+my $build_maze;
+if($opts{S})
+{
+    $build_maze = Games::Maze::SVG->new( $shape, %parms );
+}
+else
+{
+    $build_maze = Games::Maze::Ascii->new(  );
+    $build_maze->{mazeparms} = { dimensions => [ $parms{cols}, $parms{rows}, 1 ], %{$build_maze->{mazeparms}} };    
+}
 my $out = \*STDOUT;
+
+
 
 if($opts{o})
  {
@@ -28,11 +50,11 @@ if($opts{o})
  }
 
 # extract parameters from command line
-my $desc = get_maze_desc( \%opts, @ARGV );
-$build_maze->{mazeparms} = { %{$desc}, %{$build_maze->{mazeparms}} };
-$build_maze->set_wall_form( $opts{f} ) if $opts{f};
-$build_maze->set_interactive() if $opts{i};
-$build_maze->set_breadcrumb( $opts{b} ) if $opts{b};
+#my $desc = get_maze_desc( \%opts, @ARGV );
+#$build_maze->{mazeparms} = { %{$desc}, %{$build_maze->{mazeparms}} };
+#$build_maze->set_wall_form( $opts{f} ) if $opts{f};
+#$build_maze->set_interactive() if $opts{i};
+#$build_maze->set_breadcrumb( $opts{b} ) if $opts{b};
 
 # build maze
 my $num = $opts{n} || 1;
