@@ -1,15 +1,19 @@
 Games-Maze-SVG
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+This module is an extension to the Games::Maze module. Games::Maze::SVG
+takes the mazes created by Games::Maze and converts them into an SVG
+output. As an option, the SVG version of the maze can be made playable.
 
-A README file is required for CPAN modules since CPAN extracts the README
-file from a module distribution so that people browsing the archive
-can use it get an idea of the modules uses. It is usually a good idea
-to provide version information here so that people can decide whether
-fixes for the module are worth downloading.
+This module depends on Games::Maze, and Carp. The tests depend on Test::More.
+
+Displaying the SVG mazes requires an SVG viewer or a browser that supports
+SVG either natively or through a plugin. The mazes have been tested using
+the Squiggle viewer (part of the Batik library), and Adobe SVG viewer on
+both Firefox and Internet Explorer.
+
+When using the Squiggle viewer to play the interactive maze, the arrow keys
+are also used by Squiggle to move the image around. I have not yet found a
+way around this. Using Ctrl-T to restore the original view is a workaround.
 
 INSTALLATION
 

@@ -1,5 +1,13 @@
 Revision history for Games-Maze-SVG
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.6    11/2005
+	Reorganized the SVG and code to give better separation of static
+	and interactive portions. Converted the quick JavaScript into more OO
+	design. Release on CPAN.
+0.5    11/2005
+	Refactor into multiple classes. Not released.
+0.4    10/2005
+	Rewrite earlier versions as a Perl module. Not released.
+0.1    04/2004
+        Initial hack, developed for fun. Not released as a module.
 
