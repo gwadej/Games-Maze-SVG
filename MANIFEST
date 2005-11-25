@@ -4,6 +4,7 @@ Changes
 lib/Games/Maze/Ascii.pm
 lib/Games/Maze/SVG.pm
 lib/Games/Maze/SVG/Hex.pm
+lib/Games/Maze/SVG/Manual.pod
 lib/Games/Maze/SVG/Rect.pm
 lib/Games/Maze/SVG/RectHex.pm
 Makefile.PL
@@ -38,6 +39,7 @@ t/17hex_output.t
 t/18rect_output_interactive.t
 t/19recthex_output_interactive.t
 t/20hex_output_interactive.t
+t/21dimensions.t
 t/lib/MazeTestUtils.pm
 t/lib/TestString.pm
 t/pod-coverage.t

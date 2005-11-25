@@ -33,11 +33,6 @@ if($@)
 # Prepare to generate output
 my $build_maze = Games::Maze::SVG->new( $shape, dir => '/svg/', %{$desc} );
 
-#$build_maze->{mazeparms} = { %{$desc}, %{$build_maze->{mazeparms}} };
-#$build_maze->set_wall_form( $parms{walls} ) if $parms{walls};
-#$build_maze->set_interactive();
-#$build_maze->set_breadcrumb( $parms{crumb} ) if $parms{crumb};
-
 my $svg = $build_maze->toString();
 print $q->header( -type => "image/svg+xml", -Content_length => length $svg ),
       $svg;

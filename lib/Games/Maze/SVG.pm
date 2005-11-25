@@ -115,6 +115,29 @@ dot, line, and none
 Directory in which to find the ecmascript for the maze interactivity. Should
 either be relative, or in URL form.
 
+=item interactive
+
+This parameter determines if the maze will be interactive. If the value of the
+parameter is true (1), the appropriate scripting and support is written into
+the SVG. If the parameter is omitted or false, no interactive support is
+provided.
+
+=item cols
+
+The number of columns used in creating the maze. Default value is 12.
+
+=item rows
+
+The number of rows used in creating the maze. Default value is 12.
+
+=item startcol
+
+The column where the entry is found. Default value is random.
+
+=item endcol
+
+The column where the exit is found. Default value is random.
+
 =back
 
 =cut
@@ -158,7 +181,7 @@ sub init_object
 	crumb     => 'dash',
 	dir       => 'scripts/',
     );
-    $obj{mazeparms}->{dimensions} = [ $parms{cols}||3, $parms{rows}||3, 1 ];
+    $obj{mazeparms}->{dimensions} = [ $parms{cols}||12, $parms{rows}||12, 1 ];
     $obj{mazeparms}->{entry} = [ $parms{startcol}, 1, 1 ] if $parms{startcol};
     
     if($parms{endcol})

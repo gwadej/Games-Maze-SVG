@@ -33,24 +33,23 @@ EOM
 );
 
 # Default constructor.
-my $maze = Games::Maze::SVG->new( 'Rect' );
+my $maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 
-my $output = resolve_template( qq{      <path id="ul" d="M5,10 Q5,5 10,5"/>
-      <path id="ur" d="M0,5  Q5,5 5,10"/>
-      <path id="ll" d="M5,0  Q5,5 10,5"/>
-      <path id="lr" d="M0,5  Q5,5 5,0"/>
+my $output = resolve_template( qq{      <path id="ul" d="M5,10 v-5 h5"/>
+      <path id="ur" d="M0,5  h5  v5"/>
+      <path id="ll" d="M5,0  v5  h5"/>
+      <path id="lr" d="M0,5  h5  v-5"/>
       <path id="h"  d="M0,5  h10"/>
       <path id="v"  d="M5,0  v10"/>
       <path id="l"  d="M0,5  h5"/>
       <path id="r"  d="M5,5  h5"/>
       <path id="t"  d="M5,0  v5"/>
       <path id="d"  d="M5,5  v5"/>
-      <path id="tr" d="M5,0  Q5,5 10,5 Q5,5 5,10"/>
-      <path id="tl" d="M5,0  Q5,5 0,5  Q5,5 5,10"/>
-      <path id="tu" d="M0,5  Q5,5 5,0  Q5,5 10,5"/>
-      <path id="td" d="M0,5  Q5,5 5,10 Q5,5 10,5"/>
-      <path id="cross"
-                    d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>} );
+      <path id="tr" d="M5,0  v10 M5,5 h5"/>
+      <path id="tl" d="M5,0  v10 M0,5 h5"/>
+      <path id="tu" d="M0,5  h10 M5,0 v5"/>
+      <path id="td" d="M0,5  h10 M5,5 v5"/>
+      <path id="cross" d="M0,5 h10 M5,0 v10"/>} );
 
 is_string( $maze->toString(), $output, "Full transform works." );
 #is( $maze->toString(), $output, "Full transform works." );
@@ -62,7 +61,7 @@ is_string( $maze->toString(), $output, "Full transform works." );
 # Because of the outside edge effects, I can't use the template in the
 # same way.
 
-$maze = Games::Maze::SVG->new( 'Rect' );
+$maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_wall_form( 'bevel' );
 
 like( $maze->toString(),
@@ -115,7 +114,7 @@ $output = resolve_template( qq{      <path id="ul" d="M5,10 Q5,5 10,5"/>
       <path id="td" d="M0,5  h10 M5,5 v5"/>
       <path id="cross" d="M0,5 h10 M5,0 v10"/>} );
 
-$maze = Games::Maze::SVG->new( 'Rect' );
+$maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_wall_form( 'roundcorners' );
 #is( $maze->toString(), $output, "Full transform, roundcorners wall style." );
 is_string( $maze->toString(), $output, "Full transform, roundcorners wall style." );
@@ -139,7 +138,7 @@ $output = resolve_template( qq{      <path id="ul" d="M5,10 Q5,5 10,5"/>
       <path id="cross"
                     d="M0,5 Q5,5 5,0  Q5,5 10,5 Q5,5 5,10 Q5,5 0,5"/>} );
 
-$maze = Games::Maze::SVG->new( 'Rect' );
+$maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_wall_form( 'round' );
 #is( $maze->toString(), $output, "Full transform, round wall style." );
 is_string( $maze->toString(), $output, "Full transform, round wall style." );
@@ -163,7 +162,7 @@ $output = resolve_template( qq{      <path id="ul" d="M5,10 v-5 h5"/>
       <path id="td" d="M0,5  h10 M5,5 v5"/>
       <path id="cross" d="M0,5 h10 M5,0 v10"/>} );
 
-$maze = Games::Maze::SVG->new( 'Rect' );
+$maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_wall_form( 'straight' );
 #is( $maze->toString(), $output, "Full transform, straight wall style." );
 is_string( $maze->toString(), $output, "Full transform, straight wall style." );

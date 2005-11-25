@@ -1,0 +1,180 @@
+=head1 NAME
+
+Games::Maze::SVG::Manual - Manual for the Games::Maze::SVG modules.
+
+=head1 PURPOSE
+
+The Games::Maze::SVG module supports the creation of 2-dimensional mazes in
+an SVG format suitable for printing or playing interactively. This module use
+the Games::Maze module to perform the actual work of creating the mazes.
+
+=head1 HISTORY
+
+During the middle of 2004, my son was extremely interested in mazes. We could
+not get enough mazes for him to solve. As a Perl programmer, I decided there
+must be some way to generate mazes and went to CPAN. I found Games::Maze. I
+printed a few pages of these mazes, and he was happy.
+
+Unfortunately, the ASCII-based maze was not really satisfying for me. So I
+wrote code to convert the output of Games::Maze to SVG. This made much nicer
+looking mazes. I worked for a while to make the lines look better and to vary
+the corners to generate mazes that looked even better.
+
+But the mazes were still missing something. So, I added the scripting support
+that would make the maze playable. I wrapped an HTML form around the
+generation program to allow it to be launched from the web.
+
+I made this version available on my website. A friend of mine made some
+suggestions for individual visual changes that I incorporated. The design of
+the code did not change much during the next year. It was still a quick hacked
+wrapper around Games::Maze without much flexibility.
+
+A year later, a comment on the SVG Developers mailing list made me dust off the
+code with an ey towards making a legitimate Perl module out of it. When I began
+looking at the code again, I realized that the original had been more of a hack
+than I remembered. The new version still could use some significant cleanup, but
+I am much happier with the overall design.
+
+=head1 SYNOPSIS
+
+  use Games::Maze::SVG;
+
+  my $maze = Games::Maze::SVG->new( 'Rect', wallform => 'roundcorners' );
+
+  my $svgout = $maze->toString();
+
+=head1 OVERVIEW
+
+The Games::Maze::SVG module can produce interactive or non-interactive mazes
+in SVG of three basic shapes. The shape of the maze is determined by the first
+parameter. This parameter is a string with one of the following values:
+
+=over 4
+
+=item Rect
+
+A maze with a rectangular overall shape and rectangular hallways.
+
+=item RectHex
+
+A maze with a rectangular overall shape and hallways made from hexagonal cells.
+
+=item Hex
+
+A maze with a hexagonal overall shape and hallways made from hexagonal cells.
+
+=back
+
+The mazes can be further configured using a set of named parameters that follow
+the shape parameter. Most of these parameters are independent of the shape
+chosen. In addition, the \C<mazeparams> parameter supports passing parameters
+directly to the internal Games::Maze object which is used to create the maze.
+
+=head1 CONSTRUCTOR PARAMETERS
+
+The following describes the parameters supported by the Games::Maze::SVG
+constructor.
+
+=over 4
+
+=item crumb
+
+String describing the breadcrumb style. Legal values are 'dash', 'dot', 'line',
+and 'none'. The default value is 'dash'. The different styles are:
+
+=over 4
+
+=item dash
+
+A dashed line alternating 5 pixels on and 3 pixels off.
+
+=item dot
+
+A dotted line with 2 pixel dots 6 pixels apart.
+
+=item line
+
+A solid line one pixel wide.
+
+=item none
+
+No breadcrumb path.
+
+=back
+
+=item wallform
+
+String naming the wall format. Legal values depend on which shape is selected.
+
+=item dir
+
+Directory in which to find the ecmascript for the maze interactivity. Should
+either be relative, or in URL form. The default value is 'scripts/'.
+
+=item interactive
+
+This parameter determines if the maze will be interactive. If the value of the
+parameter is true (1), the appropriate scripting and support is written into
+the SVG. If the parameter is omitted or false, no interactive support is
+provided.
+
+=item cols
+
+The number of columns used in creating the maze. Default value is 12.
+
+=item rows
+
+The number of rows used in creating the maze. Default value is 12.
+
+=item startcol
+
+The column where the entry is found. Default value is random.
+
+=item endcol
+
+The column where the exit is found. Default value is random.
+
+=back
+
+The wallform parameter has different legal values depending on the shape of the
+maze.
+
+=head2 Rect
+
+The rectangular maze supports the forllowing wall forms:
+
+=over 4
+
+=item straight
+
+All walls are straight and all corners are simple right angles.
+
+=item round
+
+All corners are rounded, both inside and out of the maze.
+
+=item roundcorners
+
+Only outside corners are rounded.
+
+=item bevel
+
+All corners are beveled to give a somewhat less square appearance.
+
+=back
+
+The default wallform for the Rect maze shape is straight.
+
+=head2 RectHex
+
+The RectHex maze shape supports only one wallform: straight. This form gives
+ordinary hexagonal cells throughout the maze. Obviously, this is also the
+default wall form.
+
+=head2 Hex
+
+The Hex maze shape supports only one wallform: straight. This form gives
+ordinary hexagonal cells throughout the maze. Obviously, this is also the
+default wall form.
+
+=cut

@@ -40,7 +40,7 @@ EOM
 );
 
 # Default constructor.
-my $maze = Games::Maze::SVG->new( 'Hex' );
+my $maze = Games::Maze::SVG->new( 'Hex', cols => 3, rows => 3 );
 
 #open( my $fh, '>hex1.svg' ) or die;
 #print $fh $maze->toString();

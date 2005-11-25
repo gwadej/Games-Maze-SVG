@@ -36,7 +36,7 @@ EOM
 );
 
 # Default constructor.
-my $maze = Games::Maze::SVG->new( 'RectHex' );
+my $maze = Games::Maze::SVG->new( 'RectHex', cols => 3, rows => 3 );
 
 #open( my $fh, '>recthex1.svg' ) or die;
 #print $fh $maze->toString();

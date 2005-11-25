@@ -112,7 +112,6 @@ sub  new
     my $obj = 
     {
     	Games::Maze::SVG::init_object( @_ ),
-	wallform  => 'round',
 	@_,
     };
 
