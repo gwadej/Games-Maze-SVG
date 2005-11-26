@@ -177,4 +177,38 @@ The Hex maze shape supports only one wallform: straight. This form gives
 ordinary hexagonal cells throughout the maze. Obviously, this is also the
 default wall form.
 
+=head1 INTERACTIVITY
+
+The interactive forms of the mazes have a somewhat different appearance and
+contain an ECMAscript-driven interface that allows the player to move a little
+sprite throught the maze. The interactive maze has a control panel to the left
+with a set of controls and help text to describe how to play the game. The
+non-interactive version is missing this extra panel.
+
+The sprite is moved around the maze using the arrow keys. If any crumb style
+besides 'none' has been chosen, a trail is left behind the sprite to see where
+it has been.
+
+There are two sets of buttons on the control panel. The three buttons along the
+top are labelled \I<Begin>, \I<Save>, and \I<Back>. The first starts or restarts
+the game. The Save button saves the current location so that you can easily
+return to it. The Back button returns to the last saved position. The positions
+are stored in a stack so that you can save and restore multiple times, in
+multiple places through the maze.
+
+The second set of buttons supports moving the maze in each of the four
+directions. The center button restores the original position. These buttons are
+useful any time the maze is bigger than can be displayed by the current viewer.
+This is particularly useful when using the Adpbe SVG viewer in a browser. It is
+quite easy to make a maze that is larger than the displayable area on the
+screen. Unfortunately, there does not appear to be an easy way to determine how
+big the displayable area is. This functionality allows you to move the maze
+around so that you can see where you are going.
+
+=head1 PROBLEMS
+
+When playing the maze on Batik's Squiggle viewer, the arrow keys also move the
+entire SVG image. You can restore the image to its original position by pressing
+Ctrl-T.
+
 =cut

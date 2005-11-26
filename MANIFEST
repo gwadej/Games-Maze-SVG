@@ -28,11 +28,8 @@ t/09xform_recthex.t
 t/10xform_hexagon.t
 t/11make_board.t
 t/12rect_convert.t
-t/12rect_output.t
 t/13recthex_convert.t
-t/13recthex_output.t
 t/14hex_convert.t
-t/14hex_output.t
 t/15rect_output.t
 t/16recthex_output.t
 t/17hex_output.t
