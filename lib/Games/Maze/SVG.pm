@@ -41,9 +41,9 @@ use constant SIDE_MARGIN => 10;
 use constant PANEL_WIDTH => 250;
 
 my %crumbstyles = (
-                   dash => "stroke-width:1; stroke-dasharray:5,3;",
-                   dot  => "stroke-width:2; stroke-dasharray:2,6;",
-                   line => "stroke-width:1;",
+                   dash => "stroke-width:1px; stroke-dasharray:5px,3px;",
+                   dot  => "stroke-width:2px; stroke-dasharray:2px,6px;",
+                   line => "stroke-width:1px;",
 		   none => "visibility:hidden;",
                   );
 
@@ -376,14 +376,14 @@ EOH
       <style type="text/css">
 	path    { stroke: black; fill: none; }
 	polygon { stroke: black; fill: grey; }
-	#sprite { stroke: grey; stroke-width:0.2; fill: $color->{sprite}; }
+	#sprite { stroke: grey; stroke-width:0.2px; fill: $color->{sprite}; }
 	.crumbs { fill:none; $crumbstyle }
 	.mazebg { fill:$color->{mazebg}; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }
-	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
+	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
                    }
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>

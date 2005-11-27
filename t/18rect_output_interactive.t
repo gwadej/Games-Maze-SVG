@@ -289,14 +289,14 @@ __DATA__
       <style type="text/css">
 	path    { stroke: black; fill: none; }
 	polygon { stroke: black; fill: grey; }
-	#sprite { stroke: grey; stroke-width:0.2; fill: orange; }
-	.crumbs { fill:none; stroke-width:1; stroke-dasharray:5,3; }
+	#sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
+	.crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
 	.mazebg { fill:#ffc; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }
-	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80; fill:red;
+	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
                    }
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
