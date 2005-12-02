@@ -199,7 +199,7 @@ multiple places through the maze.
 The second set of buttons supports moving the maze in each of the four
 directions. The center button restores the original position. These buttons are
 useful any time the maze is bigger than can be displayed by the current viewer.
-This is particularly useful when using the Adpbe SVG viewer in a browser. It is
+This is particularly useful when using the Adobe SVG viewer in a browser. It is
 quite easy to make a maze that is larger than the displayable area on the
 screen. Unfortunately, there does not appear to be an easy way to determine how
 big the displayable area is. This functionality allows you to move the maze

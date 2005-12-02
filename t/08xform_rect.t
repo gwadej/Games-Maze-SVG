@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 7;
+use Test::More tests => 13;
 
 use Games::Maze::SVG;
 use FindBin;
@@ -11,7 +11,7 @@ use strict;
 use warnings;
 
 my $maze = Games::Maze::SVG->new( 'Rect' );
-can_ok( $maze, "transform_grid" );
+can_ok( $maze, "transform_grid", "make_board_array" );
 
 my $simplegrid = <<EOM;
 :--:
@@ -30,9 +30,17 @@ my $simplebevelout = [
    [ qw/oll oh olr/ ],
 ];
 
+my $simpleboard = [
+   [ qw/1 1 1/ ],
+   [ qw/1 0 1/ ],
+   [ qw/1 1 1/ ],
+];
 
-grid_ok( $simplegrid, 'straight', $simpleout, 'Simple Square' );
-grid_ok( $simplegrid, 'bevel', $simplebevelout, 'Simple Bevel Square' );
+
+grid_ok( $simplegrid, 'straight', $simpleout, 'Simple Square grid' );
+grid_ok( $simplegrid, 'bevel', $simplebevelout, 'Simple Bevel Square grid' );
+board_ok( $simplegrid, 'straight', $simpleboard, 'Simple Square board' );
+board_ok( $simplegrid, 'bevel', $simpleboard, 'Simple Bevel Square board' );
 
 
 my $rectgrid = <<EOM;
@@ -71,8 +79,22 @@ my $rectbevelout = [
    [ qw/oll oh  ol  0 or oh oh oh olr/ ],
 ];
 
-grid_ok( $rectgrid, 'straight', $rectout, 'Small Rectangle' );
-grid_ok( $rectgrid, 'bevel', $rectbevelout, 'Small Beveled Rectangle' );
+my $rectboard = [
+   [ qw/1  1  1  0  1  1  1  1 1/ ],
+   [ qw/1  0  1  0  0  0  0  0 1/ ],
+   [ qw/1  0  1  0  1  1  1  0 1/ ],
+   [ qw/1  0  0  0  1  0  0  0 1/ ],
+   [ qw/1  0  1  1  1  1  1  1 1/ ],
+   [ qw/1  0  1  0  0  0  0  0 1/ ],
+   [ qw/1  0  1  1  1  1  1  0 1/ ],
+   [ qw/1  0  0  0  0  0  0  0 1/ ],
+   [ qw/1  1  1  0  1  1  1  1 1/ ],
+];
+
+grid_ok( $rectgrid, 'straight', $rectout, 'Small Rectangle grid' );
+grid_ok( $rectgrid, 'bevel', $rectbevelout, 'Small Beveled Rectangle grid' );
+board_ok( $rectgrid, 'straight', $rectboard, 'Small Rectangle board' );
+board_ok( $rectgrid, 'bevel', $rectboard, 'Small Beveled Rectangle board' );
 
 my $rectgrid2 = <<EOM;
 :--:  :--:--:
@@ -110,8 +132,22 @@ my $rectbevelout2 = [
    [ qw/oll oh ol  0   or oh otu oh olr/ ],
 ];
 
-grid_ok( $rectgrid2, 'straight', $rectout2, 'Small Rectangle 2' );
-grid_ok( $rectgrid2, 'bevel', $rectbevelout2, 'Small Beveled Rectangle 2' );
+my $rectboard2 = [
+   [ qw/ 1  1  1  0    1  1  1  1  1/ ],
+   [ qw/ 1  0  0  0    1  0  0  0  1/ ],
+   [ qw/ 1  0  1  1    1  1  1  0  1/ ],
+   [ qw/ 1  0  0  0    1  0  0  0  1/ ],
+   [ qw/ 1  1  1  0    1  0  1  0  1/ ],
+   [ qw/ 1  0  0  0    1  0  1  0  1/ ],
+   [ qw/ 1  0  1  1    1  0  1  0  1/ ],
+   [ qw/ 1  0  0  0    0  0  1  0  1/ ],
+   [ qw/ 1  1  1  0    1  1  1  1  1/ ],
+];
+
+grid_ok( $rectgrid2, 'straight', $rectout2, 'Small Rectangle 2 grid' );
+grid_ok( $rectgrid2, 'bevel', $rectbevelout2, 'Small Beveled Rectangle 2 grid' );
+board_ok( $rectgrid2, 'straight', $rectboard2, 'Small Rectangle 2 board' );
+board_ok( $rectgrid2, 'bevel', $rectboard2, 'Small Beveled Rectangle 2 board' );
 
 
 # Need more examples to be certain that I've covered all transforms.
@@ -128,4 +164,17 @@ sub grid_ok
 
     is_deeply( [$maze->transform_grid( $grid, $wall )],
          $out, $msg );
+}
+
+
+sub board_ok
+{
+    my $grid = split_maze( shift );
+    my $wall = shift;
+    my $board = shift;
+    my $msg = shift;
+
+    my $rows = [$maze->transform_grid( $grid, $wall )];
+
+    is_deeply( $maze->make_board_array( $rows), $board, $msg );
 }
