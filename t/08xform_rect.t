@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 13;
+use Test::More tests => 16;
 
 use Games::Maze::SVG;
 use FindBin;
@@ -39,6 +39,7 @@ my $simpleboard = [
 
 grid_ok( $simplegrid, 'straight', $simpleout, 'Simple Square grid' );
 grid_ok( $simplegrid, 'bevel', $simplebevelout, 'Simple Bevel Square grid' );
+grid_ok( $simplegrid, '', $simpleout, 'Empty wallform grid' );
 board_ok( $simplegrid, 'straight', $simpleboard, 'Simple Square board' );
 board_ok( $simplegrid, 'bevel', $simpleboard, 'Simple Bevel Square board' );
 
@@ -149,6 +150,11 @@ grid_ok( $rectgrid2, 'bevel', $rectbevelout2, 'Small Beveled Rectangle 2 grid' )
 board_ok( $rectgrid2, 'straight', $rectboard2, 'Small Rectangle 2 board' );
 board_ok( $rectgrid2, 'bevel', $rectboard2, 'Small Beveled Rectangle 2 board' );
 
+eval { $maze->transform_grid( [ [ qw/| | | |/ ] ], 'straight' ) };
+like( $@, qr/Missing block for '/, "Test non-xform of invalid grid." );
+
+eval { $maze->transform_grid( [ [ qw/| | | |/ ] ], 'bevel' ) };
+like( $@, qr/Missing block for '/, "Test non-xform of invalid grid." );
 
 # Need more examples to be certain that I've covered all transforms.
 
