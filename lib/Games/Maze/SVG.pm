@@ -158,6 +158,8 @@ sub  new
     return Games::Maze::SVG::Rect->new( @_ )    if 'Rect' eq $shape;
     return Games::Maze::SVG::RectHex->new( @_ ) if 'RectHex' eq $shape;
     return Games::Maze::SVG::Hex->new( @_ )     if 'Hex' eq $shape;
+
+    croak "Unrecognized maze shape '$shape'.\n";
 }
 
 

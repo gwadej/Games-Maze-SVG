@@ -118,7 +118,7 @@ sub  new
     if(!exists $Walls{$obj->{wallform}})
     {
         my $forms = join( ", ", sort keys %Walls );
-        croak "\n'$Walls{wallform}' is not a valid wall form.\nTry one of: $forms\n\n";
+        croak "\n'$obj->{wallform}' is not a valid wall form.\nTry one of: $forms\n\n";
     }
 
     $obj->{mazeparms}->{cell} = 'Quad';
