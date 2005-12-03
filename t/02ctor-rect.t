@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 15;
+use Test::More tests => 16;
 
 use Games::Maze::SVG;
 
@@ -35,3 +35,6 @@ is( $maze->{dir}, '/svg/', "directory set correctly" );
 
 eval { $maze = Games::Maze::SVG->new( 'Rect', crumb => "xyzzy" ); };
 like( $@, qr/Unrecognized breadcrumb style 'xyzzy'/, "Bad crumbs stopped." );
+
+eval { $maze = Games::Maze::SVG->new( 'Rect', wallform => "xyzzy" ); };
+like( $@, qr/'xyzzy' is not a valid wall form/, "Bad wall form stopped." );
