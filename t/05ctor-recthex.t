@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 13;
+use Test::More tests => 14;
 
 use Games::Maze::SVG;
 
@@ -31,3 +31,6 @@ $maze = Games::Maze::SVG->new( 'RectHex',
 
 is( $maze->{crumb}, 'dot', "crumb style set correctly" );
 is( $maze->{dir}, '/svg/', "directory set correctly" );
+
+eval { $maze = Games::Maze::SVG->new( 'RectHex', wallform => "xyzzy" ); };
+like( $@, qr/'xyzzy' is not a valid wall form/, "Bad wall form stopped." );

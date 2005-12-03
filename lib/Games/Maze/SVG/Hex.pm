@@ -3,7 +3,7 @@
 
 package Games::Maze::SVG::Hex;
 
-use base Games::Maze::SVG;
+use base Games::Maze::SVG::HexCells;
 
 use Carp;
 use Games::Maze;
@@ -15,11 +15,11 @@ Games::Maze::SVG::Hex - Build hexagonal mazes in SVG.
 
 =head1 VERSION
 
-Version 0.4
+Version 0.5
 
 =cut
 
-our $VERSION = 0.4;
+our $VERSION = 0.5;
 
 =head1 SYNOPSIS
 
@@ -32,20 +32,6 @@ SVG.
     ...
 
 =cut
-
-use constant DELTA_X     => 5;
-use constant DELTA_Y     => 10;
-
-# ----------------
-#  Shape transformation tables
-my %HexBlocks = (
-                  ' '  => 0,
-		  '_'  => 'xh',
-		  '/'  => 'xsr',
-		  '\\' => 'xsl',
-                );
-
-my %Walls = _get_wall_forms();
 
 =head1 FUNCTIONS
 
@@ -95,24 +81,10 @@ sub  new
 {
     my $class = shift;
 
-    my $obj = 
-    {
-    	Games::Maze::SVG::init_object( @_ ),
-	@_,
-    };
-
-    if(!exists $Walls{$obj->{wallform}})
-    {
-        my $forms = join( ", ", sort keys %Walls );
-        croak "\n'$Walls{wallform}' is not a valid wall form.\nTry one of: $forms\n\n";
-    }
-
-    $obj->{mazeparms}->{cell} = 'Hex';
+    my $obj = Games::Maze::SVG::HexCells->new( @_ );
     $obj->{mazeparms}->{form} = 'Hexagon';
-    $obj->{scriptname} = "hexmaze.es";
-    $obj->{dx} = DELTA_X;
-    $obj->{dy} = DELTA_Y;
-
+    
+    # rebless into this class.
     bless $obj;
 }
 
@@ -140,194 +112,6 @@ sub  is_hex_shaped
     1;
 }
 
-
-=item set_wall_form
-
-Set the wall format for the current maze.
-
-=over 4
-
-=item $form
-
-String specifying a wall format.
-
-=back
-
-Returns a reference to self for chaining.
-
-=cut
-
-sub  set_wall_form
-{
-    my $self = shift;
-    my $form = shift;
-  
-    if(exists $Walls{$form})
-    {
-        $self->{wallform} = $form;
-    }
-    else
-    {
-        my $forms = join( ", ", sort keys %Walls );
-        croak "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
-    }
-    $self;
-}
-
-
-=item make_board_array
-
-Build a two-dimensional array of integers that maps the board from
-the two dimensional matrix of wall descriptions.
-
-=cut
-
-sub make_board_array
-{
-    my $self = shift;
-    my $rows = shift;
-    my @board = ();
-
-    foreach my $row (@{$rows})
-    {
-        push @board, [ map { $_ ? ($_ eq 'xh' ? -1 : 1) : 0 } @{$row} ];
-    }
-
-    \@board;
-}
-
-
-
-=item transform_grid
-
-Convert the hexagonal grid from ascii format to SVG definition
- references.
-
-=over 4
-
-=item $rows
-
-Reference to an array of rows
-
-=item $walls
-
-String specifying wall format. (Unused at present.)
-
-=back
-
-=cut
-
-sub transform_grid
-{
-    my $self = shift;
-    my $rows = shift;
-    my @out  = ();
-
-    # transform the printout into block commands
-    my $height = @{$rows};
-    my $width  = @{$rows->[0]}+1;
-    for(my $r=0; $r < $height; ++$r)
-    {
-	for(my $c=0; $c < $width; ++$c)
-        {
-	    if(defined $rows->[$r]->[$c])
-	    {
-        	croak "Missing block for '$rows->[$r]->[$c]'.\n"
-	                	    unless exists $HexBlocks{$rows->[$r]->[$c]};
-        	$out[$r]->[$c] = $HexBlocks{$rows->[$r]->[$c]};
-	    }
-	    else
-	    {
-        	$out[$r]->[$c] = 0;
-	    }
-        }
-    }
-    @{$rows} = @out;
-}
-
-
-=item wall_definitions
-
-Method that returns the definition for the shaps used to build the walls.
-
-=cut
-
-sub wall_definitions
-{
-    my $self = shift;
-
-    $Walls{$self->{wallform}}
-}
-
-# _get_wall_forms
-#
-#Extract the wall forms from the DATA file handle.
-#
-#Returns a hash of wall forms.
-
-sub _get_wall_forms
-{
- local $/ = "\n===\n";
- chomp( my @list = <DATA> );
- @list;
-}
-
-
-=item convert_start_position
-
-Convert the supplied x and y coordinates into the appropriate real coordinates
-for a start position on this map.
-
-=over 4
-
-=item $x x coord from the maze
-
-=item $y y coord from the maze
-
-=back
-
-returns a two element list containing (x, y).
-
-=cut
-
-sub convert_start_position
-{
-    my $self = shift;
-    my ($x, $y) = @_;
-
-    $x = 3*($x-1)+2;
-    $y = 2*($y-1);
-
-    ($x, $y);
-}
-
-=item convert_end_position
-
-Convert the supplied x and y coordinates into the appropriate real coordinates
-for a end position on this map.
-
-=over 4
-
-=item $x x coord from the maze
-
-=item $y y coord from the maze
-
-=back
-
-returns a two element list containing (x, y).
-
-=cut
-
-sub convert_end_position
-{
-    my $self = shift;
-    my ($x, $y) = @_;
-
-    $x = 3*($x-1)+2;
-    $y = 2*($y-1)+3;
-
-    ($x, $y);
-}
 
 =item convert_sign_position
 
@@ -402,11 +186,3 @@ under the same terms as Perl itself.
 =cut
 
 1;
-
-
-__DATA__
-straight
-===
-      <path id="xh"  d="M0,10 h5"/>
-      <path id="xsr" d="M0,10 l5,-10"/>
-      <path id="xsl" d="M0,0  l5,10"/>

@@ -1,9 +1,9 @@
 bin/MakeMaze.pl
 bin/svgmaze.pl
 Changes
-lib/Games/Maze/Ascii.pm
 lib/Games/Maze/SVG.pm
 lib/Games/Maze/SVG/Hex.pm
+lib/Games/Maze/SVG/HexCells.pm
 lib/Games/Maze/SVG/Manual.pod
 lib/Games/Maze/SVG/Rect.pm
 lib/Games/Maze/SVG/RectHex.pm
@@ -39,6 +39,8 @@ t/19rect_output_interactive.t
 t/20recthex_output_interactive.t
 t/21hex_output_interactive.t
 t/22dimensions.t
+t/23recthex-wallform.t
+t/24hex-wallform.t
 t/lib/MazeTestUtils.pm
 t/lib/TestString.pm
 t/pod-coverage.t

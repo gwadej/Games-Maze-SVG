@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 use Games::Maze::SVG;
 use FindBin;
@@ -77,6 +77,8 @@ my $hexboard = [
 grid_ok( $hexgrid, $hexout, 'hexagon grid' );
 board_ok( $hexgrid, $hexboard, 'hexagon board' );
 
+eval { $maze->transform_grid( [ [ qw/| | | |/ ] ], 'straight' ) };
+like( $@, qr/Missing block for '/, "Test non-xform of invalid grid." );
 
 # Need more examples to be certain that I've covered all transforms.
 

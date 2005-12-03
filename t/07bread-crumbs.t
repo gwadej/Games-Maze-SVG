@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 10;
+use Test::More tests => 11;
 
 use Games::Maze::SVG;
 
@@ -27,3 +27,5 @@ foreach my $crumb (keys %crumbstyles)
 
 eval { $maze->set_breadcrumb( "xyzzy" ); };
 like( $@, qr/Unrecognized breadcrumb style 'xyzzy'/, "Bad crumbs stopped." );
+
+ok( !$maze->set_breadcrumb(), "Fail to set with no crumb." );

@@ -3,14 +3,13 @@
 use strict;
 
 use Games::Maze;
-use Games::Maze::Ascii;
 use Games::Maze::SVG;
 use Getopt::Std;
 
 # Parse command line
 my %opts = ();
 
-getopts( 'xXSs:e:n:o:f:b:i', \%opts ) || usage();
+getopts( 'xXs:e:n:o:f:b:i', \%opts ) || usage();
 
 usage() if @ARGV == 1;
 
@@ -44,19 +43,9 @@ if(defined $opts{e})
 my $shape = 'Rect';
 $shape = 'RectHex' if $opts{x};
 $shape = 'Hex' if $opts{X};
-my $build_maze;
-if($opts{S})
-{
-    $build_maze = Games::Maze::SVG->new( $shape, %parms );
-}
-else
-{
-    $build_maze = Games::Maze::Ascii->new(  );
-    $build_maze->{mazeparms} = { dimensions => [ $parms{cols}, $parms{rows}, 1 ], %{$build_maze->{mazeparms}} };    
-}
+my $build_maze = Games::Maze::SVG->new( $shape, %parms );
+
 my $out = \*STDOUT;
-
-
 
 if($opts{o})
  {
@@ -82,7 +71,6 @@ Usage: $prog  [-x] [-X] [cols rows [levels]]
 
 where   -x       specifies hexagonal cells
         -X       specifies a hexagonal maze with hexagonal cells
-	-S       generates an SVG version of the maze
 	-s col   what column holds the entrance
 	-e col   what column holds the exit
 	-f form  wall forms (straight|round|roundcorners|bevel)

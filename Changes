@@ -1,5 +1,10 @@
 Revision history for Games-Maze-SVG
 
+0.7    12/2005
+	- Coverage testing to flush out remaining bugs.
+	- Fix a few bugs in error-handling found by coverage testing.
+	- Factor out common code from RectHex and Hex.
+	- Remove obsolete Ascii.pm module.
 0.6    11/2005
 	Reorganized the SVG and code to give better separation of static
 	and interactive portions. Converted the quick JavaScript into more OO

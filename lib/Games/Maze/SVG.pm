@@ -548,6 +548,7 @@ EOB
 }
 
 
+=begin COMMENT
 
 # _create_thumbnail
 #
@@ -572,6 +573,7 @@ sub _create_thumbnail
     qq{      <rect x="$x" y="$y" width="$wid" height="$ht" class="mazebg"/>\n};
 }
 
+=cut
 
 # _create_text_button
 #
