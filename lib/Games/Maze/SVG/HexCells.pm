@@ -424,7 +424,7 @@ sub convert_start_position
     my ($x, $y) = @_;
 
     $x = 3*($x-1)+2;
-    $y = 2*($y-1);
+    $y = 4*($y-1);
 
     ($x, $y);
 }
@@ -452,7 +452,7 @@ sub convert_end_position
     my ($x, $y) = @_;
 
     $x = 3*($x-1)+2;
-    $y = 2*($y-1)+3;
+    $y = 4*($y)+2;
 
     ($x, $y);
 }

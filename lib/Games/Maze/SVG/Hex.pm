@@ -153,6 +153,10 @@ sub convert_sign_position
     {
         $y += 3*$self->dy();
     }
+    else
+    {
+        $y -= 3*$self->dy();
+    }
 
     ($x, $y);
 }
