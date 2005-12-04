@@ -155,7 +155,7 @@ sub convert_sign_position
     }
     else
     {
-        $y -= 3*$self->dy();
+        $y -= $self->dy();
     }
 
     ($x, $y);

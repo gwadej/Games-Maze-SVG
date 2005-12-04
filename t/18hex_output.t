@@ -105,9 +105,24 @@ __DATA__
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
       <path id="sprite" d="M0,0 Q2.5,5 0,10 Q2.5,5 5,10 Q2.5,5 5,0 Q2.5,5 0,0"/>
-      <path id="xh"  d="M0,10 h5"/>
-      <path id="xsr" d="M0,10 l5,-10"/>
-      <path id="xsl" d="M0,0  l5,10"/>
+      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 h-5 L2.5,10"/>
+      <path id="tr" d="M0,5 h5 L10,15"/>
+      <path id="br" d="M0,5 h5 L10,-5"/>
+      <path id="bl" d="M10,5 h-5 L0,-5"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 L5,5 L2.5,10"/>
+      <path id="cl" d="M7.5,0 L5,5 L7.5,10"/>
+      <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
+      <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>
+      <path id="zz" d="M7.5,0 L2.5,10 M2.5,0 L7.5,10"/>
 
     </defs>
     <rect id="mazebg" class="mazebg" x="-10" y="-20" width="100%" height="100%"/>
