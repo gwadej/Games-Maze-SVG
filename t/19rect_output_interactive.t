@@ -51,7 +51,6 @@ my $output = resolve_template( qq{      <path id="ul" d="M5,10 v-5 h5"/>
 my $maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_interactive();
 
-#is( $maze->toString(), $output, "Full transform, default wall style." );
 is_string( $maze->toString(), $output, "Full transform, default wall style." );
 
 #open( my $fh, '>rect1.svg' ) or die;
@@ -117,8 +116,8 @@ $output = resolve_template( qq{      <path id="ul" d="M5,10 Q5,5 10,5"/>
 $maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_wall_form( 'roundcorners' );
 $maze->set_interactive();
+
 my $got = $maze->toString();
-#is( $maze->toString(), $output, "Full transform, roundcorners wall style." );
 is_string( $got, $output, "Full transform, roundcorners wall style." );
 
 # ---- Round ----
@@ -143,7 +142,7 @@ $output = resolve_template( qq{      <path id="ul" d="M5,10 Q5,5 10,5"/>
 $maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_wall_form( 'round' );
 $maze->set_interactive();
-#is( $maze->toString(), $output, "Full transform, round wall style." );
+
 is_string( $maze->toString(), $output, "Full transform, round wall style." );
 
 # ---- Straight ----
@@ -167,7 +166,7 @@ $output = resolve_template( qq{      <path id="ul" d="M5,10 v-5 h5"/>
 $maze = Games::Maze::SVG->new( 'Rect', cols => 3, rows => 3 );
 $maze->set_wall_form( 'straight' );
 $maze->set_interactive();
-#is( $maze->toString(), $output, "Full transform, straight wall style." );
+
 is_string( $maze->toString(), $output, "Full transform, straight wall style." );
 
 #
