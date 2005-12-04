@@ -20,15 +20,19 @@ my $simplegrid = normalize_maze( <<'EOM' );
 EOM
 
 my $simpleout = [
-   [ qw/ 0  xh xh  0  0/ ],
-   [ qw/xsr  0  0 xsl 0/ ],
-   [ qw/xsl xh xh xsr 0/ ],
+   [ qw/ 0 tl hz tr  0/ ],
+   [ qw/sr  $  0 sl  $/ ],
+   [ qw/cl  0  0  0 cr/ ],
+   [ qw/sl  $  0 sr  $/ ],
+   [ qw/ 0 bl hz br  0/ ],
 ];
 
 my $simpleboard = [
-   [ qw/0  -1 -1 0 0/ ],
-   [ qw/1  0  0  1 0/ ],
-   [ qw/1 -1 -1  1 0/ ],
+   [ qw/ 0  1  1  1  0/ ],
+   [ qw/ 1  1  0  1  1/ ],
+   [ qw/ 1  0  0  0  1/ ],
+   [ qw/ 1  1  0  1  1/ ],
+   [ qw/ 0  1  1  1  0/ ],
 ];
 
 grid_ok( $simplegrid, $simpleout, 'Simple Hex grid' );

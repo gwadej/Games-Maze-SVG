@@ -31,6 +31,8 @@ instatiated directly.
 use constant DELTA_X     => 5;
 use constant DELTA_Y     => 10;
 
+my $bVerbose = 0;
+
 # ----------------
 #  Shape transformation tables
 my %HexBlocks = (
@@ -39,6 +41,88 @@ my %HexBlocks = (
 		  '/'  => 'xsr',
 		  '\\' => 'xsl',
                 );
+
+# in-line
+# l r dl dr
+my %Blocks = (
+    '   /' => 0,
+    ' _/ ' => 'tl',
+    '__  ' => 'hz',
+    '_  \\' => 'tr',
+    '  \\ ' => 0,
+
+    ' / \\' => 'cl',
+    '/ \\_' => 0,
+    '  __' => 0,
+    ' \\_/' => 0,
+    '\\ / ' => 'cr',
+
+    ' \\  ' => 0,
+    '\\_  ' => 'bl',
+    '_/  ' => 'br',
+    '/   ' => 0,
+
+    '  \\_' => 0,
+    '  _/' => 0,
+    '    ' => 0,
+
+    '/ \\ ' => 0,
+    ' \\ /' => 0,
+    '\\_/ ' => 'yr',
+    '/  _' => 0,
+    ' \\_ ' => 0,
+    '\\   ' => 'slb',
+    '   \\'=> 'slt',
+
+    '_   ' => 'hzl',
+    '   _' => 0,
+
+    '  _ ' => 0,
+    ' _  ' => 'hzr',
+    '_/ \\' => 'yl',
+
+    ' /  ' => 'srb',
+    '/   ' => 0,
+);
+
+# Between lines
+# l r dl dr
+my %BlocksBetween = (
+    '   /' => 'sr',
+    ' _/ ' => '$',
+    '__  ' => 0,
+    '_  \\' => 'sl',
+    '  \\ ' => '$',
+
+    ' / \\' => 'sl',
+    '/ \\_' => '$',
+    '  __' => 0,
+    ' \\_/' => 'sr',
+    '\\ / ' => '$',
+
+    '  \\_' => '$',
+    '  _/' => 'sr',
+    '    ' => 0,
+
+    '/ \\ ' => '$',
+    ' \\ /' => 'sr',
+    '\\_/ ' => '$',
+    '_/  ' => 0,
+    '/  _' => 0,
+    ' \\_ ' => 0,
+    '\\   ' => 0,
+    '   \\' => 'sl',
+
+    '_   ' => 0,
+    '   _' => 0,
+
+    '  _ ' => 0,
+    ' _  ' => 0,
+    '_/ \\' => 'sl',
+
+    '\\_  ' => 0,
+    ' \\  ' => 0,
+);
 
 my %Walls = _get_wall_forms();
 
@@ -191,6 +275,79 @@ sub transform_grid
 {
     my $self = shift;
     my $rows = shift;
+    my $walls = shift;
+    my @out  = ();
+
+    # transform the printout into block commands
+    my $height = @{$rows};
+    my $width  = @{$rows->[0]}+1;
+    
+    for(my $r=0; $r < $height-1; ++$r)
+    {
+	# on line
+        push @out, _calc_on_line( $rows, $r, $width );
+	# between
+        push @out, _calc_between_line( $rows, $r, $width );
+    }
+    push @out, _calc_on_line( $rows, $height-1, $width );
+
+    @{$rows} = @out;
+}
+
+
+sub _calc_between_line
+{
+    my $rows = shift;
+    my $index = shift;
+    my $width = shift;
+    my @out = ();
+    
+    for(my $c = 0; $c < $width;++$c)
+    {
+        my $sig = ($c ? $rows->[$index][$c-1]||' ' : ' ')
+	        . ($rows->[$index][$c]||' ')
+	        . ($c ? $rows->[$index+1][$c-1]||' ' : ' ')
+		. ($rows->[$index+1][$c]||' ');
+
+print "b($index, $c) = '$sig'\n" if $bVerbose;
+        croak "Missing between block for '$sig'.\n" unless exists $BlocksBetween{$sig};
+
+        push @out, $BlocksBetween{$sig};
+    }
+    
+    \@out;
+}
+
+
+sub _calc_on_line
+{
+    my $rows = shift;
+    my $index = shift;
+    my $width = shift;
+    my @out = ();
+    
+    for(my $c = 0; $c < $width;++$c)
+    {
+        my $sig = ($c ? $rows->[$index][$c-1]||' ' : ' ')
+	        . ($rows->[$index][$c]||' ')
+	        . ($c ? $rows->[$index+1][$c-1]||' ' : ' ')
+		. ($rows->[$index+1][$c]||' ');
+
+print "o($index, $c) = '$sig'\n" if $bVerbose;
+        croak "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
+
+        push @out, $Blocks{$sig};
+    }
+
+    \@out;
+}
+
+=begin COMMENT
+
+sub transform_grid
+{
+    my $self = shift;
+    my $rows = shift;
     my @out  = ();
 
     # transform the printout into block commands
@@ -215,6 +372,7 @@ sub transform_grid
     @{$rows} = @out;
 }
 
+=cut
 
 =item wall_definitions
 
