@@ -31,8 +31,6 @@ instatiated directly.
 use constant DELTA_X     => 10;
 use constant DELTA_Y     => 10;
 
-my $bVerbose = 0;
-
 # ----------------
 #  Shape transformation tables
 
@@ -309,7 +307,6 @@ sub _calc_between_line
 	        . ($c ? $rows->[$index+1][$c-1]||' ' : ' ')
 		. ($rows->[$index+1][$c]||' ');
 
-print "b($index, $c) = '$sig'\n" if $bVerbose;
         croak "Missing between block for '$sig'.\n" unless exists $BlocksBetween{$sig};
 
         push @out, $BlocksBetween{$sig};
@@ -333,7 +330,6 @@ sub _calc_on_line
 	        . ($c ? $rows->[$index+1][$c-1]||' ' : ' ')
 		. ($rows->[$index+1][$c]||' ');
 
-print "o($index, $c) = '$sig'\n" if $bVerbose;
         croak "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
 
         push @out, $Blocks{$sig};
