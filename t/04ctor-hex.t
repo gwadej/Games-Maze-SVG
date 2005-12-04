@@ -21,7 +21,7 @@ like( $maze->get_script(), qr/hexmaze\.es/, "Correct script name" );
 
 is( $maze->{wallform}, 'straight', "wall form defaults correctly" );
 is( $maze->{crumb}, 'dash', "crumb style defaults correctly" );
-is( $maze->dx(), 5, "delta x defaults correctly" );
+is( $maze->dx(), 10, "delta x defaults correctly" );
 is( $maze->dy(), 10, "delta y defaults correctly" );
 is( $maze->{dir}, 'scripts/', "directory defaults correctly" );
 

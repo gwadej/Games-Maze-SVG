@@ -518,17 +518,6 @@ EOB
     $output .= _create_view_button( 'maze_down',  22, 44, '10,15 5,5 15,5' );
     $output .= _create_view_button( 'maze_reset', 22, 22, '7,7 7,13 13,13 13,7' );
 
-=begin COMMENT
-
-    $output .= <<"EOB";
-    </g>
-    <g transform="translate(110, 50)">
-      <rect width="82" height="82" x="-1" y="-1" fill="gray" stroke-width="1" stroke="black"/>
-EOB
-    $output .= $self->_create_thumbnail();
-
-=cut
-
     $output .= <<"EOB";
     </g>
 

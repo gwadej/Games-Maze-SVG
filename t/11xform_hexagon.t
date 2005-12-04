@@ -20,19 +20,19 @@ my $simplegrid = normalize_maze( <<'EOM' );
 EOM
 
 my $simpleout = [
-   [ qw/ 0 tl hz tr  0/ ],
-   [ qw/sr  $  0 sl  $/ ],
-   [ qw/cl  0  0  0 cr/ ],
-   [ qw/sl  $  0 sr  $/ ],
-   [ qw/ 0 bl hz br  0/ ],
+   [ qw/ 0 tl hz tr  0 0/ ],
+   [ qw/sr  $  0 sl  $ 0/ ],
+   [ qw/cl  0  0  0 cr 0/ ],
+   [ qw/sl  $  0 sr  $ 0/ ],
+   [ qw/ 0 bl hz br  0 0/ ],
 ];
 
 my $simpleboard = [
-   [ qw/ 0  1  1  1  0/ ],
-   [ qw/ 1  1  0  1  1/ ],
-   [ qw/ 1  0  0  0  1/ ],
-   [ qw/ 1  1  0  1  1/ ],
-   [ qw/ 0  1  1  1  0/ ],
+   [ qw/ 0  1  1  1  0 0/ ],
+   [ qw/ 1  1  0  1  1 0/ ],
+   [ qw/ 1  0  0  0  1 0/ ],
+   [ qw/ 1  1  0  1  1 0/ ],
+   [ qw/ 0  1  1  1  0 0/ ],
 ];
 
 grid_ok( $simplegrid, $simpleout, 'Simple Hex grid' );
@@ -57,39 +57,67 @@ my $hexgrid = normalize_maze( <<'EOM' );
 EOM
 
 my $hexout = [
-   [ qw| 0   0  0  0   0  0  0   0  0  0  xh xh  0   0  0  0   0  0  0   0  0  0  0| ],
-   [ qw| 0   0  0  0   0  0  0   0  0 xsr  0  0 xsl xh xh  0   0  0  0   0  0  0  0| ],
-   [ qw| 0   0  0  0  xh xh xsr  0  0 xsl  0  0  0   0  0 xsl xh xh  0   0  0  0  0| ],
-   [ qw| 0  xh xh xsr  0  0 xsl  0  0  0   0  0 xsl xh xh  0   0  0 xsl xh xh  0  0| ],
-   [ qw|xsr  0  0  0   0  0 xsr  0  0 xsl xh xh xsr  0  0  0  xh xh xsr  0  0 xsl 0| ],
-   [ qw|xsl  0  0 xsr  0  0 xsl  0  0 xsr  0  0 xsl xh xh  0   0  0  0   0  0 xsr 0| ],
-   [ qw|xsr  0  0 xsl xh xh  0   0  0 xsl xh xh  0   0  0 xsl xh xh xsr  0  0 xsl 0| ],
-   [ qw|xsl  0  0  0   0  0 xsl xh xh xsr  0  0 xsl  0  0 xsr  0  0  0  xh xh xsr 0| ],
-   [ qw|xsr  0  0 xsl xh xh  0   0  0  0   0  0 xsr  0  0 xsl xh xh  0   0  0 xsl 0| ],
-   [ qw|xsl  0  0 xsr  0  0 xsl xh xh xsr  0  0 xsl  0  0 xsr  0  0 xsl  0  0 xsr 0| ],
-   [ qw|xsr  0  0 xsl  0  0 xsr  0  0  0  xh xh xsr  0  0  0   0  0 xsr  0  0 xsl 0| ],
-   [ qw|xsl xh xh  0   0  0 xsl  0  0 xsr  0  0 xsl xh xh xsr  0  0 xsl  0  0 xsr 0| ],
-   [ qw| 0   0  0 xsl xh xh xsr  0  0 xsl  0  0  0   0  0  0  xh xh xsr  0  0  0  0| ],
-   [ qw| 0   0  0  0   0  0 xsl xh xh  0   0  0 xsl xh xh xsr  0  0  0   0  0  0  0| ],
-   [ qw| 0   0  0  0   0  0  0   0  0 xsl xh xh xsr  0  0  0   0  0  0   0  0  0  0| ],
+   [ qw/0  0  0  0   0  0  0   0  0  0   tl hz  tr 0  0   0   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   0  0  sr  $  0   sl $  0   0   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0  srt 0  cl  0  0   0  bl hz  tr  0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  sr  0  0  sl  $  0   0  0  0   sl  $   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   tl hz yl  0  0  0  slb 0  slt 0  0   0   bl  hz  tr  0   0   0   0   0/ ],
+   [ qw/0  0  0  sr  $  0  sl  $  0  0   0  0   sl $  0   0   0   0   sl  $   0   0   0   0/ ],
+   [ qw/0  tl hz br  0  0  0   cr 0 slt  0  0   0  yr hz hzl  0   0   0   yr  hz  tr  0   0/ ],
+   [ qw/sr $  0  0   0  0  sr  $  0  sl  $  0   sr $  0   0   0   0   sr  $   0   sl  $   0/ ],
+   [ qw/cl 0  0  0  srt 0  cl  0  0  0   yr hz  yl 0  0   0  hzr  hz  br  0   0   0   cr  0/ ],
+   [ qw/sl $  0  sr  0  0  sl  $  0  sr  $  0   sl $  0   0   0   0   0   0   0   sr  $   0/ ],
+   [ qw/0  cr 0  cl  0  0  0  slb 0  cl  0  0   0  bl hz  tr  0   0   0  srt  0   cl  0   0/ ],
+   [ qw/sr $  0  sl  $  0  0   0  0  sl  $  0   0  0  0   sl  $   0   sr  0   0   sl  $   0/ ],
+   [ qw/cl 0  0  0   bl hz tr  0  0  0   yr hz  tr 0  0   0   yr  hz  br  0   0   0   cr  0/ ],
+   [ qw/sl $  0  0   0  0  sl  $  0  sr  $  0   sl $  0   sr  $   0   0   0   0   sr  $   0/ ],
+   [ qw/0  cr 0 slt  0  0  0   bl hz br  0  0   0  cr 0   cl  0   0   0  hzr  hz  yl  0   0/ ],
+   [ qw/sr $  0  sl  $  0  0   0  0  0   0  0   sr $  0   sl  $   0   0   0   0   sl  $   0/ ],
+   [ qw/cl 0  0  0   yr hz tr  0  0  0  srt 0   cl 0  0   0   yr  hz  tr  0   0   0   cr  0/ ],
+   [ qw/sl $  0  sr  $  0  sl  $  0  sr  0  0   sl $  0   sr  $   0   sl  $   0   sr  $   0/ ],
+   [ qw/0  cr 0  cl  0  0  0   yr hz br  0  0   0  cr 0  srb  0   0   0   cr  0   cl  0   0/ ],
+   [ qw/sr $  0  sl  $  0  sr  $  0  0   0  0   sr $  0   0   0   0   sr  $   0   sl  $   0/ ],
+   [ qw/cl 0  0  0  slb 0  cl  0  0  0   tl hz  yl 0  0   0  srt  0   cl  0   0   0   cr  0/ ],
+   [ qw/sl $  0  0   0  0  sl  $  0  sr  $  0   sl $  0   sr  0   0   sl  $   0   sr  $   0/ ],
+   [ qw/0  bl hz tr  0  0  0   cr 0  cl  0  0   0  bl hz  br  0   0   0   cr  0  srb  0   0/ ],
+   [ qw/0  0  0  sl  $  0  sr  $  0  sl  $  0   0  0  0   0   0   0   sr  $   0   0   0   0/ ],
+   [ qw/0  0  0  0   bl hz yl  0  0  0  slb 0  slt 0  0   0   tl  hz  br  0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  sl  $  0  0   0  0   sl $  0   sr  $   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   bl hz tr  0  0   0  yr hz  br  0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   0  0  sl  $  0   sr $  0   0   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   0  0  0   bl hz  br 0  0   0   0   0   0   0   0   0   0   0/ ]
 ];
 
 my $hexboard = [
-   [ qw| 0   0  0  0   0  0  0   0  0  0  -1 -1  0   0  0  0   0  0  0   0  0  0  0| ],
-   [ qw| 0   0  0  0   0  0  0   0  0  1   0  0  1  -1 -1  0   0  0  0   0  0  0  0| ],
-   [ qw| 0   0  0  0  -1 -1  1   0  0  1   0  0  0   0  0  1  -1 -1  0   0  0  0  0| ],
-   [ qw| 0  -1 -1  1   0  0  1   0  0  0   0  0  1  -1 -1  0   0  0  1  -1 -1  0  0| ],
-   [ qw| 1   0  0  0   0  0  1   0  0  1  -1 -1  1   0  0  0  -1 -1  1   0  0  1  0| ],
-   [ qw| 1   0  0  1   0  0  1   0  0  1   0  0  1  -1 -1  0   0  0  0   0  0  1  0| ],
-   [ qw| 1   0  0  1  -1 -1  0   0  0  1  -1 -1  0   0  0  1  -1 -1  1   0  0  1  0| ],
-   [ qw| 1   0  0  0   0  0  1  -1 -1  1   0  0  1   0  0  1   0  0  0  -1 -1  1  0| ],
-   [ qw| 1   0  0  1  -1 -1  0   0  0  0   0  0  1   0  0  1  -1 -1  0   0  0  1  0| ],
-   [ qw| 1   0  0  1   0  0  1  -1 -1  1   0  0  1   0  0  1   0  0  1   0  0  1  0| ],
-   [ qw| 1   0  0  1   0  0  1   0  0  0  -1 -1  1   0  0  0   0  0  1   0  0  1  0| ],
-   [ qw| 1  -1 -1  0   0  0  1   0  0  1   0  0  1  -1 -1  1   0  0  1   0  0  1  0| ],
-   [ qw| 0   0  0  1  -1 -1  1   0  0  1   0  0  0   0  0  0  -1 -1  1   0  0  0  0| ],
-   [ qw| 0   0  0  0   0  0  1  -1 -1  0   0  0  1  -1 -1  1   0  0  0   0  0  0  0| ],
-   [ qw| 0   0  0  0   0  0  0   0  0  1  -1 -1  1   0  0  0   0  0  0   0  0  0  0| ],
+   [ qw/0  0  0  0   0  0  0   0  0  0   1  1   1  0  0   0   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   0  0  1   1  0   1  1  0   0   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   1  0  1   0  0   0  1  1   1   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  1   0  0  1   1  0   0  0  0   1   1   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   1  1  1   0  0  0   1  0   1  0  0   0   1   1   1   0   0   0   0   0/ ],
+   [ qw/0  0  0  1   1  0  1   1  0  0   0  0   1  1  0   0   0   0   1   1   0   0   0   0/ ],
+   [ qw/0  1  1  1   0  0  0   1  0  1   0  0   0  1  1   1   0   0   0   1   1   1   0   0/ ],
+   [ qw/1  1  0  0   0  0  1   1  0  1   1  0   1  1  0   0   0   0   1   1   0   1   1   0/ ],
+   [ qw/1  0  0  0   1  0  1   0  0  0   1  1   1  0  0   0   1   1   1   0   0   0   1   0/ ],
+   [ qw/1  1  0  1   0  0  1   1  0  1   1  0   1  1  0   0   0   0   0   0   0   1   1   0/ ],
+   [ qw/0  1  0  1   0  0  0   1  0  1   0  0   0  1  1   1   0   0   0   1   0   1   0   0/ ],
+   [ qw/1  1  0  1   1  0  0   0  0  1   1  0   0  0  0   1   1   0   1   0   0   1   1   0/ ],
+   [ qw/1  0  0  0   1  1  1   0  0  0   1  1   1  0  0   0   1   1   1   0   0   0   1   0/ ],
+   [ qw/1  1  0  0   0  0  1   1  0  1   1  0   1  1  0   1   1   0   0   0   0   1   1   0/ ],
+   [ qw/0  1  0  1   0  0  0   1  1  1   0  0   0  1  0   1   0   0   0   1   1   1   0   0/ ],
+   [ qw/1  1  0  1   1  0  0   0  0  0   0  0   1  1  0   1   1   0   0   0   0   1   1   0/ ],
+   [ qw/1  0  0  0   1  1  1   0  0  0   1  0   1  0  0   0   1   1   1   0   0   0   1   0/ ],
+   [ qw/1  1  0  1   1  0  1   1  0  1   0  0   1  1  0   1   1   0   1   1   0   1   1   0/ ],
+   [ qw/0  1  0  1   0  0  0   1  1  1   0  0   0  1  0   1   0   0   0   1   0   1   0   0/ ],
+   [ qw/1  1  0  1   1  0  1   1  0  0   0  0   1  1  0   0   0   0   1   1   0   1   1   0/ ],
+   [ qw/1  0  0  0   1  0  1   0  0  0   1  1   1  0  0   0   1   0   1   0   0   0   1   0/ ],
+   [ qw/1  1  0  0   0  0  1   1  0  1   1  0   1  1  0   1   0   0   1   1   0   1   1   0/ ],
+   [ qw/0  1  1  1   0  0  0   1  0  1   0  0   0  1  1   1   0   0   0   1   0   1   0   0/ ],
+   [ qw/0  0  0  1   1  0  1   1  0  1   1  0   0  0  0   0   0   0   1   1   0   0   0   0/ ],
+   [ qw/0  0  0  0   1  1  1   0  0  0   1  0   1  0  0   0   1   1   1   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  1   1  0  0   0  0   1  1  0   1   1   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   1  1  1   0  0   0  1  1   1   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   0  0  1   1  0   1  1  0   0   0   0   0   0   0   0   0   0/ ],
+   [ qw/0  0  0  0   0  0  0   0  0  0   1  1   1  0  0   0   0   0   0   0   0   0   0   0/ ]
 ];
 
 grid_ok( $hexgrid, $hexout, 'Hexagon maze grid' );
@@ -108,7 +136,6 @@ sub grid_ok
     my $grid = split_maze( shift );
     my $out = shift;
     my $msg = shift;
-
     is_deeply( [$maze->transform_grid( $grid, 'straight' )],
          $out, $msg );
 }

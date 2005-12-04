@@ -342,38 +342,6 @@ print "o($index, $c) = '$sig'\n" if $bVerbose;
     \@out;
 }
 
-=begin COMMENT
-
-sub transform_grid
-{
-    my $self = shift;
-    my $rows = shift;
-    my @out  = ();
-
-    # transform the printout into block commands
-    my $height = @{$rows};
-    my $width  = @{$rows->[0]}+1;
-    for(my $r=0; $r < $height; ++$r)
-    {
-	for(my $c=0; $c < $width; ++$c)
-        {
-	    if(defined $rows->[$r]->[$c])
-	    {
-        	croak "Missing block for '$rows->[$r]->[$c]'.\n"
-	                	    unless exists $HexBlocks{$rows->[$r]->[$c]};
-        	$out[$r]->[$c] = $HexBlocks{$rows->[$r]->[$c]};
-	    }
-	    else
-	    {
-        	$out[$r]->[$c] = 0;
-	    }
-        }
-    }
-    @{$rows} = @out;
-}
-
-=cut
-
 =item wall_definitions
 
 Method that returns the definition for the shapes used to build the walls.
