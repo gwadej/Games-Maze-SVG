@@ -675,7 +675,7 @@ sub  _just_maze
         my $x = 0;
         foreach my $c (@{$r})
         {
-            $output .= qq{    <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c;
+            $output .= qq{    <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c and $c ne '$';
             $x += $dx;
         }
         $y += $dy;

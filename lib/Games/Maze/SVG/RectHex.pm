@@ -133,12 +133,16 @@ sub convert_sign_position
     my ($x, $y) = @_;
 
     $x *= $self->dx();
-    $y *= $self->dy();
+    $y *= 2*$self->dy();
 
     # adjust bottom
     if($y > $self->{height}/2)
     {
         $y += 2*$self->dy();
+    }
+   else
+    {
+        $y -= $self->dy();
     }
 
     ($x, $y);

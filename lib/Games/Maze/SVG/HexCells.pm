@@ -28,19 +28,13 @@ instatiated directly.
 
 =cut
 
-use constant DELTA_X     => 5;
+use constant DELTA_X     => 10;
 use constant DELTA_Y     => 10;
 
 my $bVerbose = 0;
 
 # ----------------
 #  Shape transformation tables
-my %HexBlocks = (
-                  ' '  => 0,
-		  '_'  => 'xh',
-		  '/'  => 'xsr',
-		  '\\' => 'xsl',
-                );
 
 # in-line
 # l r dl dr
@@ -83,6 +77,8 @@ my %Blocks = (
 
     ' /  ' => 'srb',
     '/   ' => 0,
+    
+    '  / ' => 'srt',
 );
 
 # Between lines
@@ -122,6 +118,10 @@ my %BlocksBetween = (
 
     '\\_  ' => 0,
     ' \\  ' => 0,
+    
+    '  / ' => 0,
+    '/   ' => 0,
+    ' /  ' => 0,
 );
 
 my %Walls = _get_wall_forms();
@@ -280,7 +280,7 @@ sub transform_grid
 
     # transform the printout into block commands
     my $height = @{$rows};
-    my $width  = @{$rows->[0]}+1;
+    my $width  = @{$rows->[0]}+2;
     
     for(my $r=0; $r < $height-1; ++$r)
     {
@@ -491,6 +491,21 @@ under the same terms as Perl itself.
 __DATA__
 straight
 ===
-      <path id="xh"  d="M0,10 h5"/>
-      <path id="xsr" d="M0,10 l5,-10"/>
-      <path id="xsl" d="M0,0  l5,10"/>
+      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 h-5 L2.5,10"/>
+      <path id="tr" d="M0,5 h5 L10,15"/>
+      <path id="br" d="M0,5 h5 L10,-5"/>
+      <path id="bl" d="M10,5 h-5 L0,-5"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 L5,5 L2.5,10"/>
+      <path id="cl" d="M7.5,0 L5,5 L7.5,10"/>
+      <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
+      <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>
+      <path id="zz" d="M7.5,0 L2.5,10 M2.5,0 L7.5,10"/>
