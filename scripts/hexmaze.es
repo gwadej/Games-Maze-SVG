@@ -50,35 +50,19 @@ function move_right()
 }
 
 
-/* Override for a hex maze */
-MazeGame.prototype.isFinished = function( pt )
-{
-    return (pt.x == this.end.x || pt.x+1 == this.end.x) && pt.y == this.end.y;
-}
-
-MazeGame.prototype.down_blocked = function( pt )
-{
-    return pt.y+1 == this.board.length
-        || this.board[pt.y][pt.x]
-        || this.board[pt.y+1][pt.x] > 0;
-}
-
 /* Add some methods for the hex maze */
 MazeGame.prototype.downright_blocked = function( pt )
 {
     return pt.y+1 == this.board.length
         || pt.x+1 == this.board[pt.y+1].length
-        || this.board[pt.y][pt.x]
-        || this.board[pt.y][pt.x+1] == -1
-        || this.board[pt.y+1][pt.x+1] > 0;
+        || this.board[pt.y+1][pt.x+1];
 }
 
 MazeGame.prototype.downleft_blocked = function( pt )
 {
     return pt.x < 0 || pt.y+1 == this.board.length
-        || this.board[pt.y+1][pt.x-1] > 0
-        || this.board[pt.y][pt.x]
-        || this.board[pt.y][pt.x-1] == -1;
+        || this.board[pt.y+1][pt.x-1]
+        || this.board[pt.y][pt.x-1];
 }
 
 MazeGame.prototype.upright_blocked = function( pt )
