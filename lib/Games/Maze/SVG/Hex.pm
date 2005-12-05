@@ -15,11 +15,11 @@ Games::Maze::SVG::Hex - Build hexagonal mazes in SVG.
 
 =head1 VERSION
 
-Version 0.5
+Version 0.7
 
 =cut
 
-our $VERSION = 0.5;
+our $VERSION = 0.7;
 
 =head1 SYNOPSIS
 
