@@ -459,9 +459,9 @@ straight
       <path id="hzr" d="M5,5 h5"/>
       <path id="hzl" d="M0,5 h5"/>
       <path id="tl" d="M10,5 h-5 L2.5,10"/>
-      <path id="tr" d="M0,5 h5 L10,15"/>
-      <path id="br" d="M0,5 h5 L10,-5"/>
-      <path id="bl" d="M10,5 h-5 L0,-5"/>
+      <path id="tr" d="M0,5 h5 L7.5,10"/>
+      <path id="br" d="M0,5 h5 L7.5,0"/>
+      <path id="bl" d="M10,5 h-5 L2.5,0"/>
       <path id="sl" d="M7.5,0 L12.5,10"/>
       <path id="sr" d="M12.5,0 L7.5,10"/>
       <path id="slt" d="M5,5 L7.5,10"/>
@@ -472,4 +472,43 @@ straight
       <path id="cl" d="M7.5,0 L5,5 L7.5,10"/>
       <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
       <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>
-      <path id="zz" d="M7.5,0 L2.5,10 M2.5,0 L7.5,10"/>
+===
+roundcorners
+===
+      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 Q6,6 2.5,10"/>
+      <path id="tr" d="M0,5 Q4,6 7.5,10"/>
+      <path id="br" d="M0,5 Q5,5 7.5,0"/>
+      <path id="bl" d="M10,5 Q6,4 2.5,0"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 Q4,5 2.5,10"/>
+      <path id="cl" d="M7.5,0 Q6,5 7.5,10"/>
+      <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
+      <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>
+===
+round
+===
+      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 Q6,6 2.5,10"/>
+      <path id="tr" d="M0,5 Q4,6 7.5,10"/>
+      <path id="br" d="M0,5 Q5,5 7.5,0"/>
+      <path id="bl" d="M10,5 Q6,4 2.5,0"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 Q4,5 2.5,10"/>
+      <path id="cl" d="M7.5,0 Q6,5 7.5,10"/>
+      <path id="yr" d="M2.5,0 Q4,5 2.5,10 Q6,5 10,5 Q5,4 2.5,0"/>
+      <path id="yl" d="M7.5,0 Q6,5 7.5,10 Q4,6 0,5 Q4,4 7.5,0"/>
