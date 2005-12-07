@@ -15,11 +15,11 @@ Games::Maze::SVG::HexCells - Base class for Hex and RectHex mazes.
 
 =head1 VERSION
 
-Version 0.7
+Version 0.71
 
 =cut
 
-our $VERSION = 0.7;
+our $VERSION = 0.71;
 
 =head1 SYNOPSIS
 
