@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 4;
+use Test::More tests => 8;
 
 use Games::Maze::SVG;
 
@@ -13,7 +13,7 @@ my $maze = Games::Maze::SVG->new( 'Hex' );
 
 can_ok( $maze, "set_wall_form" );
 
-foreach my $form (qw/straight/)
+foreach my $form (qw/straight round roundcorners/)
 {
     is( $maze->set_wall_form( $form ), $maze, "successful set wall form" );
     is( $maze->{wallform}, $form, " ... to $form" );

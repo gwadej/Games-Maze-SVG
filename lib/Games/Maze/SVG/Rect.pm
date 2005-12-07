@@ -322,9 +322,13 @@ sub wall_definitions
 
 sub _get_wall_forms
 {
- local $/ = "\n===\n";
- chomp( my @list = <DATA> );
- @list;
+    local $/ = "\n===\n";
+    chomp( my @list = <DATA> );
+
+    $/ = "\n";
+    chomp( @list );
+
+    @list;
 }
 
 

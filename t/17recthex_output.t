@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 1;
+use Test::More tests => 4;
 use Test::MockModule;
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -14,9 +14,7 @@ use warnings;
 
 my $gmaze = Test::MockModule->new( 'Games::Maze' );
 
-my $rectgrid = 
-
-my $output = do { local $/ = undef; <DATA>; };
+my $template = do { local $/ = undef; <DATA>; };
 
 $gmaze->mock(
     make => sub { my $self = shift; $self->{entry} = [2,1]; $self->{exit} = [6,8]; },
@@ -41,8 +39,116 @@ my $maze = Games::Maze::SVG->new( 'RectHex', cols => 3, rows => 3 );
 #open( my $fh, '>recthex1.svg' ) or die;
 #print $fh $maze->toString();
 
+my $output = resolve_template( qq{      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 h-5 L2.5,10"/>
+      <path id="tr" d="M0,5 h5 L7.5,10"/>
+      <path id="br" d="M0,5 h5 L7.5,0"/>
+      <path id="bl" d="M10,5 h-5 L2.5,0"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 L5,5 L2.5,10"/>
+      <path id="cl" d="M7.5,0 L5,5 L7.5,10"/>
+      <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
+      <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>});
+
 is_string( $maze->toString(), $output, "Full transform works." );
 
+# ---- Round Corners ----
+
+$output = resolve_template( qq{      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 Q6,6 2.5,10"/>
+      <path id="tr" d="M0,5 Q4,6 7.5,10"/>
+      <path id="br" d="M0,5 Q5,5 7.5,0"/>
+      <path id="bl" d="M10,5 Q6,4 2.5,0"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 Q4,5 2.5,10"/>
+      <path id="cl" d="M7.5,0 Q6,5 7.5,10"/>
+      <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
+      <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>} );
+
+$maze = Games::Maze::SVG->new( 'RectHex', cols => 3, rows => 3 );
+$maze->set_wall_form( 'roundcorners' );
+
+is_string( $maze->toString(), $output, "Full transform, roundcorners wall style." );
+
+# ---- Round ----
+
+$output = resolve_template( qq{      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 Q6,6 2.5,10"/>
+      <path id="tr" d="M0,5 Q4,6 7.5,10"/>
+      <path id="br" d="M0,5 Q5,5 7.5,0"/>
+      <path id="bl" d="M10,5 Q6,4 2.5,0"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 Q4,5 2.5,10"/>
+      <path id="cl" d="M7.5,0 Q6,5 7.5,10"/>
+      <path id="yr" d="M2.5,0 Q4,5 2.5,10 Q6,5 10,5 Q5,4 2.5,0"/>
+      <path id="yl" d="M7.5,0 Q6,5 7.5,10 Q4,6 0,5 Q4,4 7.5,0"/>} );
+
+$maze = Games::Maze::SVG->new( 'RectHex', cols => 3, rows => 3 );
+$maze->set_wall_form( 'round' );
+
+is_string( $maze->toString(), $output, "Full transform, round wall style." );
+
+# ---- Straight ----
+
+$output = resolve_template( qq{      <path id="hz" d="M0,5 h10"/>
+      <path id="hzr" d="M5,5 h5"/>
+      <path id="hzl" d="M0,5 h5"/>
+      <path id="tl" d="M10,5 h-5 L2.5,10"/>
+      <path id="tr" d="M0,5 h5 L7.5,10"/>
+      <path id="br" d="M0,5 h5 L7.5,0"/>
+      <path id="bl" d="M10,5 h-5 L2.5,0"/>
+      <path id="sl" d="M7.5,0 L12.5,10"/>
+      <path id="sr" d="M12.5,0 L7.5,10"/>
+      <path id="slt" d="M5,5 L7.5,10"/>
+      <path id="slb" d="M5,5 L2.5,0"/>
+      <path id="srt" d="M5,5 L2.5,10"/>
+      <path id="srb" d="M5,5 L7.5,0"/>
+      <path id="cr" d="M2.5,0 L5,5 L2.5,10"/>
+      <path id="cl" d="M7.5,0 L5,5 L7.5,10"/>
+      <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
+      <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>} );
+
+$maze = Games::Maze::SVG->new( 'RectHex', cols => 3, rows => 3 );
+$maze->set_wall_form( 'straight' );
+
+is_string( $maze->toString(), $output, "Full transform, straight wall style." );
+
+#
+# Convert the template into a complete svg page.
+#
+# walldefs  a string containing the wall piece definitions
+#
+# Returns the complete output.
+sub resolve_template
+{
+    my $walldefs = shift;
+    my $output = $template;
+    
+    $output =~ s/\{\{walldefs\}\}/$walldefs/sm;
+    
+    $output;
+}
 
 __DATA__
 <?xml version="1.0"?>
@@ -101,23 +207,7 @@ __DATA__
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
       <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
-      <path id="hz" d="M0,5 h10"/>
-      <path id="hzr" d="M5,5 h5"/>
-      <path id="hzl" d="M0,5 h5"/>
-      <path id="tl" d="M10,5 h-5 L2.5,10"/>
-      <path id="tr" d="M0,5 h5 L7.5,10"/>
-      <path id="br" d="M0,5 h5 L7.5,0"/>
-      <path id="bl" d="M10,5 h-5 L2.5,0"/>
-      <path id="sl" d="M7.5,0 L12.5,10"/>
-      <path id="sr" d="M12.5,0 L7.5,10"/>
-      <path id="slt" d="M5,5 L7.5,10"/>
-      <path id="slb" d="M5,5 L2.5,0"/>
-      <path id="srt" d="M5,5 L2.5,10"/>
-      <path id="srb" d="M5,5 L7.5,0"/>
-      <path id="cr" d="M2.5,0 L5,5 L2.5,10"/>
-      <path id="cl" d="M7.5,0 L5,5 L7.5,10"/>
-      <path id="yr" d="M2.5,0 L5,5 L2.5,10 M5,5 h5"/>
-      <path id="yl" d="M7.5,0 L5,5 L7.5,10 M5,5 h-5"/>
+{{walldefs}}
     </defs>
     <rect id="mazebg" class="mazebg" x="-10" y="-20" width="100%" height="100%"/>
 
