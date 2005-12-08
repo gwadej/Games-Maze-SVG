@@ -3,6 +3,7 @@ Revision history for Games-Maze-SVG
 0.71   12/2005
 	- Various code clean ups
 	- Extend testing to cover new hex shapes.
+	- Corrected drawing anomally when running on a hex maze.
 0.7    12/2005
 	- Coverage testing to flush out remaining bugs.
 	- Fix a few bugs in error-handling found by coverage testing.
