@@ -14,19 +14,19 @@ function move_sprite(evt)
 	    return;
 	case 40: // down
 	   while(sprite.move_down() && shifted)
-	       ;
+	       sprite.show();
 	   break;
 	case 38: // up
 	   while(sprite.move_up() && shifted)
-	       ;
+	       sprite.show();
 	   break;
 	case 37: // left
 	   while(move_left() && shifted)
-	       ;
+	       sprite.show();
 	   break;
 	case 39: // right
 	   while(move_right() && shifted)
-	       ;
+	       sprite.show();
 	   break;
 	default:
 	   return;
