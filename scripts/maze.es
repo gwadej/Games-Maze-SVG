@@ -8,6 +8,7 @@ var shifted = false;
 
 var game;
 var sprite;
+var extents;
 
 /*
  * The MazeGame object will maintain the current state of the game and
@@ -72,6 +73,8 @@ function initialize( board, start, end, tile )
     sprite.reset();
 
     remove_msg();
+
+    extents = getDisplaySize();
 }
 
 function create_crumb_point( pt )
@@ -111,6 +114,12 @@ function remove_msg()
     }
 }
 
+function  setText(elem, str)
+ {
+   var text = document.createTextNode( str );
+   elem.replaceChild( text, elem.getFirstChild() );
+ }
+
 function restart()
 {
     sprite.reset();
@@ -128,22 +137,22 @@ function make_visible( name )
 
 function maze_up()
 {
-    game.maze_move( 1, 25 );
+    game.maze_move( 1, -25 );
 }
 
 function maze_down()
 {
-    game.maze_move( 1, -25 );
+    game.maze_move( 1, 25 );
 }
 
 function maze_left()
 {
-    game.maze_move( 0, 25 );
+    game.maze_move( 0, -25 );
 }
 
 function maze_right()
 {
-    game.maze_move( 0, -25 );
+    game.maze_move( 0, 25 );
 }
 
 function maze_reset()
@@ -160,3 +169,27 @@ function restore_position()
 {
     sprite.restore();
 }
+
+function getDisplaySize()
+{
+    var extents = null;
+    try
+    {
+        var view = document.documentElement.viewport;
+
+        extents = {
+            width: view.width,
+            height: view.height
+        };
+    }
+    catch(e)
+    {
+        extents = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+    }
+
+    return extents;
+}
+

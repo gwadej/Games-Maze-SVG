@@ -510,7 +510,7 @@ EOB
     <g transform="translate(20,65)">
       <rect x="-2" y="-2" rx="25" ry="25" width="68" height="68"
           fill="none" stroke-width="0.5" stroke="black"/>
-      <text x="34" y="-5" class="ctrllabel">Move Maze</text>
+      <text x="34" y="-5" class="ctrllabel">Move View</text>
 EOB
     $output .= _create_view_button( 'maze_up',    22,  0, '10,5 5,15 15,15' );
     $output .= _create_view_button( 'maze_left',   0, 22, '5,10 15,5 15,15' );
