@@ -342,5 +342,5 @@ __DATA__
       <text x="0" y="180">Back button restores last position</text>
     </g>
   </g>
-  <text id="solvedmsg" x="180" y="217.5" opacity="0">Solved!</text>
+  <text id="solvedmsg" x="180" y="217.5" visibility="hidden">Solved!</text>
 </svg>

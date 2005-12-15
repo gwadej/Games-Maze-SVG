@@ -74,8 +74,6 @@ function initialize()
     
     sprite.reset();
 
-    remove_msg();
-
     extents = getDisplaySize();
 }
 
@@ -102,7 +100,7 @@ function finished_msg()
     }
     else
     {
-        msg.setAttributeNS( null, "opacity", "1.0" );
+        msg.setAttributeNS( null, "visibility", "visible" );
         setTimeout( "remove_msg()", 2000 );
     }
 }
@@ -112,7 +110,7 @@ function remove_msg()
     var msg = document.getElementById( "solvedmsg" );
     if(null != msg)
     {
-        msg.setAttributeNS( null, "opacity", "0.0" );
+        msg.setAttributeNS( null, "visibility", "hidden" );
     }
 }
 

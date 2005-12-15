@@ -420,7 +420,7 @@ EOH
         my ($cx,$cy) = (($self->{width}+PANEL_WIDTH)/2, (35+$panelheight/2));
         $output .= $self->build_control_panel( 0, $panelheight );
 	$output .= <<"EOM";
-  <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
+  <text id="solvedmsg" x="$cx" y="$cy" visibility="hidden">Solved!</text>
 EOM
     }
     $output . "</svg>\n";
