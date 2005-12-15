@@ -202,8 +202,6 @@ __DATA__
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }
-	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
-                   }
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
       <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
@@ -291,6 +289,5 @@ __DATA__
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
       <text x="0" y="4">Exit</text>
     </g>
-    <text id="solvedmsg" x="55" y="120" opacity="0">Solved!</text>
   </svg>
 </svg>

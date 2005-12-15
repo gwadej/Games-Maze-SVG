@@ -1,5 +1,10 @@
 Revision history for Games-Maze-SVG
 
+0.72   12/2005 (not released)
+	- Added support for maze:board element which allowed bigger mazes on
+	  Batik and cleaned up initialization code.
+	- Swapped the arrow buttons back.
+	- Fixed problem with very short mazes cutting off the help.
 0.71   12/2005
 	- Various code clean ups
 	- Extend testing to cover new hex shapes.

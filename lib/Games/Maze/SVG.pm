@@ -17,11 +17,11 @@ Games::Maze::SVG - Build mazes in SVG.
 
 =head1 VERSION
 
-Version 0.71
+Version 0.72
 
 =cut
 
-our $VERSION = 0.71;
+our $VERSION = 0.72;
 
 =head1 SYNOPSIS
 
@@ -39,6 +39,7 @@ See Games::Maze::SVG::Manual for more information on using the module.
 use constant SIGN_HEIGHT => 20;
 use constant SIDE_MARGIN => 10;
 use constant PANEL_WIDTH => 250;
+use constant PANEL_MIN_HEIGHT => 365;
 
 my %crumbstyles = (
                    dash => "stroke-width:1px; stroke-dasharray:5px,3px;",
@@ -306,7 +307,6 @@ sub  toString
 
     my $width = $self->{width} + 2 * SIDE_MARGIN;
     my $height = $self->{height} + 2 * SIGN_HEIGHT;
-    my ($cx,$cy) = ($self->{width}/2, (35+$self->{height}/2));
     my $sprite_def = $self->create_sprite();
 
     my $output = qq{<?xml version="1.0"?>\n} ;
@@ -315,6 +315,7 @@ sub  toString
     my ($xme, $yme) = ($xp*$self->dx(), $yp*$self->dy());
     my ($xcrumb, $ycrumb) = ($xme+$self->dx()/2, $yme+$self->dy()/2);
 
+    my $panelheight = $height > PANEL_MIN_HEIGHT ? $height : PANEL_MIN_HEIGHT;
     if($self->{interactive})
     {
         my $script = $self->build_all_script();
@@ -324,7 +325,7 @@ sub  toString
 
         my $totalwidth = $width + PANEL_WIDTH;
         $output .= <<"EOH";
-<svg width="$totalwidth" height="$height"
+<svg width="$totalwidth" height="$panelheight"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      xmlns:maze="http://www.anomaly.org/2005/maze"
@@ -343,6 +344,8 @@ $license
 	.button text { text-anchor:middle; fill:#fff; font-weight:bold; }
 	.button polygon { fill:white; stroke:none; }
 	.ctrllabel { text-anchor:middle; font-weight:bold; }
+	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
+                   }
      </style>
      <filter id="bevel">
        <feFlood flood-color="#ccf" result="lite-flood"/>
@@ -390,8 +393,6 @@ EOH
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }
-	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
-                   }
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
 $sprite_def
@@ -411,13 +412,16 @@ $self->{mazeout}
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
       <text x="0" y="4">Exit</text>
     </g>
-    <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
   </svg>
 EOH
 
     if($self->{interactive})
     {
-        $output .= $self->build_control_panel( 0, $height );
+        my ($cx,$cy) = (($self->{width}+PANEL_WIDTH)/2, (35+$panelheight/2));
+        $output .= $self->build_control_panel( 0, $panelheight );
+	$output .= <<"EOM";
+  <text id="solvedmsg" x="$cx" y="$cy" opacity="0">Solved!</text>
+EOM
     }
     $output . "</svg>\n";
 }

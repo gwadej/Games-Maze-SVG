@@ -47,7 +47,7 @@ is_string( $maze->toString(), $output, "Full transform works." );
 
 __DATA__
 <?xml version="1.0"?>
-<svg width="380" height="210"
+<svg width="380" height="365"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      xmlns:maze="http://www.anomaly.org/2005/maze"
@@ -99,6 +99,8 @@ __DATA__
 	.button text { text-anchor:middle; fill:#fff; font-weight:bold; }
 	.button polygon { fill:white; stroke:none; }
 	.ctrllabel { text-anchor:middle; font-weight:bold; }
+	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
+                   }
      </style>
      <filter id="bevel">
        <feFlood flood-color="#ccf" result="lite-flood"/>
@@ -166,8 +168,6 @@ __DATA__
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }
-	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
-                   }
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
       <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
@@ -271,10 +271,9 @@ __DATA__
       <rect x="-16" y="-8" width="32" height="16" rx="3" ry="3"/>
       <text x="0" y="4">Exit</text>
     </g>
-    <text id="solvedmsg" x="55" y="120" opacity="0">Solved!</text>
   </svg>
   <g id="control_panel" transform="translate(0,0)">
-    <rect x="0" y="0" width="250" height="210"
+    <rect x="0" y="0" width="250" height="365"
           class="panel"/>
 
     <g onclick="restart()" transform="translate(20,20)" class="button"
@@ -343,4 +342,5 @@ __DATA__
       <text x="0" y="180">Back button restores last position</text>
     </g>
   </g>
+  <text id="solvedmsg" x="180" y="217.5" opacity="0">Solved!</text>
 </svg>
