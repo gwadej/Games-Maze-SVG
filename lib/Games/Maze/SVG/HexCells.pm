@@ -211,30 +211,6 @@ sub  set_wall_form
     $self;
 }
 
-
-=item make_board_array
-
-Build a two-dimensional array of integers that maps the board from
-the two dimensional matrix of wall descriptions.
-
-=cut
-
-sub make_board_array
-{
-    my $self = shift;
-    my $rows = shift;
-    my @board = ();
-
-    foreach my $row (@{$rows})
-    {
-        push @board, [ map { $_ ? ($_ eq 'xh' ? -1 : 1) : 0 } @{$row} ];
-    }
-
-    \@board;
-}
-
-
-
 =item transform_grid
 
 Convert the hexagonal grid from ascii format to SVG definition

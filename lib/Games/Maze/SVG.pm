@@ -418,6 +418,28 @@ EOH
 }
 
 
+=item make_board_array
+
+Build a two-dimensional array of integers that maps the board from
+the two dimensional matrix of wall descriptions.
+
+=cut
+
+sub make_board_array
+{
+    my $self = shift;
+    my $rows = shift;
+    my @board = ();
+
+    foreach my $row (@{$rows})
+    {
+        push @board, [ map { $_ ? 1 : 0 } @{$row} ];
+    }
+    
+    \@board;
+}
+
+
 =item build_all_script
 
 Generate the full set of script sections for the maze.
