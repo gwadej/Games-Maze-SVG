@@ -55,27 +55,27 @@ MazeGame.prototype.downright_blocked = function( pt )
 {
     return pt.y+1 == this.board.length
         || pt.x+1 == this.board[pt.y+1].length
-        || this.board[pt.y+1][pt.x+1];
+        || this.board[pt.y+1][pt.x+1]-0;
 }
 
 MazeGame.prototype.downleft_blocked = function( pt )
 {
     return pt.x < 0 || pt.y+1 == this.board.length
-        || this.board[pt.y+1][pt.x-1]
-        || this.board[pt.y][pt.x-1];
+        || this.board[pt.y+1][pt.x-1]-0
+        || this.board[pt.y][pt.x-1]-0;
 }
 
 MazeGame.prototype.upright_blocked = function( pt )
 {
     return pt.y < 0 || pt.x+1 == this.board[pt.y-1].length
-    || this.board[pt.y-1][pt.x+1]
-    || (this.board[pt.y][pt.x+1] && this.board[pt.y-1][pt.x]);
+    || this.board[pt.y-1][pt.x+1]-0
+    || (this.board[pt.y][pt.x+1]-0 && this.board[pt.y-1][pt.x]-0);
 }
 
 MazeGame.prototype.upleft_blocked = function( pt )
 {
-    return pt.x < 0 || pt.y < 0 || this.board[pt.y-1][pt.x-1]
-     || (this.board[pt.y][pt.x-1] && this.board[pt.y-1][pt.x]);
+    return pt.x < 0 || pt.y < 0 || this.board[pt.y-1][pt.x-1]-0
+     || (this.board[pt.y][pt.x-1]-0 && this.board[pt.y-1][pt.x]-0);
 }
 
 

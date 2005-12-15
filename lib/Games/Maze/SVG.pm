@@ -317,14 +317,18 @@ sub  toString
 
     if($self->{interactive})
     {
-        my $script = $self->build_all_script( \@rows );
+        my $script = $self->build_all_script();
+	my $boardelem = $self->build_board_element(
+	    \@rows, $xp, $yp, $xe, $ye
+	);
 
         my $totalwidth = $width + PANEL_WIDTH;
         $output .= <<"EOH";
 <svg width="$totalwidth" height="$height"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     onload="initialize( board, {x:$xp, y:$yp}, {x:$xe, y:$ye}, {x:@{[$self->dx()]}, y:@{[$self->dy()]}} )"
+     xmlns:maze="http://www.anomaly.org/2005/maze"
+     onload="initialize()"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
 $license
   <defs>
@@ -356,6 +360,7 @@ $license
         </feMerge>
      </filter>
 $script
+$boardelem
   </defs>
   <svg x="@{[ PANEL_WIDTH ]}" y="0" width="$width" height="$height"
        viewBox="$offsetx $offsety $width $height" id="maze">
@@ -444,37 +449,16 @@ sub make_board_array
 
 Generate the full set of script sections for the maze.
 
-=over 4
-
-=item $rows reference to an array of rows.
-
-=back
-
 =cut
 
 sub build_all_script
 {
     my $self = shift;
-    my $rows = shift;
     
-    my $script = qq{    <script type="text/ecmascript" xlink:href="$self->{dir}sprite.es"/>\n};
-    $script  .= qq{    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>\n};
-    $script  .= qq{    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>\n};
-
-    my $board = $self->make_board_array( $rows );
-
-    $script .= qq{    <script type="text/ecmascript">\n}
-              .qq{      var board = new Array();\n};
-    my $i = 0;
-    foreach my $row (@{$board})
-    {
-	$script .= qq{      board[$i] = new Array(}
-                   . join( ', ', @{$row} )
-	           . qq{ );\n};
-	$i++;
-    }
-    $script .= <<'EOS';
-    </script>
+    my $script = <<"EOS";
+    <script type="text/ecmascript" xlink:href="$self->{dir}sprite.es"/>
+    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>
+    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>
     <script type="text/ecmascript">
       function push( evt )
        {
@@ -491,6 +475,43 @@ sub build_all_script
 EOS
 
    $script;
+}
+
+
+
+=item build_board_element
+
+Create the element that describes the board.
+
+=over 4
+
+=item $rows reference to an array of rows.
+
+=back
+
+=cut
+
+sub build_board_element
+{
+    my $self = shift;
+    my $rows = shift;
+    my ($xp, $yp, $xe, $ye) = @_;
+
+    my $tilex = $self->dx();
+    my $tiley = $self->dy();
+    
+    my $board = $self->make_board_array( $rows );
+
+    my $elem .= qq{    <maze:board start="$xp,$yp" end="$xe,$ye" tile="$tilex,$tiley">\n};
+    foreach my $row (@{$board})
+    {
+	$elem .= qq{      } . join( '', @{$row} ) ."\n";
+    }
+    $elem .= <<'EOS';
+    </maze:board>
+EOS
+
+   $elem;
 }
 
 

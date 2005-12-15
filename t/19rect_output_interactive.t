@@ -190,7 +190,8 @@ __DATA__
 <svg width="340" height="110"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     onload="initialize( board, {x:3, y:-2}, {x:3, y:10}, {x:10, y:10} )"
+     xmlns:maze="http://www.anomaly.org/2005/maze"
+     onload="initialize()"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
   <metadata>
     <!--
@@ -258,16 +259,6 @@ __DATA__
     <script type="text/ecmascript" xlink:href="scripts/maze.es"/>
     <script type="text/ecmascript" xlink:href="scripts/rectmaze.es"/>
     <script type="text/ecmascript">
-      var board = new Array();
-      board[0] = new Array(1, 1, 1, 1, 1, 1, 1 );
-      board[1] = new Array(1, 0, 1, 0, 1, 0, 1 );
-      board[2] = new Array(1, 1, 1, 1, 1, 1, 1 );
-      board[3] = new Array(1, 0, 1, 0, 1, 0, 1 );
-      board[4] = new Array(1, 1, 1, 1, 1, 1, 1 );
-      board[5] = new Array(1, 0, 1, 0, 1, 0, 1 );
-      board[6] = new Array(1, 1, 1, 1, 1, 1, 1 );
-    </script>
-    <script type="text/ecmascript">
       function push( evt )
        {
         var btn = evt.getCurrentTarget();
@@ -280,6 +271,16 @@ __DATA__
            btn.removeAttributeNS( null, "opacity" );
        }
     </script>
+
+    <maze:board start="3,-2" end="3,10" tile="10,10">
+      1111111
+      1010101
+      1111111
+      1010101
+      1111111
+      1010101
+      1111111
+    </maze:board>
 
   </defs>
   <svg x="250" y="0" width="90" height="110"

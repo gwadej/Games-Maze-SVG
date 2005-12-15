@@ -50,7 +50,8 @@ __DATA__
 <svg width="380" height="210"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     onload="initialize( board, {x:11, y:-4}, {x:11, y:22}, {x:10, y:10} )"
+     xmlns:maze="http://www.anomaly.org/2005/maze"
+     onload="initialize()"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
   <metadata>
     <!--
@@ -118,26 +119,6 @@ __DATA__
     <script type="text/ecmascript" xlink:href="scripts/maze.es"/>
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
     <script type="text/ecmascript">
-      var board = new Array();
-      board[0] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[1] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[2] = new Array(1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1 );
-      board[3] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[4] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[5] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[6] = new Array(1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1 );
-      board[7] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[8] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[9] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[10] = new Array(1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1 );
-      board[11] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[12] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[13] = new Array(0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0 );
-      board[14] = new Array(0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 );
-      board[15] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-      board[16] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-    </script>
-    <script type="text/ecmascript">
       function push( evt )
        {
         var btn = evt.getCurrentTarget();
@@ -150,6 +131,26 @@ __DATA__
            btn.removeAttributeNS( null, "opacity" );
        }
     </script>
+
+    <maze:board start="11,-4" end="11,22" tile="10,10">
+      01110001110
+      11011011011
+      10001110001
+      11011011011
+      01110001110
+      11011011011
+      10001110001
+      11011011011
+      01110001110
+      11011011011
+      10001110001
+      11011011011
+      01110001110
+      00011011000
+      00001110000
+      00000000000
+      00000000000
+    </maze:board>
 
   </defs>
   <svg x="250" y="0" width="130" height="210"

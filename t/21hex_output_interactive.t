@@ -51,7 +51,8 @@ __DATA__
 <svg width="440" height="290"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     onload="initialize( board, {x:5, y:0}, {x:17, y:34}, {x:10, y:10} )"
+     xmlns:maze="http://www.anomaly.org/2005/maze"
+     onload="initialize()"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
   <metadata>
     <!--
@@ -119,34 +120,6 @@ __DATA__
     <script type="text/ecmascript" xlink:href="scripts/maze.es"/>
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
     <script type="text/ecmascript">
-      var board = new Array();
-      board[0] = new Array(0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 );
-      board[1] = new Array(0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0 );
-      board[2] = new Array(0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 );
-      board[3] = new Array(0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0 );
-      board[4] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[5] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[6] = new Array(1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1 );
-      board[7] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[8] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[9] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[10] = new Array(1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1 );
-      board[11] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[12] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[13] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[14] = new Array(1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1 );
-      board[15] = new Array(1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1 );
-      board[16] = new Array(0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 );
-      board[17] = new Array(0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0 );
-      board[18] = new Array(0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 );
-      board[19] = new Array(0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0 );
-      board[20] = new Array(0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 );
-      board[21] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-      board[22] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-      board[23] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-      board[24] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
-    </script>
-    <script type="text/ecmascript">
       function push( evt )
        {
         var btn = evt.getCurrentTarget();
@@ -159,6 +132,34 @@ __DATA__
            btn.removeAttributeNS( null, "opacity" );
        }
     </script>
+
+    <maze:board start="5,0" end="17,34" tile="10,10">
+      00000001110000000
+      00000011011000000
+      00001110001110000
+      00011011011011000
+      01110001110001110
+      11011011011011011
+      10001110001110001
+      11011011011011011
+      01110001110001110
+      11011011011011011
+      10001110001110001
+      11011011011011011
+      01110001110001110
+      11011011011011011
+      10001110001110001
+      11011011011011011
+      01110001110001110
+      00011011011011000
+      00001110001110000
+      00000011011000000
+      00000001110000000
+      00000000000000000
+      00000000000000000
+      00000000000000000
+      00000000000000000
+    </maze:board>
 
   </defs>
   <svg x="250" y="0" width="190" height="290"

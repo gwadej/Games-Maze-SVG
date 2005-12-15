@@ -44,31 +44,33 @@ MazeGame.prototype.maze_move = function( index, offset )
 
 MazeGame.prototype.up_blocked = function( pt )
 {
-    return (pt.y == 0 || this.board[pt.y-1][pt.x]);
+    return (pt.y == 0 || this.board[pt.y-1][pt.x]-0);
 }
 
 MazeGame.prototype.left_blocked = function( pt )
 {
-    return pt.x < 0 || this.board[pt.y][pt.x-1] > 0;
+    return pt.x < 0 || this.board[pt.y][pt.x-1]-0 > 0;
 }
 
 MazeGame.prototype.right_blocked = function( pt )
 {
     return pt.x+1 == this.board[pt.y].length
-        || this.board[pt.y][pt.x+1] > 0;
+        || this.board[pt.y][pt.x+1]-0 > 0;
 }
 
 MazeGame.prototype.down_blocked = function( pt )
 {
-    return pt.y+1 == this.board.length || this.board[pt.y+1][pt.x];
+    return pt.y+1 == this.board.length || this.board[pt.y+1][pt.x]-0;
 }
 
 /***** Standalone functions *******/
 
-function initialize( board, start, end, tile )
+function initialize()
 {
-    game = new MazeGame( start, end, board );
-    sprite = new Sprite( start, tile, game );
+    var mazedesc = loadBoard();
+
+    game = new MazeGame( mazedesc.start, mazedesc.end, mazedesc.board );
+    sprite = new Sprite( mazedesc.start, mazedesc.tile, game );
     
     sprite.reset();
 
@@ -193,3 +195,57 @@ function getDisplaySize()
     return extents;
 }
 
+function loadBoard()
+{
+    var elem = document.getElementsByTagNameNS( "http://www.anomaly.org/2005/maze",
+        "board" ).item( 0 );
+
+    var content = elem.childNodes.item( 0 ).nodeValue;
+
+    // if the content is broken up for some reason.
+    for(var i = 1;i < elem.childNodes.length;++i)
+    {
+        content = content + elem.childNodes.item( i ).nodeValue;
+    }
+
+    var lines = content.split( /\s+/ );
+    var retval = {
+        board: [],
+	start: { x: 0, y: 0 },
+	end: { x: 0, y: 0 },
+	tile: { x: 0, y: 0 }
+    };
+
+    for(var i=0, j=0;i < lines.length;++i)
+    {
+        lines[i].replace( /\s+/g, '' );
+	if(lines[i].length)
+	{
+	    retval.board[j++] = lines[i].split( '' );
+	}
+    }
+    
+    retval.start = pointFromAttribute( elem, "start" );
+    retval.end = pointFromAttribute( elem, "end" );
+    retval.tile = pointFromAttribute( elem, "tile" );
+    
+    return retval;
+}
+
+
+function pointFromAttribute( elem, attr )
+{
+    var value = elem.getAttributeNS( null, attr );
+    if(null == value)
+    {
+        return null;
+    }
+
+    var parts = value.split( /[, ]+/ );
+    if(2 > parts.length)
+    {
+        return null;
+    }
+
+    return { x: parts[0]-0, y: parts[1]-0 };
+}
