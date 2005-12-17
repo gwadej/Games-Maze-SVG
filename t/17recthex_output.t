@@ -155,6 +155,9 @@ __DATA__
 <svg width="130" height="210"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>An SVG Maze</title>
+  <desc>This maze was generated using the Games::Maze::SVG Perl
+    module.</desc>
   <metadata>
     <!--
         Copyright 2004-2005, G. Wade Johnson

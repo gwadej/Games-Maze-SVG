@@ -331,6 +331,9 @@ sub  toString
      xmlns:maze="http://www.anomaly.org/2005/maze"
      onload="initialize()"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+  <title>A Playable SVG Maze</title>
+  <desc>This maze was generated using the Games::Maze::SVG Perl
+    module.</desc>
 $license
   <defs>
      <style type="text/css">
@@ -375,6 +378,9 @@ EOH
 <svg width="$width" height="$height"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>An SVG Maze</title>
+  <desc>This maze was generated using the Games::Maze::SVG Perl
+    module.</desc>
 $license
   <svg x="0" y="0" width="$width" height="$height"
        viewBox="$offsetx $offsety $width $height" id="maze">

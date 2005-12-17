@@ -193,6 +193,9 @@ __DATA__
      xmlns:maze="http://www.anomaly.org/2005/maze"
      onload="initialize()"
      onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+  <title>A Playable SVG Maze</title>
+  <desc>This maze was generated using the Games::Maze::SVG Perl
+    module.</desc>
   <metadata>
     <!--
         Copyright 2004-2005, G. Wade Johnson
