@@ -75,6 +75,12 @@ function initialize()
     sprite.reset();
 
     extents = getDisplaySize();
+    
+    // Center the message on the screen.
+    var msg = document.getElementById( "solvedmsg" );
+    msg.setAttributeNS( null, "x", extents.width/2 );
+    msg.setAttributeNS( null, "y", extents.height/2 );
+    
 }
 
 function create_crumb_point( pt )
