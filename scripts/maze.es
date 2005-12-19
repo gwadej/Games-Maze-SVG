@@ -15,7 +15,7 @@ var extents;
  * update the display.
  */
 
-function MazeGame( start, end, board )
+function MazeGame( start, end, board, extents )
 {
     this.start = start;
     this.end = end;
@@ -23,6 +23,17 @@ function MazeGame( start, end, board )
 
     this.maze = document.getElementById( "maze" );
     this.origin = this.maze.getAttributeNS( null, "viewBox" );
+
+    // The displayable area of the screen
+    this.viewport = {
+        width: extents.width - this.maze.getAttributeNS( null, "x" ),
+        height: extents.height
+    };
+    // The full extent of the maze.
+    this.extents = {
+        width: this.maze.getAttributeNS( null, "width" ) - 0,
+	heigth: this.maze.getAttributeNS( null, "height" ) - 0
+    };
 }
 
 MazeGame.prototype.isFinished = function( pt )
@@ -68,19 +79,16 @@ MazeGame.prototype.down_blocked = function( pt )
 function initialize()
 {
     var mazedesc = loadBoard();
+    extents = getDisplaySize();
 
-    game = new MazeGame( mazedesc.start, mazedesc.end, mazedesc.board );
+    game = new MazeGame( mazedesc.start, mazedesc.end, mazedesc.board, extents );
     sprite = new Sprite( mazedesc.start, mazedesc.tile, game );
-    
     sprite.reset();
 
-    extents = getDisplaySize();
-    
     // Center the message on the screen.
     var msg = document.getElementById( "solvedmsg" );
     msg.setAttributeNS( null, "x", extents.width/2 );
     msg.setAttributeNS( null, "y", extents.height/2 );
-    
 }
 
 function create_crumb_point( pt )
@@ -179,9 +187,10 @@ function restore_position()
 function getDisplaySize()
 {
     var extents = null;
+    var doc = document.documentElement;
     try
     {
-        var view = document.documentElement.viewport;
+        var view = doc.viewport;
 
         extents = {
             width: view.width,
@@ -194,6 +203,17 @@ function getDisplaySize()
             width: window.innerWidth,
             height: window.innerHeight
         };
+    }
+
+    var w = doc.getAttributeNS( null, "width" )-0;
+    var h = doc.getAttributeNS( null, "height" )-0;
+    if(w < extents.width)
+    {
+        extents.width = w;
+    }
+    if(h < extents.height)
+    {
+        extents.height = h;
     }
 
     return extents;
