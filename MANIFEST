@@ -41,6 +41,9 @@ t/21hex_output_interactive.t
 t/22dimensions.t
 t/23recthex-wallform.t
 t/24hex-wallform.t
+t/25build_script_rect.t
+t/26build_script_recthex.t
+t/27build_script_hex.t
 t/lib/MazeTestUtils.pm
 t/lib/TestString.pm
 t/pod-coverage.t
