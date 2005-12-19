@@ -104,7 +104,7 @@ Takes one positional parameter that is the maze type: Rect, RectHex, or Hex
 =item wallform
 
 String naming the wall format. Legal values are bevel, round, roundcorners,
-and straight.
+and straight. Not all formats work with all maze shapes.
 
 =item crumb
 
@@ -455,6 +455,26 @@ sub make_board_array
 }
 
 
+=item get_script_list
+
+Returns a list of script URLs that will be needed by the interactive
+maze.
+
+=cut
+
+sub get_script_list
+{
+    my $self = shift;
+    my @scripts = (
+        "$self->{dir}sprite.es",
+	"$self->{dir}maze.es",
+	$self->get_script(),
+    );
+
+    @scripts;
+}
+
+
 =item build_all_script
 
 Generate the full set of script sections for the maze.
@@ -464,11 +484,15 @@ Generate the full set of script sections for the maze.
 sub build_all_script
 {
     my $self = shift;
+
+    my $script = "";
     
-    my $script = <<"EOS";
-    <script type="text/ecmascript" xlink:href="$self->{dir}sprite.es"/>
-    <script type="text/ecmascript" xlink:href="$self->{dir}maze.es"/>
-    <script type="text/ecmascript" xlink:href="@{[$self->get_script()]}"/>
+    foreach my $url ($self->get_script_list())
+    {
+        $script .= qq{    <script type="text/ecmascript" xlink:href="$url"/>\n};
+    }
+
+    $script .= <<"EOS";
     <script type="text/ecmascript">
       function push( evt )
        {
