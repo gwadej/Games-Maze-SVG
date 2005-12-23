@@ -46,6 +46,20 @@ MazeGame.prototype.reset_origin = function()
     this.maze.setAttributeNS( null, "viewBox", this.origin );
 }
 
+MazeGame.prototype.center_view = function()
+{
+    var vctr = { x: this.viewport.width/2, y: this.viewport.height/2 };
+    var curr = sprite.calc_crumb_position( sprite.curr );
+    var offset = { x: curr.x-vctr.x, y: curr.y-vctr.y };
+
+    this.maze.setAttributeNS(
+       null, "viewBox",
+       [ offset.x, offset.y,
+         this.viewport.width, this.viewport.height
+       ].join( " " )
+    );
+}
+
 MazeGame.prototype.maze_move = function( index, offset )
 {
     var box = this.maze.getAttributeNS( null, "viewBox" ).split( ' ' );
@@ -171,7 +185,8 @@ function maze_right()
 
 function maze_reset()
 {
-    game.reset_origin();
+//    game.reset_origin();
+    game.center_view();
 }
 
 function save_position()

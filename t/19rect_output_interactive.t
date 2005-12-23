@@ -426,7 +426,7 @@ __DATA__
       <text x="0" y="70">The mouse must remain over the</text>
       <text x="0" y="90">maze for the keys to work.</text>
       <text x="0" y="120">Use arrow buttons to shift the maze</text>
-      <text x="0" y="140">Center button restores position</text>
+      <text x="0" y="140">Center button centers view on sprite</text>
       <text x="0" y="160">Save button saves current position</text>
       <text x="0" y="180">Back button restores last position</text>
     </g>
