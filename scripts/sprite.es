@@ -21,6 +21,9 @@ function Sprite( start, tile, game )
 Sprite.prototype.reset = function()
 {
     this.curr     = this.start.clone();
+    this.curposn
+        = new Point( this.curr.x*this.tile.x, this.curr.y*this.tile.y );
+
     this.crumbpts = create_crumb_point( this.start );
     this.crumb.setAttributeNS( null, "points", this.crumbpts );
     this.saves.clear();
@@ -28,8 +31,7 @@ Sprite.prototype.reset = function()
 
 Sprite.prototype.show = function()
 {
-    this.elem.setAttributeNS( null, "x", (this.curr.x*this.tile.x) );
-    this.elem.setAttributeNS( null, "y", (this.curr.y*this.tile.y) );
+    positionElement( this.elem, this.curposn );
     this.elem.setAttributeNS( null, "visibility", "visible" );
 
     this.crumbpts += " " + create_crumb_point( this.curr );
@@ -65,21 +67,25 @@ Sprite.prototype.restore = function()
 Sprite.prototype.down = function()
 {
     this.curr.y++;
+    this.curposn.y += this.tile.y;
 }
 
 Sprite.prototype.up = function()
 {
     this.curr.y--;
+    this.curposn.y -= this.tile.y;
 }
 
 Sprite.prototype.left = function()
 {
     this.curr.x--;
+    this.curposn.x -= this.tile.x;
 }
 
 Sprite.prototype.right = function()
 {
     this.curr.x++;
+    this.curposn.x += this.tile.x;
 }
 
 Sprite.prototype.move_down = function()
