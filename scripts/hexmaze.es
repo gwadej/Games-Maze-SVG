@@ -87,8 +87,8 @@ Sprite.prototype.move_dnleft = function()
     {
         return false;
     }
-    this.curr.x--;
-    this.curr.y++;
+    this.left();
+    this.down();
     return true;
 }
 
@@ -98,8 +98,8 @@ Sprite.prototype.move_upleft = function()
     {
         return false;
     }
-    this.curr.x--;
-    this.curr.y--;
+    this.left();
+    this.up();
     return true;
 }
 
@@ -109,8 +109,8 @@ Sprite.prototype.move_dnright = function()
     {
         return false;
     }
-    this.curr.x++;
-    this.curr.y++;
+    this.right();
+    this.down();
     return true;
 }
 
@@ -120,7 +120,7 @@ Sprite.prototype.move_upright = function()
     {
         return false;
     }
-    this.curr.x++;
-    this.curr.y--;
+    this.right();
+    this.up();
     return true;
 }

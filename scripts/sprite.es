@@ -61,13 +61,34 @@ Sprite.prototype.restore = function()
     }
 }
 
+
+Sprite.prototype.down = function()
+{
+    this.curr.y++;
+}
+
+Sprite.prototype.up = function()
+{
+    this.curr.y--;
+}
+
+Sprite.prototype.left = function()
+{
+    this.curr.x--;
+}
+
+Sprite.prototype.right = function()
+{
+    this.curr.x++;
+}
+
 Sprite.prototype.move_down = function()
 {
     if(this.game.down_blocked( this.curr ))
     {
          return false;
     }
-    this.curr.y++;
+    this.down();
     return true;
 }
 
@@ -77,7 +98,7 @@ Sprite.prototype.move_up = function()
     {
         return false;
     }
-    this.curr.y--;
+    this.up();
     return true;
 }
 
@@ -87,7 +108,7 @@ Sprite.prototype.move_left = function()
     {
         return false;
     }
-    this.curr.x--;
+    this.left();
     return true;
 }
 
@@ -97,7 +118,7 @@ Sprite.prototype.move_right = function()
     {
         return false;
     }
-    this.curr.x++;
+    this.right();
     return true;
 }
 
