@@ -20,7 +20,7 @@ function Sprite( start, tile, game )
 
 Sprite.prototype.reset = function()
 {
-    this.curr     = {x:this.start.x, y:this.start.y};
+    this.curr     = this.start.clone();
     this.crumbpts = create_crumb_point( this.start );
     this.crumb.setAttributeNS( null, "points", this.crumbpts );
     this.saves.clear();
@@ -38,9 +38,9 @@ Sprite.prototype.show = function()
 
 Sprite.prototype.calc_crumb_position = function( pt )
 {
-    return { x: pt.x*this.tile.x+this.tile.x/2,
-             y: pt.y*this.tile.y+this.tile.y/2
-           };
+    return new Point( pt.x*this.tile.x+this.tile.x/2,
+                      pt.y*this.tile.y+this.tile.y/2
+                    );
 }
 
 Sprite.prototype.save = function()
@@ -55,8 +55,7 @@ Sprite.prototype.restore = function()
     if(!this.saves.empty())
     {
         var saved = this.saves.last();
-        this.curr.x = saved.x;
-        this.curr.y = saved.y;
+	this.curr = saved.pt.clone();
         this.crumbpts = saved.crumb;
         this.show();
     }
@@ -118,13 +117,12 @@ Snapshots.prototype.save = function( pt, pos, crumbpts )
 {
     var mark = document.createElementNS( svgns, 'use' );
 
-    mark.setAttributeNS( null, 'x', pos.x );
-    mark.setAttributeNS( null, 'y', pos.y );
+    positionElement( mark, pos );
     mark.setAttributeNS( xlinkns, 'href', '#savemark' );
 
     this.maze.appendChild( mark );
 
-    this.stack.push( { x: pt.x, y: pt.y, crumb: crumbpts, marker: mark } );
+    this.stack.push( { pt: pt.clone(), crumb: crumbpts, marker: mark } );
 }
 
 Snapshots.prototype.last = function()

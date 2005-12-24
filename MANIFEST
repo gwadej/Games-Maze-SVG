@@ -16,6 +16,7 @@ scripts/hexmaze.es
 scripts/maze.es
 scripts/rectmaze.es
 scripts/sprite.es
+scripts/point.es
 t/00-load.t
 t/01ctor-default.t
 t/02ctor-bad.t

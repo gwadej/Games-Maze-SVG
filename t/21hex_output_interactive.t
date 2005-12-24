@@ -121,6 +121,7 @@ __DATA__
          <feMergeNode in="SourceGraphic"/>
         </feMerge>
      </filter>
+    <script type="text/ecmascript" xlink:href="scripts/point.es"/>
     <script type="text/ecmascript" xlink:href="scripts/sprite.es"/>
     <script type="text/ecmascript" xlink:href="scripts/maze.es"/>
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>

@@ -466,6 +466,7 @@ sub get_script_list
 {
     my $self = shift;
     my @scripts = (
+        "$self->{dir}point.es",
         "$self->{dir}sprite.es",
 	"$self->{dir}maze.es",
 	$self->get_script(),

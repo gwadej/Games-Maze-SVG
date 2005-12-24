@@ -38,7 +38,7 @@ function MazeGame( start, end, board, extents )
 
 MazeGame.prototype.isFinished = function( pt )
 {
-    return pt.x == this.end.x && pt.y == this.end.y;
+    return this.end.equals( pt );
 }
 
 MazeGame.prototype.reset_origin = function()
@@ -48,9 +48,9 @@ MazeGame.prototype.reset_origin = function()
 
 MazeGame.prototype.center_view = function()
 {
-    var vctr = { x: this.viewport.width/2, y: this.viewport.height/2 };
+    var vctr = new Point( this.viewport.width/2, this.viewport.height/2 );
     var curr = sprite.calc_crumb_position( sprite.curr );
-    var offset = { x: curr.x-vctr.x, y: curr.y-vctr.y };
+    var offset = new Point( curr.x-vctr.x, curr.y-vctr.y );
 
     this.maze.setAttributeNS(
        null, "viewBox",
@@ -108,7 +108,7 @@ function initialize()
 function create_crumb_point( pt )
 {
     var pos = sprite.calc_crumb_position( pt );
-    return pos.x +  "," + pos.y;
+    return "" + pos;
 }
 
 function unshift(evt)
@@ -185,7 +185,6 @@ function maze_right()
 
 function maze_reset()
 {
-//    game.reset_origin();
     game.center_view();
 }
 
@@ -250,9 +249,9 @@ function loadBoard()
     var lines = content.split( /\s+/ );
     var retval = {
         board: [],
-	start: { x: 0, y: 0 },
-	end: { x: 0, y: 0 },
-	tile: { x: 0, y: 0 }
+	start: new Point(),
+	end: new Point(),
+	tile: new Point()
     };
 
     for(var i=0, j=0;i < lines.length;++i)
@@ -280,11 +279,5 @@ function pointFromAttribute( elem, attr )
         return null;
     }
 
-    var parts = value.split( /[, ]+/ );
-    if(2 > parts.length)
-    {
-        return null;
-    }
-
-    return { x: parts[0]-0, y: parts[1]-0 };
+    return new Point( value );
 }

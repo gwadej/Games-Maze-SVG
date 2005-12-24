@@ -16,6 +16,7 @@ my $maze = Games::Maze::SVG->new( 'RectHex' );
 can_ok( $maze, qw/get_script_list build_all_script/ );
 
 my $scripts = [
+    "scripts/point.es",
     "scripts/sprite.es",
     "scripts/maze.es",
     "scripts/hexmaze.es",
@@ -24,6 +25,7 @@ my $scripts = [
 is_deeply( [ $maze->get_script_list() ], $scripts, "Correct list of scripts" );
 
 my $script = <<"EOF";
+    <script type="text/ecmascript" xlink:href="scripts/point.es"/>
     <script type="text/ecmascript" xlink:href="scripts/sprite.es"/>
     <script type="text/ecmascript" xlink:href="scripts/maze.es"/>
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
