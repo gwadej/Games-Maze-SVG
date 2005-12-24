@@ -31,10 +31,7 @@ Sprite.prototype.reset = function()
 
 Sprite.prototype.create_crumb_point = function()
 {
-    var pos = this.curposn.clone();
-
-    pos.x += this.tile.x/2;
-    pos.y += this.tile.y/2;
+    var pos = this.calc_crumb_position();
 
     return "" + pos;
 }
@@ -50,16 +47,19 @@ Sprite.prototype.show = function()
 
 Sprite.prototype.calc_crumb_position = function()
 {
-    return new Point( this.curposn.x+this.tile.x/2,
-                      this.curposn.y+this.tile.y/2
-                    );
+    var pos = this.curposn.clone();
+
+    pos.x += this.tile.x/2;
+    pos.y += this.tile.y/2;
+
+    return pos;
 }
 
 Sprite.prototype.save = function()
 {
     var pos = this.calc_crumb_position();
 
-    this.saves.save( this.curr, pos, this.crumbpts );
+    this.saves.save( this.curr, this.curposn, pos, this.crumbpts );
 }
 
 Sprite.prototype.restore = function()
@@ -67,7 +67,8 @@ Sprite.prototype.restore = function()
     if(!this.saves.empty())
     {
         var saved = this.saves.last();
-	this.curr = saved.pt.clone();
+	this.curr    = saved.pt;
+	this.curposn = saved.curposn;
         this.crumbpts = saved.crumb;
         this.show();
     }
@@ -150,7 +151,7 @@ function Snapshots( maze )
     this.maze = maze;
 }
 
-Snapshots.prototype.save = function( pt, pos, crumbpts )
+Snapshots.prototype.save = function( pt, curposn, pos, crumbpts )
 {
     var mark = document.createElementNS( svgns, 'use' );
 
@@ -159,7 +160,11 @@ Snapshots.prototype.save = function( pt, pos, crumbpts )
 
     this.maze.appendChild( mark );
 
-    this.stack.push( { pt: pt.clone(), crumb: crumbpts, marker: mark } );
+    this.stack.push(
+      { pt: pt.clone(), curposn: curposn.clone(),
+        crumb: crumbpts, marker: mark
+      }
+    );
 }
 
 Snapshots.prototype.last = function()
