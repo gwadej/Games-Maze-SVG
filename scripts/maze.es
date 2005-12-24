@@ -49,7 +49,7 @@ MazeGame.prototype.reset_origin = function()
 MazeGame.prototype.center_view = function()
 {
     var vctr = new Point( this.viewport.width/2, this.viewport.height/2 );
-    var curr = sprite.calc_crumb_position( sprite.curr );
+    var curr = sprite.calc_crumb_position();
     var offset = new Point( curr.x-vctr.x, curr.y-vctr.y );
 
     this.maze.setAttributeNS(
@@ -103,12 +103,6 @@ function initialize()
     var msg = document.getElementById( "solvedmsg" );
     msg.setAttributeNS( null, "x", extents.width/2 );
     msg.setAttributeNS( null, "y", extents.height/2 );
-}
-
-function create_crumb_point( pt )
-{
-    var pos = sprite.calc_crumb_position( pt );
-    return "" + pos;
 }
 
 function unshift(evt)

@@ -24,9 +24,19 @@ Sprite.prototype.reset = function()
     this.curposn
         = new Point( this.curr.x*this.tile.x, this.curr.y*this.tile.y );
 
-    this.crumbpts = create_crumb_point( this.start );
+    this.crumbpts = this.create_crumb_point();
     this.crumb.setAttributeNS( null, "points", this.crumbpts );
     this.saves.clear();
+}
+
+Sprite.prototype.create_crumb_point = function()
+{
+    var pos = this.curposn.clone();
+
+    pos.x += this.tile.x/2;
+    pos.y += this.tile.y/2;
+
+    return "" + pos;
 }
 
 Sprite.prototype.show = function()
@@ -34,20 +44,20 @@ Sprite.prototype.show = function()
     positionElement( this.elem, this.curposn );
     this.elem.setAttributeNS( null, "visibility", "visible" );
 
-    this.crumbpts += " " + create_crumb_point( this.curr );
+    this.crumbpts += " " + this.create_crumb_point();
     this.crumb.setAttributeNS( null, "points", this.crumbpts );
 }
 
-Sprite.prototype.calc_crumb_position = function( pt )
+Sprite.prototype.calc_crumb_position = function()
 {
-    return new Point( pt.x*this.tile.x+this.tile.x/2,
-                      pt.y*this.tile.y+this.tile.y/2
+    return new Point( this.curposn.x+this.tile.x/2,
+                      this.curposn.y+this.tile.y/2
                     );
 }
 
 Sprite.prototype.save = function()
 {
-    var pos = this.calc_crumb_position( this.curr );
+    var pos = this.calc_crumb_position();
 
     this.saves.save( this.curr, pos, this.crumbpts );
 }
