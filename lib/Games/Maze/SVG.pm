@@ -288,7 +288,7 @@ sub  toString
 
     my $crumb  = '';
     my $color  = {
-                  mazebg => '#ffc', # '#9cc'; # '#fc0'
+                  mazebg => '#ffc',
                   panel  => '#ccc',
                   crumb  => '#f3f',
                   sprite => 'orange',
@@ -374,6 +374,8 @@ EOH
     }
     else
     {
+	$color->{mazebg} = '#fff';
+
         $output .= <<"EOH";
 <svg width="$width" height="$height"
      xmlns="http://www.w3.org/2000/svg"

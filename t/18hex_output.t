@@ -204,7 +204,7 @@ __DATA__
 	polygon { stroke: black; fill: grey; }
 	#sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
 	.crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
-	.mazebg { fill:#ffc; stroke:none; }
+	.mazebg { fill:#fff; stroke:none; }
 	text { font-family: sans-serif; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }

@@ -53,7 +53,7 @@ sub  get_maze_desc
     cols => $parms->{width} || 12,
     rows => $parms->{height} || 12,
     ($parms{walls} ? ( wallform => $parms{walls} ) : ()),
-    interactive => 1,
+    interactive => ($parms->{playable}||'') eq "yes",
     ($parms{crumb} ? ( crumb => $parms{crumb} ) : ()),
   );
 
