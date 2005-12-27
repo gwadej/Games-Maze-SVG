@@ -5,6 +5,7 @@ Revision history for Games-Maze-SVG
 	  Batik and cleaned up initialization code.
 	- Swapped the arrow buttons back.
 	- Fixed problem with very short mazes cutting off the help.
+	- Change background on non-interactive mazes for easier printing.
 0.71   12/2005
 	- Various code clean ups
 	- Extend testing to cover new hex shapes.
