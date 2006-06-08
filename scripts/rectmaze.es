@@ -9,22 +9,22 @@ function move_sprite(evt)
 {
     switch(evt.keyCode)
     {
-	case 16: // shift
+	case Keys.SHIFT:
             shifted = true;
 	    return;
-	case 40: // down
+	case Keys.DOWN:
 	   while(sprite.move_down() && shifted)
                ;
 	   break;
-	case 38: // up
+	case Keys.UP:
 	   while(sprite.move_up() && shifted)
                ;
 	   break;
-	case 37:
+	case Keys.LEFT:
 	   while(sprite.move_left() && shifted)
                ;
 	   break;
-	case 39: // right
+	case Keys.RIGHT:
 	   while(sprite.move_right() && shifted)
                ;
 	   break;

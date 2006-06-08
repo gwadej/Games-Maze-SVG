@@ -329,15 +329,14 @@ sub  toString
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      xmlns:maze="http://www.anomaly.org/2005/maze"
-     onload="initialize()"
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+     onload="initialize()">
   <title>A Playable SVG Maze</title>
   <desc>This maze was generated using the Games::Maze::SVG Perl
     module.</desc>
 $license
   <defs>
      <style type="text/css">
-	text { font-family: sans-serif; }
+	text { font-family: sans-serif; font-size: 10px; }
 	.panel  { fill:$color->{panel}; stroke:none; }
 	.button {
                    cursor: pointer;
@@ -397,7 +396,7 @@ EOH
 	#sprite { stroke: grey; stroke-width:0.2px; fill: $color->{sprite}; }
 	.crumbs { fill:none; $crumbstyle }
 	.mazebg { fill:$color->{mazebg}; stroke:none; }
-	text { font-family: sans-serif; }
+	text { font-family: sans-serif; font-size: 10px; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }
@@ -498,15 +497,16 @@ sub build_all_script
     $script .= <<"EOS";
     <script type="text/ecmascript">
       function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
+      {
+          var btn = evt.currentTarget;
+          btn.setAttributeNS( null, "opacity", "0.5" );
+      }
       function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
+      {
+          var btn = evt.currentTarget;
+          var opval = btn.getAttributeNS( null, "opacity" );
+          if("" != opval &amp;&amp; 1.0 != opval)
+              btn.setAttributeNS( null, "opacity", '1.0' );
        }
     </script>
 EOS
@@ -818,7 +818,7 @@ mazes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2004-2005 G. Wade Johnson, all rights reserved.
+Copyright 2004-2006 G. Wade Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -90,6 +90,14 @@ MazeGame.prototype.down_blocked = function( pt )
 
 /***** Standalone functions *******/
 
+Keys = {
+   SHIFT: 16,
+   DOWN: 40,
+   UP: 38,
+   LEFT: 37,
+   RIGHT: 39
+};
+
 function initialize()
 {
     var mazedesc = loadBoard();
@@ -103,11 +111,20 @@ function initialize()
     var msg = document.getElementById( "solvedmsg" );
     msg.setAttributeNS( null, "x", extents.width/2 );
     msg.setAttributeNS( null, "y", extents.height/2 );
+
+    try {
+        window.addEventListener("keydown", move_sprite, true);
+        window.addEventListener("keyup", unshift, true);
+    } catch (e) {
+        // MSIE6 compatibility
+        document.attachEvent("onkeydown", move_sprite);
+        document.attachEvent("onkeyup", unshift);
+    }
 }
 
 function unshift(evt)
 {
-    if(16 == evt.keyCode)
+    if(Keys.SHIFT == evt.keyCode)
     {
         shifted = false;
     }
@@ -139,7 +156,7 @@ function remove_msg()
 function  setText(elem, str)
  {
    var text = document.createTextNode( str );
-   elem.replaceChild( text, elem.getFirstChild() );
+   elem.replaceChild( text, elem.firstChild );
  }
 
 function restart()
