@@ -52,14 +52,13 @@ __DATA__
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      xmlns:maze="http://www.anomaly.org/2005/maze"
-     onload="initialize()"
-     onkeydown="move_sprite(evt)" onkeyup="unshift(evt)">
+     onload="initialize()">
   <title>A Playable SVG Maze</title>
   <desc>This maze was generated using the Games::Maze::SVG Perl
     module.</desc>
   <metadata>
     <!--
-        Copyright 2004-2005, G. Wade Johnson
+        Copyright 2004-2006, G. Wade Johnson
 	Some rights reserved.
     -->
     <rdf:RDF xmlns="http://web.resource.org/cc/"
@@ -67,7 +66,7 @@ __DATA__
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <Work rdf:about="">
        <dc:title>SVG Maze</dc:title>
-       <dc:date>2005</dc:date>
+       <dc:date>2006</dc:date>
        <dc:description>An SVG-based Game</dc:description>
        <dc:creator><Agent>
 	  <dc:title>G. Wade Johnson</dc:title>
@@ -93,7 +92,7 @@ __DATA__
 
   <defs>
      <style type="text/css">
-	text { font-family: sans-serif; }
+	text { font-family: sans-serif; font-size: 10px; }
 	.panel  { fill:#ccc; stroke:none; }
 	.button {
                    cursor: pointer;
@@ -127,16 +126,17 @@ __DATA__
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
     <script type="text/ecmascript">
       function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
+      {
+          var btn = evt.currentTarget;
+          btn.setAttributeNS( null, "opacity", "0.5" );
+      }
       function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
+      {
+          var btn = evt.currentTarget;
+          var opval = btn.getAttributeNS( null, "opacity" );
+          if("" != opval &amp;&amp; 1.0 != opval)
+              btn.setAttributeNS( null, "opacity", '1.0' );
+      }
     </script>
 
     <maze:board start="5,0" end="17,34" tile="10,10">
@@ -177,7 +177,7 @@ __DATA__
 	#sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
 	.crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
 	.mazebg { fill:#ffc; stroke:none; }
-	text { font-family: sans-serif; }
+	text { font-family: sans-serif; font-size: 10px; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }

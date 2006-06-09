@@ -31,16 +31,17 @@ my $script = <<"EOF";
     <script type="text/ecmascript" xlink:href="scripts/hexmaze.es"/>
     <script type="text/ecmascript">
       function push( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	btn.setAttributeNS( null, "opacity", "0.5" );
-       }
+      {
+          var btn = evt.currentTarget;
+          btn.setAttributeNS( null, "opacity", "0.5" );
+      }
       function release( evt )
-       {
-        var btn = evt.getCurrentTarget();
-	if("" != btn.getAttributeNS( null, "opacity" ))
-           btn.removeAttributeNS( null, "opacity" );
-       }
+      {
+          var btn = evt.currentTarget;
+          var opval = btn.getAttributeNS( null, "opacity" );
+          if("" != opval &amp;&amp; 1.0 != opval)
+              btn.setAttributeNS( null, "opacity", '1.0' );
+      }
     </script>
 EOF
 

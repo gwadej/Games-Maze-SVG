@@ -160,7 +160,7 @@ __DATA__
     module.</desc>
   <metadata>
     <!--
-        Copyright 2004-2005, G. Wade Johnson
+        Copyright 2004-2006, G. Wade Johnson
 	Some rights reserved.
     -->
     <rdf:RDF xmlns="http://web.resource.org/cc/"
@@ -168,7 +168,7 @@ __DATA__
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <Work rdf:about="">
        <dc:title>SVG Maze</dc:title>
-       <dc:date>2005</dc:date>
+       <dc:date>2006</dc:date>
        <dc:description>An SVG-based Game</dc:description>
        <dc:creator><Agent>
 	  <dc:title>G. Wade Johnson</dc:title>
@@ -201,7 +201,7 @@ __DATA__
 	#sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
 	.crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
 	.mazebg { fill:#fff; stroke:none; }
-	text { font-family: sans-serif; }
+	text { font-family: sans-serif; font-size: 10px; }
 	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
 	.exit rect {  fill:red; stroke:none; }
 	.entry rect {  fill:green; stroke:none; }

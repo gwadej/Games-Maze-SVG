@@ -51,7 +51,7 @@ my %crumbstyles = (
 my $license = <<'EOL';
   <metadata>
     <!--
-        Copyright 2004-2005, G. Wade Johnson
+        Copyright 2004-2006, G. Wade Johnson
 	Some rights reserved.
     -->
     <rdf:RDF xmlns="http://web.resource.org/cc/"
@@ -59,7 +59,7 @@ my $license = <<'EOL';
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <Work rdf:about="">
        <dc:title>SVG Maze</dc:title>
-       <dc:date>2005</dc:date>
+       <dc:date>2006</dc:date>
        <dc:description>An SVG-based Game</dc:description>
        <dc:creator><Agent>
 	  <dc:title>G. Wade Johnson</dc:title>
@@ -507,7 +507,7 @@ sub build_all_script
           var opval = btn.getAttributeNS( null, "opacity" );
           if("" != opval &amp;&amp; 1.0 != opval)
               btn.setAttributeNS( null, "opacity", '1.0' );
-       }
+      }
     </script>
 EOS
 
