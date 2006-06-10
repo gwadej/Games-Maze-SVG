@@ -1,5 +1,9 @@
 Revision history for Games-Maze-SVG
 
+0.73    6/2006
+        - Finally added support for FireFox. The problem was caused by the
+          keystroke handling interface. Corrected based on examples from the
+          SVG Developers mailing list.
 0.72   12/2005 (not released)
 	- Added support for maze:board element which allowed bigger mazes on
 	  Batik and cleaned up initialization code.
