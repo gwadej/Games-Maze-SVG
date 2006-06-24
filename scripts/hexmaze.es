@@ -7,6 +7,8 @@
 
 function move_sprite(evt)
 {
+    evt.preventDefault();
+
     switch(evt.keyCode)
     {
 	case 16:

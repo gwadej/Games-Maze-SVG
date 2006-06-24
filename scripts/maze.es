@@ -117,8 +117,15 @@ function initialize()
         window.addEventListener("keyup", unshift, true);
     } catch (e) {
         // MSIE6 compatibility
-        document.attachEvent("onkeydown", move_sprite);
-        document.attachEvent("onkeyup", unshift);
+        try
+        {
+            document.attachEvent("onkeydown", move_sprite);
+            document.attachEvent("onkeyup", unshift);
+        } catch(e) {
+            // Batik support
+            document.documentElement.setAttributeNS( null, "onkeydown", "move_sprite(evt)" );
+            document.documentElement.setAttributeNS( null, "onkeyup", "unshift(evt)" );
+        }
     }
 }
 
