@@ -8,6 +8,7 @@ use base Games::Maze::SVG::HexCells;
 use Carp;
 use Games::Maze;
 use strict;
+use warnings;
 
 =head1 NAME
 
@@ -15,11 +16,11 @@ Games::Maze::SVG::Hex - Build hexagonal mazes in SVG.
 
 =head1 VERSION
 
-Version 0.7
+Version 0.71
 
 =cut
 
-our $VERSION = 0.7;
+our $VERSION = 0.71;
 
 =head1 SYNOPSIS
 
@@ -85,7 +86,7 @@ sub  new
     $obj->{mazeparms}->{form} = 'Hexagon';
     
     # rebless into this class.
-    bless $obj;
+    return bless $obj, $class;
 }
 
 
@@ -97,7 +98,7 @@ Method returns true.
 
 sub  is_hex
 {
-    1;
+    return 1;
 }
 
 
@@ -109,7 +110,7 @@ Method returns true.
 
 sub  is_hex_shaped
 {
-    1;
+    return 1;
 }
 
 
@@ -158,7 +159,7 @@ sub convert_sign_position
         $y -= $self->dy();
     }
 
-    ($x, $y);
+    return ($x, $y);
 }
 
 =back
@@ -170,7 +171,7 @@ G. Wade Johnson, C<< <wade@anomaly.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to
-C<bug-maze-svg1@rt.cpan.org>, or through the web interface at
+C<bug-game-maze-svg@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Game-Maze-SVG>.
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
@@ -182,7 +183,7 @@ mazes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2004-2005 G. Wade Johnson, all rights reserved.
+Copyright 2004-2006 G. Wade Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

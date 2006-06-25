@@ -10,6 +10,7 @@ use Games::Maze::SVG::RectHex;
 use Games::Maze::SVG::Hex;
 
 use strict;
+use warnings;
 
 =head1 NAME
 
@@ -17,11 +18,11 @@ Games::Maze::SVG - Build mazes in SVG.
 
 =head1 VERSION
 
-Version 0.73
+Version 0.74
 
 =cut
 
-our $VERSION = 0.73;
+our $VERSION = 0.74;
 
 =head1 SYNOPSIS
 
@@ -151,7 +152,7 @@ sub  new
     
     my %params = @_;
     
-    if(exists $params{crumb} and !exists $crumbstyles{$params{crumb}})
+    if(exists $params{crumb} && !exists $crumbstyles{$params{crumb}})
     {
         croak "Unrecognized breadcrumb style '$params{crumb}'.\n"
     }
@@ -194,7 +195,7 @@ sub init_object
         ];
     }
 
-    %obj;
+    return %obj;
 }
 
 =item set_interactive
@@ -209,7 +210,7 @@ sub  set_interactive
 {
     my $self = shift;
     $self->{interactive} = 1;
-    $self;
+    return $self;
 }
 
 
@@ -240,7 +241,7 @@ sub  set_breadcrumb
     $self->{crumb} = $bcs;
     $self->{crumbstyle} = $crumbstyles{$bcs};
 
-    $self;
+    return $self;
 }
 
 
@@ -254,7 +255,7 @@ sub  get_crumbstyle
 {
     my $self = shift;
 
-    $self->{crumbstyle} ||= $crumbstyles{$self->{crumb}};
+    return $self->{crumbstyle} ||= $crumbstyles{$self->{crumb}};
 }
 
 
@@ -268,7 +269,7 @@ sub get_script
 {
     my $self = shift;
     
-    "$self->{dir}$self->{scriptname}";
+    return "$self->{dir}$self->{scriptname}";
 }
 
 =item toString
@@ -283,10 +284,10 @@ sub  toString
     my $maze = Games::Maze->new( %{$self->{mazeparms}} );
 
     $maze->make();
-    my @rows = map { [ split //, $_ ] }
-                   split( /\n/, $maze->to_ascii() );
+    my @rows = map { [ split q{}, $_ ] }
+                   split( "\n", $maze->to_ascii() );
 
-    my $crumb  = '';
+    my $crumb  = q{};
     my $color  = {
                   mazebg => '#ffc',
                   panel  => '#ccc',
@@ -430,7 +431,7 @@ EOH
   <text id="solvedmsg" x="$cx" y="$cy" visibility="hidden">Solved!</text>
 EOM
     }
-    $output . "</svg>\n";
+    return $output . "</svg>\n";
 }
 
 
@@ -452,7 +453,7 @@ sub make_board_array
         push @board, [ map { $_ ? 1 : 0 } @{$row} ];
     }
     
-    \@board;
+    return \@board;
 }
 
 
@@ -473,7 +474,7 @@ sub get_script_list
 	$self->get_script(),
     );
 
-    @scripts;
+    return @scripts;
 }
 
 
@@ -487,7 +488,7 @@ sub build_all_script
 {
     my $self = shift;
 
-    my $script = "";
+    my $script = q{};
     
     foreach my $url ($self->get_script_list())
     {
@@ -511,7 +512,7 @@ sub build_all_script
     </script>
 EOS
 
-   $script;
+   return $script;
 }
 
 
@@ -542,13 +543,13 @@ sub build_board_element
     my $elem .= qq{    <maze:board start="$xp,$yp" end="$xe,$ye" tile="$tilex,$tiley">\n};
     foreach my $row (@{$board})
     {
-	$elem .= qq{      } . join( '', @{$row} ) ."\n";
+	$elem .= qq{      } . join( q{}, @{$row} ) ."\n";
     }
     $elem .= <<'EOS';
     </maze:board>
 EOS
 
-   $elem;
+   return $elem;
 }
 
 
@@ -625,6 +626,8 @@ EOB
     </g>
   </g>
 EOB
+
+    return $output;
 }
 
 
@@ -685,7 +688,7 @@ sub _create_text_button
     </g>
 EOF
 
-    $output;
+    return $output;
 }
 
 
@@ -712,7 +715,7 @@ sub _create_view_button
       </g>
 EOF
 
-    $output;
+    return $output;
 }
 
 
@@ -727,7 +730,7 @@ sub  create_sprite
     my $self = shift;
     my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
 
-    qq|      | .
+    return qq|      | .
     qq|<path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>|;
 }
 
@@ -747,7 +750,7 @@ sub  _just_maze
     my $dy   = $self->dy();
     my $rows = shift;
 
-    my $output = '';
+    my $output = q{};
     my ($maxx,$y) = (0,0);
 
     foreach my $r (@{$rows})
@@ -755,7 +758,8 @@ sub  _just_maze
         my $x = 0;
         foreach my $c (@{$r})
         {
-            $output .= qq{    <use x="$x" y="$y" xlink:href="#$c"/>\n} if $c and $c ne '$';
+            $output .= qq{    <use x="$x" y="$y" xlink:href="#$c"/>\n}
+                if $c and $c ne q{$};
             $x += $dx;
         }
         $y += $dy;
@@ -766,7 +770,7 @@ sub  _just_maze
     $self->{height} = $y;
     $self->{mazeout} = $output;
 
-    $self;
+    return $self;
 }
 
 
@@ -780,7 +784,7 @@ sub dx
 {
     my $self = shift;
 
-    $self->{dx};
+    return $self->{dx};
 }
 
 
@@ -794,7 +798,7 @@ sub dy
 {
     my $self = shift;
 
-    $self->{dy};
+    return $self->{dy};
 }
 
 =back
@@ -806,7 +810,7 @@ G. Wade Johnson, C<< <wade@anomaly.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to
-C<bug-maze-svg1@rt.cpan.org>, or through the web interface at
+C<bug-game-maze-svg@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Game-Maze-SVG>.
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.

@@ -1,5 +1,9 @@
 Revision history for Games-Maze-SVG
 
+0.74    6/2006
+        - Cleaned up event handling a little further in the script code.
+          Now supports Batik and ASV a bit better.
+        - Minor code cleanups to satisfy Perl::Critic.
 0.73    6/2006
         - Finally added support for FireFox. The problem was caused by the
           keystroke handling interface. Corrected based on examples from the

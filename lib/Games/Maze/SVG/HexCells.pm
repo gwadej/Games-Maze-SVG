@@ -8,6 +8,7 @@ use base Games::Maze::SVG;
 use Carp;
 use Games::Maze;
 use strict;
+use warnings;
 
 =head1 NAME
 
@@ -15,11 +16,11 @@ Games::Maze::SVG::HexCells - Base class for Hex and RectHex mazes.
 
 =head1 VERSION
 
-Version 0.71
+Version 0.72
 
 =cut
 
-our $VERSION = 0.71;
+our $VERSION = 0.72;
 
 =head1 SYNOPSIS
 
@@ -82,13 +83,13 @@ my %BlocksBetween = (
     ' / \\' => 'sl',
     '   \\' => 'sl',
     '_/ \\' => 'sl',
-    ' _/ ' => '$',
-    '  \\ ' => '$',
-    '/ \\_' => '$',
-    '\\ / ' => '$',
-    '  \\_' => '$',
-    '/ \\ ' => '$',
-    '\\_/ ' => '$',
+    ' _/ ' => q{$},
+    '  \\ ' => q{$},
+    '/ \\_' => q{$},
+    '\\ / ' => q{$},
+    '  \\_' => q{$},
+    '/ \\ ' => q{$},
+    '\\_/ ' => q{$},
     '__  ' => 0,
     '  __' => 0,
     '    ' => 0,
@@ -174,7 +175,7 @@ sub  new
     $obj->{dx} = DELTA_X;
     $obj->{dy} = DELTA_Y;
 
-    bless $obj;
+    return bless $obj, $class;
 }
 
 
@@ -208,7 +209,8 @@ sub  set_wall_form
         my $forms = join( ", ", sort keys %Walls );
         croak "\n'$form' is not a valid wall form.\nTry one of: $forms\n\n";
     }
-    $self;
+
+    return $self;
 }
 
 =item transform_grid
@@ -250,7 +252,7 @@ sub transform_grid
     }
     push @out, _calc_on_line( $rows, $height-1, $width );
 
-    @{$rows} = @out;
+    return @{$rows} = @out;
 }
 
 
@@ -263,17 +265,17 @@ sub _calc_between_line
     
     for(my $c = 0; $c < $width;++$c)
     {
-        my $sig = ($c ? $rows->[$index][$c-1]||' ' : ' ')
-	        . ($rows->[$index][$c]||' ')
-	        . ($c ? $rows->[$index+1][$c-1]||' ' : ' ')
-		. ($rows->[$index+1][$c]||' ');
+        my $sig = ($c ? $rows->[$index][$c-1]||q{ } : q{ })
+	        . ($rows->[$index][$c]||q{ })
+	        . ($c ? $rows->[$index+1][$c-1]||q{ } : q{ })
+		. ($rows->[$index+1][$c]||q{ });
 
         croak "Missing between block for '$sig'.\n" unless exists $BlocksBetween{$sig};
 
         push @out, $BlocksBetween{$sig};
     }
     
-    \@out;
+    return \@out;
 }
 
 
@@ -286,17 +288,17 @@ sub _calc_on_line
     
     for(my $c = 0; $c < $width;++$c)
     {
-        my $sig = ($c ? $rows->[$index][$c-1]||' ' : ' ')
-	        . ($rows->[$index][$c]||' ')
-	        . ($c ? $rows->[$index+1][$c-1]||' ' : ' ')
-		. ($rows->[$index+1][$c]||' ');
+        my $sig = ($c ? $rows->[$index][$c-1]||q{ } : q{ })
+	        . ($rows->[$index][$c]||q{ })
+	        . ($c ? $rows->[$index+1][$c-1]||q{ } : q{ })
+		. ($rows->[$index+1][$c]||q{ });
 
         croak "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
 
         push @out, $Blocks{$sig};
     }
 
-    \@out;
+    return \@out;
 }
 
 =item wall_definitions
@@ -309,7 +311,7 @@ sub wall_definitions
 {
     my $self = shift;
 
-    $Walls{$self->{wallform}}
+    return $Walls{$self->{wallform}}
 }
 
 # _get_wall_forms
@@ -326,7 +328,7 @@ sub _get_wall_forms
     $/ = "\n";
     chomp( @list );
 
-    @list;
+    return @list;
 }
 
 
@@ -355,7 +357,7 @@ sub convert_start_position
     $x = 3*($x-1)+2;
     $y = 4*($y-1);
 
-    ($x, $y);
+    return ($x, $y);
 }
 
 =item convert_end_position
@@ -383,7 +385,7 @@ sub convert_end_position
     $x = 3*($x-1)+2;
     $y = 4*($y)+2;
 
-    ($x, $y);
+    return ($x, $y);
 }
 
 =back
@@ -395,7 +397,7 @@ G. Wade Johnson, C<< <wade@anomaly.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to
-C<bug-maze-svg1@rt.cpan.org>, or through the web interface at
+C<bug-game-maze-svg@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Game-Maze-SVG>.
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
@@ -407,7 +409,7 @@ mazes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2004-2005 G. Wade Johnson, all rights reserved.
+Copyright 2004-2006 G. Wade Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
