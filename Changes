@@ -1,5 +1,9 @@
 Revision history for Games-Maze-SVG
 
+0.75    6/2006
+        - Corrected dependency on Test::MockModule that was causing CPAN
+          tests to fail. If you don't have Test::MockModule, some tests
+          will be skipped.
 0.74    6/2006
         - Cleaned up event handling a little further in the script code.
           Now supports Batik and ASV a bit better.

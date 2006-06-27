@@ -1,7 +1,15 @@
 #!perl
 
-use Test::More tests => 5;
-use Test::MockModule;
+use Test::More;
+eval 'use Test::MockModule;';
+if($@)
+{
+    plan( skip_all => q{missing Test::MockModule} );
+}
+else
+{
+    plan( tests => 5 );
+}
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use TestString;
