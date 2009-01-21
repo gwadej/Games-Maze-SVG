@@ -1,5 +1,7 @@
 Revision history for Games-Maze-SVG
 
+0.76    Not Yet Released
+        - Corrected some typos and other deficiencies in the manual.
 0.75    6/2006
         - Corrected dependency on Test::MockModule that was causing CPAN
           tests to fail. If you don't have Test::MockModule, some tests
