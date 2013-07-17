@@ -41,7 +41,7 @@ cleanup, but I am much happier with the overall design.
 
   my $maze = Games::Maze::SVG->new( 'Rect', wallform => 'roundcorners' );
 
-  my $svgout = $maze->toString();
+  my $svgout = $maze->to_string();
 
 =head1 OVERVIEW
 

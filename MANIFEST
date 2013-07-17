@@ -9,7 +9,6 @@ lib/Games/Maze/SVG/Rect.pm
 lib/Games/Maze/SVG/RectHex.pm
 Makefile.PL
 MANIFEST
-maze.html
 META.yml			# Will be created by "make dist"
 README
 scripts/hexmaze.es
