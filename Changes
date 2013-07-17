@@ -1,7 +1,11 @@
 Revision history for Games-Maze-SVG
 
-0.76    Not Yet Released
+0.76    Wed Jul 17 10:20:00 2013
         - Corrected some typos and other deficiencies in the manual.
+        - Changed the toString method to to_string to be consistent with other
+          capitalization. Made alias to old name that I can deprecate later.
+        - Corrected POD error found by CPANTESTERs.
+        - Moved POD tests so that they don't stop install.
 0.75    6/2006
         - Corrected dependency on Test::MockModule that was causing CPAN
           tests to fail. If you don't have Test::MockModule, some tests

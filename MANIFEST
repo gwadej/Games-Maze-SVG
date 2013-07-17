@@ -7,15 +7,15 @@ lib/Games/Maze/SVG/HexCells.pm
 lib/Games/Maze/SVG/Manual.pod
 lib/Games/Maze/SVG/Rect.pm
 lib/Games/Maze/SVG/RectHex.pm
-Makefile.PL
 MANIFEST
-META.yml			# Will be created by "make dist"
+MANIFEST.SKIP
+META.yml
 README
 scripts/hexmaze.es
 scripts/maze.es
+scripts/point.es
 scripts/rectmaze.es
 scripts/sprite.es
-scripts/point.es
 t/00-load.t
 t/01ctor-default.t
 t/02ctor-bad.t
@@ -46,5 +46,5 @@ t/26build_script_recthex.t
 t/27build_script_hex.t
 t/lib/MazeTestUtils.pm
 t/lib/TestString.pm
-t/pod-coverage.t
-t/pod.t
+xt/pod-coverage.t
+xt/pod.t

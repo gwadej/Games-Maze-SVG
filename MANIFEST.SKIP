@@ -1,0 +1,10 @@
+\.gz
+\..*\.swp
+\.git/
+TODO
+blib/
+pm_to_blib
+MYMETA\.
+Makefile
+\.old
+\.bak
