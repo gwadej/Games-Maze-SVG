@@ -1,0 +1,7 @@
+TODO list for changes to Games::Maze::SVG
+
+1. Circular dependency between Games::Maze::SVG and its subclasses
+   I need to separate the interface class from the base class.
+
+2. Add support for playing the game with a mouse.
+   Can't play on a tablet that has no keys.
