@@ -5,3 +5,5 @@ TODO list for changes to Games::Maze::SVG
 
 2. Add support for playing the game with a mouse.
    Can't play on a tablet that has no keys.
+
+3. Convert README to markdown for better results on GitLab.
