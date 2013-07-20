@@ -7,6 +7,7 @@ lib/Games/Maze/SVG/HexCells.pm
 lib/Games/Maze/SVG/Manual.pod
 lib/Games/Maze/SVG/Rect.pm
 lib/Games/Maze/SVG/RectHex.pm
+Makefile.PL
 MANIFEST
 MANIFEST.SKIP
 META.yml
