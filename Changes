@@ -1,5 +1,8 @@
 Revision history for Games-Maze-SVG
 
+0.77    Sat Jul 20 10:10:00 2013
+        - Fixed mistake in MANIFEST.SKIP that removed Makefile.PL from
+          distribution.
 0.76    Wed Jul 17 10:20:00 2013
         - Corrected some typos and other deficiencies in the manual.
         - Changed the toString method to to_string to be consistent with other
