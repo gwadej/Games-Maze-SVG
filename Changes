@@ -1,5 +1,7 @@
 Revision history for Games-Maze-SVG
 
+0.78    Sat Jul 20 23:10:00 2013
+        - Corrected test to match some formatting and copyright corrections.
 0.77    Sat Jul 20 10:10:00 2013
         - Fixed mistake in MANIFEST.SKIP that removed Makefile.PL from
           distribution.
@@ -22,29 +24,29 @@ Revision history for Games-Maze-SVG
           keystroke handling interface. Corrected based on examples from the
           SVG Developers mailing list.
 0.72   12/2005 (not released)
-	- Added support for maze:board element which allowed bigger mazes on
-	  Batik and cleaned up initialization code.
-	- Swapped the arrow buttons back.
-	- Fixed problem with very short mazes cutting off the help.
-	- Change background on non-interactive mazes for easier printing.
+        - Added support for maze:board element which allowed bigger mazes on
+          Batik and cleaned up initialization code.
+        - Swapped the arrow buttons back.
+        - Fixed problem with very short mazes cutting off the help.
+        - Change background on non-interactive mazes for easier printing.
 0.71   12/2005
-	- Various code clean ups
-	- Extend testing to cover new hex shapes.
-	- Corrected drawing anomally when running on a hex maze.
+        - Various code clean ups
+        - Extend testing to cover new hex shapes.
+        - Corrected drawing anomally when running on a hex maze.
 0.7    12/2005
-	- Coverage testing to flush out remaining bugs.
-	- Fix a few bugs in error-handling found by coverage testing.
-	- Factor out common code from RectHex and Hex.
-	- Remove obsolete Ascii.pm module.
-	- Convert to new hex cell definitions.
+        - Coverage testing to flush out remaining bugs.
+        - Fix a few bugs in error-handling found by coverage testing.
+        - Factor out common code from RectHex and Hex.
+        - Remove obsolete Ascii.pm module.
+        - Convert to new hex cell definitions.
 0.6    11/2005
-	Reorganized the SVG and code to give better separation of static
-	and interactive portions. Converted the quick JavaScript into more OO
-	design. Release on CPAN.
+        Reorganized the SVG and code to give better separation of static
+        and interactive portions. Converted the quick JavaScript into more OO
+        design. Release on CPAN.
 0.5    11/2005
-	Refactor into multiple classes. Not released.
+        Refactor into multiple classes. Not released.
 0.4    10/2005
-	Rewrite earlier versions as a Perl module. Not released.
+        Rewrite earlier versions as a Perl module. Not released.
 0.1    04/2004
         Initial hack, developed for fun. Not released as a module.
 

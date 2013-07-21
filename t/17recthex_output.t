@@ -168,21 +168,21 @@ __DATA__
     module.</desc>
   <metadata>
     <!--
-        Copyright 2004-2006, G. Wade Johnson
-	Some rights reserved.
+        Copyright 2004-2013, G. Wade Johnson
+        Some rights reserved.
     -->
     <rdf:RDF xmlns="http://web.resource.org/cc/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <Work rdf:about="">
        <dc:title>SVG Maze</dc:title>
        <dc:date>2006</dc:date>
        <dc:description>An SVG-based Game</dc:description>
        <dc:creator><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
+          <dc:title>G. Wade Johnson</dc:title>
        </Agent></dc:creator>
        <dc:rights><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
+          <dc:title>G. Wade Johnson</dc:title>
        </Agent></dc:rights>
        <dc:type rdf:resource="http://purl.org/dc/dcmitype/Interactive" />
        <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
@@ -204,15 +204,15 @@ __DATA__
        viewBox="-10 -20 130 210" id="maze">
     <defs>
       <style type="text/css">
-	path    { stroke: black; fill: none; }
-	polygon { stroke: black; fill: grey; }
-	#sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
-	.crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
-	.mazebg { fill:#fff; stroke:none; }
-	text { font-family: sans-serif; font-size: 10px; }
-	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-	.exit rect {  fill:red; stroke:none; }
-	.entry rect {  fill:green; stroke:none; }
+        path    { stroke: black; fill: none; }
+        polygon { stroke: black; fill: grey; }
+        #sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
+        .crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
+        .mazebg { fill:#fff; stroke:none; }
+        text { font-family: sans-serif; font-size: 10px; }
+        .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
+        .exit rect {  fill:red; stroke:none; }
+        .entry rect {  fill:green; stroke:none; }
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
       <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>

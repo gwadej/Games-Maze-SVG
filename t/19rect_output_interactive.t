@@ -205,21 +205,21 @@ __DATA__
     module.</desc>
   <metadata>
     <!--
-        Copyright 2004-2006, G. Wade Johnson
-	Some rights reserved.
+        Copyright 2004-2013, G. Wade Johnson
+        Some rights reserved.
     -->
     <rdf:RDF xmlns="http://web.resource.org/cc/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <Work rdf:about="">
        <dc:title>SVG Maze</dc:title>
        <dc:date>2006</dc:date>
        <dc:description>An SVG-based Game</dc:description>
        <dc:creator><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
+          <dc:title>G. Wade Johnson</dc:title>
        </Agent></dc:creator>
        <dc:rights><Agent>
-	  <dc:title>G. Wade Johnson</dc:title>
+          <dc:title>G. Wade Johnson</dc:title>
        </Agent></dc:rights>
        <dc:type rdf:resource="http://purl.org/dc/dcmitype/Interactive" />
        <license rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
@@ -239,17 +239,17 @@ __DATA__
 
   <defs>
      <style type="text/css">
-	text { font-family: sans-serif; font-size: 10px; }
-	.panel  { fill:#ccc; stroke:none; }
-	.button {
+        text { font-family: sans-serif; font-size: 10px; }
+        .panel  { fill:#ccc; stroke:none; }
+        .button {
                    cursor: pointer;
-        	}
-	.button rect { fill: #33f; stroke: none; filter: url(#bevel);
+                }
+        .button rect { fill: #33f; stroke: none; filter: url(#bevel);
                     }
-	.button text { text-anchor:middle; fill:#fff; font-weight:bold; }
-	.button polygon { fill:white; stroke:none; }
-	.ctrllabel { text-anchor:middle; font-weight:bold; }
-	#solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
+        .button text { text-anchor:middle; fill:#fff; font-weight:bold; }
+        .button polygon { fill:white; stroke:none; }
+        .ctrllabel { text-anchor:middle; font-weight:bold; }
+        #solvedmsg { text-anchor:middle; pointer-events:none; font-size:80px; fill:red;
                    }
      </style>
      <filter id="bevel">
@@ -301,15 +301,15 @@ __DATA__
        viewBox="-10 -20 90 110" id="maze">
     <defs>
       <style type="text/css">
-	path    { stroke: black; fill: none; }
-	polygon { stroke: black; fill: grey; }
-	#sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
-	.crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
-	.mazebg { fill:#ffc; stroke:none; }
-	text { font-family: sans-serif; font-size: 10px; }
-	.sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
-	.exit rect {  fill:red; stroke:none; }
-	.entry rect {  fill:green; stroke:none; }
+        path    { stroke: black; fill: none; }
+        polygon { stroke: black; fill: grey; }
+        #sprite { stroke: grey; stroke-width:0.2px; fill: orange; }
+        .crumbs { fill:none; stroke-width:1px; stroke-dasharray:5px,3px; }
+        .mazebg { fill:#ffc; stroke:none; }
+        text { font-family: sans-serif; font-size: 10px; }
+        .sign text {  fill:#fff;text-anchor:middle; font-weight:bold; }
+        .exit rect {  fill:red; stroke:none; }
+        .entry rect {  fill:green; stroke:none; }
       </style>
       <circle id="savemark" r="3" fill="#6f6" stroke="none"/>
       <path id="sprite" d="M0,0 Q5,5 0,10 Q5,5 10,10 Q5,5 10,0 Q5,5 0,0"/>
@@ -398,33 +398,33 @@ __DATA__
       <text x="34" y="-5" class="ctrllabel">Move View</text>
 
       <g onclick="maze_up()" transform="translate(22,0)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="10,5 5,15 15,15"/>
+         onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+        <rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
+        <polygon points="10,5 5,15 15,15"/>
       </g>
 
       <g onclick="maze_left()" transform="translate(0,22)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="5,10 15,5 15,15"/>
+         onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+        <rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
+        <polygon points="5,10 15,5 15,15"/>
       </g>
 
       <g onclick="maze_right()" transform="translate(44,22)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="15,10 5,5 5,15"/>
+         onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+        <rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
+        <polygon points="15,10 5,5 5,15"/>
       </g>
 
       <g onclick="maze_down()" transform="translate(22,44)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="10,15 5,5 15,5"/>
+         onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+        <rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
+        <polygon points="10,15 5,5 15,5"/>
       </g>
 
       <g onclick="maze_reset()" transform="translate(22,22)" class="button"
-	 onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
-	<rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
-	<polygon points="7,7 7,13 13,13 13,7"/>
+         onmousedown="push(evt)" onmouseup="release(evt)" onmouseout="release(evt)">
+        <rect x="0" y="0" width="20" height="20" rx="5" ry="5"/>
+        <polygon points="7,7 7,13 13,13 13,7"/>
       </g>
     </g>
 
