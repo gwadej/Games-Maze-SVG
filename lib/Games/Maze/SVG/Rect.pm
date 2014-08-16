@@ -16,11 +16,11 @@ Games::Maze::SVG::Rect - Build rectangular mazes in SVG.
 
 =head1 VERSION
 
-Version 0.72
+Version 0.80
 
 =cut
 
-our $VERSION = 0.72;
+our $VERSION = 0.80;
 
 =head1 SYNOPSIS
 
@@ -33,41 +33,70 @@ Games::Maze::SVG::Rect uses the Games::Maze module to create mazes in SVG.
 
 =cut
 
-use constant DELTA_X     => 10;
-use constant DELTA_Y     => 10;
+use constant DELTA_X => 10;
+use constant DELTA_Y => 10;
 
 # ----------------
 #  Shape transformation tables
-my %Blocks = ( ': - |' => 'ul',  ':-  |' => 'ur',
-	       ': -| ' => 'll',  ':- | ' => 'lr',
-               ':--  ' => 'h',   '-::  ' => 'h',
-               ':  ||' => 'v',   '|  ::' => 'v',
-               ':-   ' => 'l',   ': -  ' => 'r',
-               ':  | ' => 't',   ':   |' => 'd',
-	       ': -||' => 'tr',  ':- ||' => 'tl',
-	       ':--| ' => 'tu',  ':-- |' => 'td',
-	       ':--||' => 'cross',
-	       ':.- |' => 'oul', ':- .|' => 'our',
-	       ': -.|' => 'oul', ':-. |' => 'our',
-	       ':.-.|' => 'oul', ':-..|' => 'our',
-	       ':.-| ' => 'oll', ':-.| ' => 'olr',
-	       ': -|.' => 'oll', ':- |.' => 'olr',
-	       ':.-|.' => 'oll', ':-.|.' => 'olr',
-               ':--. ' => 'oh',  '-::. ' => 'oh',
-               ':-- .' => 'oh',  '-:: .' => 'oh',
-               ':. ||' => 'ov',  '|. ::' => 'ov',
-               ': .||' => 'ov',  '| .::' => 'ov',
-               ':- . ' => 'ol',  ': -. ' => 'or',
-               ':-.  ' => 'ol',  ':.-  ' => 'or',
-               ':-  .' => 'ol',  ': - .' => 'or',
-               ':. | ' => 'ot',  ':.  |' => 'od',
-               ': .| ' => 'ot',  ': . |' => 'od',
-               ':  |.' => 'ot',  ':  .|' => 'od',
-               ':. |.' => 'ot',  ':. .|' => 'od',
-               ': .|.' => 'ot',  ': ..|' => 'od',
-	       ':.-||' => 'otr', ':-.||' => 'otl',
-	       ':--|.' => 'otu', ':--.|' => 'otd',
-             );
+my %Blocks = (
+    ': - |' => 'ul',
+    ':-  |' => 'ur',
+    ': -| ' => 'll',
+    ':- | ' => 'lr',
+    ':--  ' => 'h',
+    '-::  ' => 'h',
+    ':  ||' => 'v',
+    '|  ::' => 'v',
+    ':-   ' => 'l',
+    ': -  ' => 'r',
+    ':  | ' => 't',
+    ':   |' => 'd',
+    ': -||' => 'tr',
+    ':- ||' => 'tl',
+    ':--| ' => 'tu',
+    ':-- |' => 'td',
+    ':--||' => 'cross',
+    ':.- |' => 'oul',
+    ':- .|' => 'our',
+    ': -.|' => 'oul',
+    ':-. |' => 'our',
+    ':.-.|' => 'oul',
+    ':-..|' => 'our',
+    ':.-| ' => 'oll',
+    ':-.| ' => 'olr',
+    ': -|.' => 'oll',
+    ':- |.' => 'olr',
+    ':.-|.' => 'oll',
+    ':-.|.' => 'olr',
+    ':--. ' => 'oh',
+    '-::. ' => 'oh',
+    ':-- .' => 'oh',
+    '-:: .' => 'oh',
+    ':. ||' => 'ov',
+    '|. ::' => 'ov',
+    ': .||' => 'ov',
+    '| .::' => 'ov',
+    ':- . ' => 'ol',
+    ': -. ' => 'or',
+    ':-.  ' => 'ol',
+    ':.-  ' => 'or',
+    ':-  .' => 'ol',
+    ': - .' => 'or',
+    ':. | ' => 'ot',
+    ':.  |' => 'od',
+    ': .| ' => 'ot',
+    ': . |' => 'od',
+    ':  |.' => 'ot',
+    ':  .|' => 'od',
+    ':. |.' => 'ot',
+    ':. .|' => 'od',
+    ': .|.' => 'ot',
+    ': ..|' => 'od',
+    ':.-||' => 'otr',
+    ':-.||' => 'otl',
+    ':--|.' => 'otu',
+    ':--.|' => 'otd',
+);
 
 my %Walls = _get_wall_forms();
 
@@ -106,17 +135,13 @@ either be relative, or in URL form.
 
 =cut
 
-sub  new
+sub new
 {
     my $class = shift;
-    
-    my $obj = 
-    {
-    	Games::Maze::SVG::init_object( @_ ),
-	@_,
-    };
 
-    if(!exists $Walls{$obj->{wallform}})
+    my $obj = { Games::Maze::SVG::init_object( @_ ), @_, };
+
+    if( !exists $Walls{ $obj->{wallform} } )
     {
         my $forms = join( ", ", sort keys %Walls );
         croak "\n'$obj->{wallform}' is not a valid wall form.\nTry one of: $forms\n\n";
@@ -124,13 +149,12 @@ sub  new
 
     $obj->{mazeparms}->{cell} = 'Quad';
     $obj->{mazeparms}->{form} = 'Rectangle';
-    $obj->{scriptname} = "rectmaze.es";
-    $obj->{dx} = DELTA_X;
-    $obj->{dy} = DELTA_Y;
+    $obj->{scriptname}        = "rectmaze.es";
+    $obj->{dx}                = DELTA_X;
+    $obj->{dy}                = DELTA_Y;
 
     return bless $obj, $class;
 }
-
 
 =item is_hex
 
@@ -138,11 +162,10 @@ Method always returns false.
 
 =cut
 
-sub  is_hex
+sub is_hex
 {
     return;
 }
-
 
 =item is_hex_shaped
 
@@ -150,11 +173,10 @@ Method always returns false.
 
 =cut
 
-sub  is_hex_shaped
+sub is_hex_shaped
 {
     return;
 }
-
 
 =item set_wall_form
 
@@ -172,12 +194,12 @@ Returns a reference to self for chaining.
 
 =cut
 
-sub  set_wall_form
+sub set_wall_form
 {
     my $self = shift;
     my $form = shift;
-  
-    if(exists $Walls{$form})
+
+    if( exists $Walls{$form} )
     {
         $self->{wallform} = $form;
     }
@@ -188,7 +210,6 @@ sub  set_wall_form
     }
     return $self;
 }
-
 
 =item transform_grid
 
@@ -209,45 +230,45 @@ String specifying wall format.
 
 =cut
 
-sub  transform_grid
+sub transform_grid
 {
-    my $self = shift;
+    my $self  = shift;
     my $rows  = shift;
     my $walls = shift;
-    my @out  = ();
+    my @out   = ();
 
-    my $sp = 'bevel' eq ($walls||q{}) ? q{.} : q{ };
+    my $sp = 'bevel' eq ( $walls || q{} ) ? q{.} : q{ };
     remove_horiz_padding( $rows );
 
     # transform the printout into block commands
     my $height = @{$rows};
-    my $width  = @{$rows->[0]};
-    for(my $r=0; $r < $height; ++$r)
+    my $width  = @{ $rows->[0] };
+    for ( my $r = 0; $r < $height; ++$r )
     {
-	for(my $c=0; $c < $width; ++$c)
-	{
-	    if($rows->[$r]->[$c] eq q{ })
-	    {
-        	$out[$r]->[$c] = 0;
-	    }
-	    else
-	    {
-        	# convert the cell and its neighbors into a signature
-        	my $sig = $rows->[$r]->[$c]                   # cell
-	        	. ($c==0 ? $sp : $rows->[$r]->[$c-1]) # left neighbor
-	        	. ($rows->[$r]->[$c+1] || $sp)        # right neighbor
-			. ($r==0 ? $sp : $rows->[$r-1]->[$c]) # up neighbor
-	        	. ($rows->[$r+1] ? $rows->[$r+1]->[$c] : $sp); # down neighbor
-		# convert the signature into the block name
-		croak "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
-		$out[$r]->[$c] = $Blocks{$sig};
-	    }
-	}
+        for ( my $c = 0; $c < $width; ++$c )
+        {
+            if( $rows->[$r]->[$c] eq q{ } )
+            {
+                $out[$r]->[$c] = 0;
+            }
+            else
+            {
+
+                # convert the cell and its neighbors into a signature
+                my $sig = $rows->[$r]->[$c]    # cell
+                    . ( $c == 0 ? $sp : $rows->[$r]->[ $c - 1 ] )    # left neighbor
+                    . ( $rows->[$r]->[ $c + 1 ] || $sp )             # right neighbor
+                    . ( $r == 0 ? $sp : $rows->[ $r - 1 ]->[$c] )    # up neighbor
+                    . ( $rows->[ $r + 1 ] ? $rows->[ $r + 1 ]->[$c] : $sp );    # down neighbor
+                      # convert the signature into the block name
+                croak "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
+                $out[$r]->[$c] = $Blocks{$sig};
+            }
+        }
     }
 
     return @{$rows} = @out;
 }
-
 
 =item remove_horiz_padding
 
@@ -264,24 +285,23 @@ Reference to an array of rows
 
 =cut
 
-sub  remove_horiz_padding
+sub remove_horiz_padding
 {
     my $rows = shift;
 
-    for(my $i = $#{$rows->[0]}; $i > 0; $i -= 3)
+    for ( my $i = $#{ $rows->[0] }; $i > 0; $i -= 3 )
     {
-        splice( @{$_}, $i-1, 1 ) foreach(@{$rows});
+        splice( @{$_}, $i - 1, 1 ) foreach ( @{$rows} );
     }
 
-  # apparently trailing spaces that I wasn't aware of.
-    foreach my $r (@{$rows})
+    # apparently trailing spaces that I wasn't aware of.
+    foreach my $r ( @{$rows} )
     {
         pop @{$r} if $r->[-1] eq q{ };
     }
 
     return;
 }
-
 
 =item wall_definitions
 
@@ -293,7 +313,7 @@ sub wall_definitions
 {
     my $self = shift;
 
-    return $Walls{$self->{wallform}}
+    return $Walls{ $self->{wallform} };
 }
 
 # _get_wall_forms
@@ -312,7 +332,6 @@ sub _get_wall_forms
 
     return @list;
 }
-
 
 =item convert_start_position
 
@@ -334,12 +353,12 @@ returns a two element list containing (x, y).
 sub convert_start_position
 {
     my $self = shift;
-    my ($x, $y) = @_;
+    my ( $x, $y ) = @_;
 
-    $x = 2*($x-1)+1;
-    $y = 2*($y-1);
+    $x = 2 * ( $x - 1 ) + 1;
+    $y = 2 * ( $y - 1 );
 
-    return ($x, $y);
+    return ( $x, $y );
 }
 
 =item convert_end_position
@@ -362,12 +381,12 @@ returns a two element list containing (x, y).
 sub convert_end_position
 {
     my $self = shift;
-    my ($x, $y) = @_;
+    my ( $x, $y ) = @_;
 
-    $x = 2*($x-1)+1;
-    $y = 2*($y-1)+2;
+    $x = 2 * ( $x - 1 ) + 1;
+    $y = 2 * ( $y - 1 ) + 2;
 
-    return ($x, $y);
+    return ( $x, $y );
 }
 
 =item convert_sign_position
@@ -390,24 +409,24 @@ returns a two element list containing (x, y).
 sub convert_sign_position
 {
     my $self = shift;
-    my ($x, $y) = @_;
+    my ( $x, $y ) = @_;
 
     $x *= $self->dx();
     $y *= $self->dy();
 
-    $x += 0.5*$self->dx();
-    
+    $x += 0.5 * $self->dx();
+
     # adjust bottom
-    if($y > $self->{height}/2)
+    if( $y > $self->{height} / 2 )
     {
-        $y += 2 *$self->dy();
+        $y += 2 * $self->dy();
     }
     else
     {
         $y -= $self->dy();
     }
 
-    return ($x, $y);
+    return ( $x, $y );
 }
 
 =back
@@ -439,7 +458,6 @@ under the same terms as Perl itself.
 =cut
 
 1;
-
 
 __DATA__
 straight

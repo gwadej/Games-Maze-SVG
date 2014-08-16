@@ -16,11 +16,11 @@ Games::Maze::SVG::Hex - Build hexagonal mazes in SVG.
 
 =head1 VERSION
 
-Version 0.71
+Version 0.80
 
 =cut
 
-our $VERSION = 0.71;
+our $VERSION = 0.80;
 
 =head1 SYNOPSIS
 
@@ -84,7 +84,7 @@ sub  new
 
     my $obj = Games::Maze::SVG::HexCells->new( @_ );
     $obj->{mazeparms}->{form} = 'Hexagon';
-    
+
     # rebless into this class.
     return bless $obj, $class;
 }

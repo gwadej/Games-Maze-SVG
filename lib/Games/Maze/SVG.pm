@@ -18,11 +18,11 @@ Games::Maze::SVG - Build mazes in SVG.
 
 =head1 VERSION
 
-Version 0.78
+Version 0.80
 
 =cut
 
-our $VERSION = 0.78;
+our $VERSION = 0.80;
 
 =head1 SYNOPSIS
 
@@ -37,17 +37,17 @@ See Games::Maze::SVG::Manual for more information on using the module.
 
 =cut
 
-use constant SIGN_HEIGHT => 20;
-use constant SIDE_MARGIN => 10;
-use constant PANEL_WIDTH => 250;
+use constant SIGN_HEIGHT      => 20;
+use constant SIDE_MARGIN      => 10;
+use constant PANEL_WIDTH      => 250;
 use constant PANEL_MIN_HEIGHT => 365;
 
 my %crumbstyles = (
-                   dash => "stroke-width:1px; stroke-dasharray:5px,3px;",
-                   dot  => "stroke-width:2px; stroke-dasharray:2px,6px;",
-                   line => "stroke-width:1px;",
-                   none => "visibility:hidden;",
-                  );
+    dash => "stroke-width:1px; stroke-dasharray:5px,3px;",
+    dot  => "stroke-width:2px; stroke-dasharray:2px,6px;",
+    line => "stroke-width:1px;",
+    none => "visibility:hidden;",
+);
 
 my $license = <<'EOL';
   <metadata>
@@ -143,7 +143,7 @@ The column where the exit is found. Default value is random.
 
 =cut
 
-sub  new
+sub new
 {
     my $class = shift;
 
@@ -151,18 +151,17 @@ sub  new
 
     my %params = @_;
 
-    if(exists $params{crumb} && !exists $crumbstyles{$params{crumb}})
+    if( exists $params{crumb} && !exists $crumbstyles{ $params{crumb} } )
     {
-        croak "Unrecognized breadcrumb style '$params{crumb}'.\n"
+        croak "Unrecognized breadcrumb style '$params{crumb}'.\n";
     }
 
-    return Games::Maze::SVG::Rect->new( @_ )    if 'Rect' eq $shape;
+    return Games::Maze::SVG::Rect->new( @_ )    if 'Rect'    eq $shape;
     return Games::Maze::SVG::RectHex->new( @_ ) if 'RectHex' eq $shape;
-    return Games::Maze::SVG::Hex->new( @_ )     if 'Hex' eq $shape;
+    return Games::Maze::SVG::Hex->new( @_ )     if 'Hex'     eq $shape;
 
     croak "Unrecognized maze shape '$shape'.\n";
 }
-
 
 =head2 $m->init_object( %parms )
 
@@ -177,21 +176,18 @@ sub init_object
 {
     my %parms = @_;
 
-    my %obj =
-    (
+    my %obj = (
         mazeparms => {},
         wallform  => 'straight',
         crumb     => 'dash',
         dir       => 'scripts/',
     );
-    $obj{mazeparms}->{dimensions} = [ $parms{cols}||12, $parms{rows}||12, 1 ];
+    $obj{mazeparms}->{dimensions} = [ $parms{cols} || 12, $parms{rows} || 12, 1 ];
     $obj{mazeparms}->{entry} = [ $parms{startcol}, 1, 1 ] if $parms{startcol};
 
-    if($parms{endcol})
+    if( $parms{endcol} )
     {
-        $obj{mazeparms}->{exit} = [
-            $parms{endcol}, $obj{mazeparms}->{dimensions}->[1], 1
-        ];
+        $obj{mazeparms}->{exit} = [ $parms{endcol}, $obj{mazeparms}->{dimensions}->[1], 1 ];
     }
 
     return %obj;
@@ -205,13 +201,12 @@ Returns a reference to self for chaining.
 
 =cut
 
-sub  set_interactive
+sub set_interactive
 {
     my $self = shift;
     $self->{interactive} = 1;
     return $self;
 }
-
 
 =head2 $m->set_breadcrumb( $bcs )
 
@@ -228,7 +223,7 @@ Returns a reference to self for chaining.
 
 =cut
 
-sub  set_breadcrumb
+sub set_breadcrumb
 {
     my $self = shift;
     my $bcs  = shift;
@@ -236,13 +231,12 @@ sub  set_breadcrumb
     return unless defined $bcs;
 
     croak "Unrecognized breadcrumb style '$bcs'.\n"
-      unless exists $crumbstyles{$bcs};
-    $self->{crumb} = $bcs;
+        unless exists $crumbstyles{$bcs};
+    $self->{crumb}      = $bcs;
     $self->{crumbstyle} = $crumbstyles{$bcs};
 
     return $self;
 }
-
 
 =head2 $m->get_crumbstyle()
 
@@ -250,13 +244,12 @@ Returns the CSS style for the breadcrumb.
 
 =cut
 
-sub  get_crumbstyle
+sub get_crumbstyle
 {
     my $self = shift;
 
-    return $self->{crumbstyle} ||= $crumbstyles{$self->{crumb}};
+    return $self->{crumbstyle} ||= $crumbstyles{ $self->{crumb} };
 }
-
 
 =head2 $m->get_script()
 
@@ -277,51 +270,49 @@ Method that converts the current maze into an SVG string.
 
 =cut
 
-sub  to_string
+sub to_string
 {
     my $self = shift;
-    my $maze = Games::Maze->new( %{$self->{mazeparms}} );
+    my $maze = Games::Maze->new( %{ $self->{mazeparms} } );
 
     $maze->make();
     my @rows = map { [ split q{}, $_ ] }
-                   split( "\n", $maze->to_ascii() );
+        split( "\n", $maze->to_ascii() );
 
-    my $crumb  = q{};
-    my $color  = {
-                  mazebg => '#ffc',
-                  panel  => '#ccc',
-                  crumb  => '#f3f',
-                  sprite => 'orange',
-        	  button => '#ccf',
-                 };
+    my $crumb = q{};
+    my $color = {
+        mazebg => '#ffc',
+        panel  => '#ccc',
+        crumb  => '#f3f',
+        sprite => 'orange',
+        button => '#ccf',
+    };
 
     my $crumbstyle = $self->get_crumbstyle();
 
     $self->transform_grid( \@rows, $self->{wallform} );
     $self->_just_maze( \@rows );
 
-    my ($xp, $yp) = $self->convert_start_position( @{$maze->{entry}} );
-    my ($xe, $ye) = $self->convert_end_position( @{$maze->{exit}} );
-    my ($xenter, $yenter) = $self->convert_sign_position( $xp, $yp );
-    my ($xexit, $yexit) = $self->convert_sign_position( $xe, $ye );
+    my ( $xp,     $yp )     = $self->convert_start_position( @{ $maze->{entry} } );
+    my ( $xe,     $ye )     = $self->convert_end_position( @{ $maze->{exit} } );
+    my ( $xenter, $yenter ) = $self->convert_sign_position( $xp, $yp );
+    my ( $xexit,  $yexit )  = $self->convert_sign_position( $xe, $ye );
 
-    my $width = $self->{width} + 2 * SIDE_MARGIN;
-    my $height = $self->{height} + 2 * SIGN_HEIGHT;
+    my $width      = $self->{width} + 2 * SIDE_MARGIN;
+    my $height     = $self->{height} + 2 * SIGN_HEIGHT;
     my $sprite_def = $self->create_sprite();
 
-    my $output = qq{<?xml version="1.0"?>\n} ;
+    my $output  = qq{<?xml version="1.0"?>\n};
     my $offsety = - SIGN_HEIGHT;
     my $offsetx = - SIDE_MARGIN;
-    my ($xme, $yme) = ($xp*$self->dx(), $yp*$self->dy());
-    my ($xcrumb, $ycrumb) = ($xme+$self->dx()/2, $yme+$self->dy()/2);
+    my ( $xme, $yme ) = ( $xp * $self->dx(), $yp * $self->dy() );
+    my ( $xcrumb, $ycrumb ) = ( $xme + $self->dx() / 2, $yme + $self->dy() / 2 );
 
     my $panelheight = $height > PANEL_MIN_HEIGHT ? $height : PANEL_MIN_HEIGHT;
-    if($self->{interactive})
+    if( $self->{interactive} )
     {
         my $script = $self->build_all_script();
-        my $boardelem = $self->build_board_element(
-            \@rows, $xp, $yp, $xe, $ye
-        );
+        my $boardelem = $self->build_board_element( \@rows, $xp, $yp, $xe, $ye );
 
         my $totalwidth = $width + PANEL_WIDTH;
         $output .= <<"EOH";
@@ -422,9 +413,9 @@ $self->{mazeout}
   </svg>
 EOH
 
-    if($self->{interactive})
+    if( $self->{interactive} )
     {
-        my ($cx,$cy) = (($self->{width}+PANEL_WIDTH)/2, (35+$panelheight/2));
+        my ( $cx, $cy ) = ( ( $self->{width} + PANEL_WIDTH ) / 2, ( 35 + $panelheight / 2 ) );
         $output .= $self->build_control_panel( 0, $panelheight );
         $output .= <<"EOM";
   <text id="solvedmsg" x="$cx" y="$cy" visibility="hidden">Solved!</text>
@@ -441,7 +432,6 @@ Alias for C<to_string> to deal with inconsistent name from earlier versions.
 
 sub toString { return $_[0]->to_string(); }
 
-
 =head2 $m->make_board_array( $rows )
 
 Build a two-dimensional array of integers that maps the board from
@@ -451,18 +441,17 @@ the two dimensional matrix of wall descriptions.
 
 sub make_board_array
 {
-    my $self = shift;
-    my $rows = shift;
+    my $self  = shift;
+    my $rows  = shift;
     my @board = ();
 
-    foreach my $row (@{$rows})
+    foreach my $row ( @{$rows} )
     {
         push @board, [ map { $_ ? 1 : 0 } @{$row} ];
     }
 
     return \@board;
 }
-
 
 =head2 $m->get_script_list()
 
@@ -473,17 +462,14 @@ maze.
 
 sub get_script_list
 {
-    my $self = shift;
+    my $self    = shift;
     my @scripts = (
-        "$self->{dir}point.es",
-        "$self->{dir}sprite.es",
-        "$self->{dir}maze.es",
-        $self->get_script(),
+        "$self->{dir}point.es", "$self->{dir}sprite.es",
+        "$self->{dir}maze.es",  $self->get_script(),
     );
 
     return @scripts;
 }
-
 
 =head2 $m->build_all_script()
 
@@ -497,7 +483,7 @@ sub build_all_script
 
     my $script = q{};
 
-    foreach my $url ($self->get_script_list())
+    foreach my $url ( $self->get_script_list() )
     {
         $script .= qq{    <script type="text/ecmascript" xlink:href="$url"/>\n};
     }
@@ -519,10 +505,8 @@ sub build_all_script
     </script>
 EOS
 
-   return $script;
+    return $script;
 }
-
-
 
 =head2 $m->build_board_element( $rows, $xp, $yp, $xe, $ye )
 
@@ -550,7 +534,7 @@ sub build_board_element
 {
     my $self = shift;
     my $rows = shift;
-    my ($xp, $yp, $xe, $ye) = @_;
+    my ( $xp, $yp, $xe, $ye ) = @_;
 
     my $tilex = $self->dx();
     my $tiley = $self->dy();
@@ -558,18 +542,16 @@ sub build_board_element
     my $board = $self->make_board_array( $rows );
 
     my $elem .= qq{    <maze:board start="$xp,$yp" end="$xe,$ye" tile="$tilex,$tiley">\n};
-    foreach my $row (@{$board})
+    foreach my $row ( @{$board} )
     {
-        $elem .= qq{      } . join( q{}, @{$row} ) ."\n";
+        $elem .= qq{      } . join( q{}, @{$row} ) . "\n";
     }
     $elem .= <<'EOS';
     </maze:board>
 EOS
 
-   return $elem;
+    return $elem;
 }
-
-
 
 =head2 $m->build_control_panel( $startx, $height )
 
@@ -591,9 +573,9 @@ the height of the maze
 
 sub build_control_panel
 {
-    my $self = shift;
-    my $startx = shift;
-    my $height = shift;
+    my $self       = shift;
+    my $startx     = shift;
+    my $height     = shift;
     my $panelwidth = PANEL_WIDTH;
 
     my $offset = 20;
@@ -602,13 +584,9 @@ sub build_control_panel
     <rect x="0" y="0" width="$panelwidth" height="$height"
           class="panel"/>
 EOB
-    $output .= _create_text_button( 'restart', $offset, 20, 50, 20, 'Begin' );
-    $output .= _create_text_button(
-        'save_position', $offset+60, 20, 50, 20, 'Save'
-    );
-    $output .= _create_text_button(
-        'restore_position', $offset+120, 20, 50, 20, 'Back'
-    );
+    $output .= _create_text_button( 'restart',          $offset,       20, 50, 20, 'Begin' );
+    $output .= _create_text_button( 'save_position',    $offset + 60,  20, 50, 20, 'Save' );
+    $output .= _create_text_button( 'restore_position', $offset + 120, 20, 50, 20, 'Back' );
     $output .= <<"EOB";
 
     <g transform="translate(20,65)">
@@ -616,8 +594,8 @@ EOB
           fill="none" stroke-width="0.5" stroke="black"/>
       <text x="34" y="-5" class="ctrllabel">Move View</text>
 EOB
-    $output .= _create_view_button( 'maze_up',    22,  0, '10,5 5,15 15,15' );
-    $output .= _create_view_button( 'maze_left',   0, 22, '5,10 15,5 15,15' );
+    $output .= _create_view_button( 'maze_up',    22, 0,  '10,5 5,15 15,15' );
+    $output .= _create_view_button( 'maze_left',  0,  22, '5,10 15,5 15,15' );
     $output .= _create_view_button( 'maze_right', 44, 22, '15,10 5,5 5,15' );
     $output .= _create_view_button( 'maze_down',  22, 44, '10,15 5,5 15,5' );
     $output .= _create_view_button( 'maze_reset', 22, 22, '7,7 7,13 13,13 13,7' );
@@ -652,7 +630,6 @@ EOB
 
     return $output;
 }
-
 
 =begin COMMENT
 
@@ -692,15 +669,15 @@ sub _create_thumbnail
 
 sub _create_text_button
 {
-    my $fn = shift;
-    my $x = shift;
-    my $y = shift;
-    my $width = shift;
+    my $fn     = shift;
+    my $x      = shift;
+    my $y      = shift;
+    my $width  = shift;
     my $height = shift;
-    my $text = shift;
+    my $text   = shift;
 
-    my $tx = $width/2;
-    my $ty = $height/2 + 5;
+    my $tx = $width / 2;
+    my $ty = $height / 2 + 5;
 
     my $output = <<"EOF";
 
@@ -714,7 +691,6 @@ EOF
     return $output;
 }
 
-
 # _create_view_button
 #
 #  $function - function name to call
@@ -724,9 +700,9 @@ EOF
 
 sub _create_view_button
 {
-    my $fn = shift;
-    my $x = shift;
-    my $y = shift;
+    my $fn   = shift;
+    my $x    = shift;
+    my $y    = shift;
     my $icon = shift;
 
     my $output = <<"EOF";
@@ -741,22 +717,20 @@ EOF
     return $output;
 }
 
-
 =head2 $m->create_sprite()
 
 Create the sprite definition for inclusion in the SVG.
 
 =cut
 
-sub  create_sprite
+sub create_sprite
 {
     my $self = shift;
-    my ($dx2, $dy2) = ($self->dx()/2, $self->dy()/2);
+    my ( $dx2, $dy2 ) = ( $self->dx() / 2, $self->dy() / 2 );
 
-    return qq|      | .
-    qq|<path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>|;
+    return qq|      |
+        . qq|<path id="sprite" d="M0,0 Q$dx2,$dy2 0,@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},@{[$self->dy()]} Q$dx2,$dy2 @{[$self->dx()]},0 Q$dx2,$dy2 0,0"/>|;
 }
-
 
 #
 # Generates just the maze portion of the SVG.
@@ -766,7 +740,7 @@ sub  create_sprite
 # $rows - Reference to an array of row data.
 #
 # returns a string containing the SVG for the maze description.
-sub  _just_maze
+sub _just_maze
 {
     my $self = shift;
     my $dx   = $self->dx();
@@ -774,12 +748,12 @@ sub  _just_maze
     my $rows = shift;
 
     my $output = q{};
-    my ($maxx,$y) = (0,0);
+    my ( $maxx, $y ) = ( 0, 0 );
 
-    foreach my $r (@{$rows})
+    foreach my $r ( @{$rows} )
     {
         my $x = 0;
-        foreach my $c (@{$r})
+        foreach my $c ( @{$r} )
         {
             $output .= qq{    <use x="$x" y="$y" xlink:href="#$c"/>\n}
                 if $c and $c ne q{$};
@@ -789,13 +763,12 @@ sub  _just_maze
         $maxx = $x if $maxx < $x;
     }
 
-    $self->{width} = $maxx;
-    $self->{height} = $y;
+    $self->{width}   = $maxx;
+    $self->{height}  = $y;
     $self->{mazeout} = $output;
 
     return $self;
 }
-
 
 =head2 $m->dx()
 
@@ -809,7 +782,6 @@ sub dx
 
     return $self->{dx};
 }
-
 
 =head2 $m->dy()
 

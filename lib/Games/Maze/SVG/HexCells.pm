@@ -16,11 +16,11 @@ Games::Maze::SVG::HexCells - Base class for Hex and RectHex mazes.
 
 =head1 VERSION
 
-Version 0.72
+Version 0.80
 
 =cut
 
-our $VERSION = 0.72;
+our $VERSION = 0.80;
 
 =head1 SYNOPSIS
 
@@ -29,8 +29,8 @@ instatiated directly.
 
 =cut
 
-use constant DELTA_X     => 10;
-use constant DELTA_Y     => 10;
+use constant DELTA_X => 10;
+use constant DELTA_Y => 10;
 
 # ----------------
 #  Shape transformation tables
@@ -38,74 +38,74 @@ use constant DELTA_Y     => 10;
 # in-line
 # l r dl dr
 my %Blocks = (
-    ' _/ ' => 'tl',
+    ' _/ '  => 'tl',
     '_  \\' => 'tr',
     '\\_  ' => 'bl',
-    '_/  ' => 'br',
+    '_/  '  => 'br',
     ' / \\' => 'cl',
     '\\ / ' => 'cr',
-    '__  ' => 'hz',
-    '_   ' => 'hzl',
-    ' _  ' => 'hzr',
+    '__  '  => 'hz',
+    '_   '  => 'hzl',
+    ' _  '  => 'hzr',
     '\\_/ ' => 'yr',
     '_/ \\' => 'yl',
     '\\   ' => 'slb',
-    '   \\'=> 'slt',
-    ' /  ' => 'srb',
-    '  / ' => 'srt',
-    '   /' => 0,
+    '   \\' => 'slt',
+    ' /  '  => 'srb',
+    '  / '  => 'srt',
+    '   /'  => 0,
     '  \\ ' => 0,
     '/ \\_' => 0,
-    '  __' => 0,
+    '  __'  => 0,
     ' \\_/' => 0,
     ' \\  ' => 0,
-    '/   ' => 0,
+    '/   '  => 0,
     '  \\_' => 0,
-    '  _/' => 0,
-    '    ' => 0,
+    '  _/'  => 0,
+    '    '  => 0,
     '/ \\ ' => 0,
     ' \\ /' => 0,
-    '/  _' => 0,
+    '/  _'  => 0,
     ' \\_ ' => 0,
-    '   _' => 0,
-    '  _ ' => 0,
-    '/   ' => 0,
+    '   _'  => 0,
+    '  _ '  => 0,
+    '/   '  => 0,
 );
 
 # Between lines
 # l r dl dr
 my %BlocksBetween = (
-    '   /' => 'sr',
+    '   /'  => 'sr',
     ' \\_/' => 'sr',
-    '  _/' => 'sr',
+    '  _/'  => 'sr',
     ' \\ /' => 'sr',
     '_  \\' => 'sl',
     ' / \\' => 'sl',
     '   \\' => 'sl',
     '_/ \\' => 'sl',
-    ' _/ ' => q{$},
+    ' _/ '  => q{$},
     '  \\ ' => q{$},
     '/ \\_' => q{$},
     '\\ / ' => q{$},
     '  \\_' => q{$},
     '/ \\ ' => q{$},
     '\\_/ ' => q{$},
-    '__  ' => 0,
-    '  __' => 0,
-    '    ' => 0,
-    '_/  ' => 0,
-    '/  _' => 0,
+    '__  '  => 0,
+    '  __'  => 0,
+    '    '  => 0,
+    '_/  '  => 0,
+    '/  _'  => 0,
     ' \\_ ' => 0,
     '\\   ' => 0,
-    '_   ' => 0,
-    '   _' => 0,
-    '  _ ' => 0,
-    ' _  ' => 0,
+    '_   '  => 0,
+    '   _'  => 0,
+    '  _ '  => 0,
+    ' _  '  => 0,
     '\\_  ' => 0,
     ' \\  ' => 0,
-    '  / ' => 0,
-    '/   ' => 0,
-    ' /  ' => 0,
+    '  / '  => 0,
+    '/   '  => 0,
+    ' /  '  => 0,
 );
 
 my %Walls = _get_wall_forms();
@@ -154,30 +154,25 @@ either be relative, or in URL form.
 
 =cut
 
-sub  new
+sub new
 {
     my $class = shift;
 
-    my $obj = 
-    {
-    	Games::Maze::SVG::init_object( @_ ),
-	@_,
-    };
+    my $obj = { Games::Maze::SVG::init_object( @_ ), @_, };
 
-    if(!exists $Walls{$obj->{wallform}})
+    if( !exists $Walls{ $obj->{wallform} } )
     {
         my $forms = join( ", ", sort keys %Walls );
         croak "\n'$obj->{wallform}' is not a valid wall form.\nTry one of: $forms\n\n";
     }
 
     $obj->{mazeparms}->{cell} = 'Hex';
-    $obj->{scriptname} = "hexmaze.es";
-    $obj->{dx} = DELTA_X;
-    $obj->{dy} = DELTA_Y;
+    $obj->{scriptname}        = "hexmaze.es";
+    $obj->{dx}                = DELTA_X;
+    $obj->{dy}                = DELTA_Y;
 
     return bless $obj, $class;
 }
-
 
 =item set_wall_form
 
@@ -195,12 +190,12 @@ Returns a reference to self for chaining.
 
 =cut
 
-sub  set_wall_form
+sub set_wall_form
 {
     my $self = shift;
     my $form = shift;
-  
-    if(exists $Walls{$form})
+
+    if( exists $Walls{$form} )
     {
         $self->{wallform} = $form;
     }
@@ -234,64 +229,66 @@ String specifying wall format. (Unused at present.)
 
 sub transform_grid
 {
-    my $self = shift;
-    my $rows = shift;
+    my $self  = shift;
+    my $rows  = shift;
     my $walls = shift;
-    my @out  = ();
+    my @out   = ();
 
     # transform the printout into block commands
     my $height = @{$rows};
-    my $width  = @{$rows->[0]}+2;
-    
-    for(my $r=0; $r < $height-1; ++$r)
+    my $width  = @{ $rows->[0] } + 2;
+
+    for ( my $r = 0; $r < $height - 1; ++$r )
     {
-	# on line
+
+        # on line
         push @out, _calc_on_line( $rows, $r, $width );
-	# between
+
+        # between
         push @out, _calc_between_line( $rows, $r, $width );
     }
-    push @out, _calc_on_line( $rows, $height-1, $width );
+    push @out, _calc_on_line( $rows, $height - 1, $width );
 
     return @{$rows} = @out;
 }
 
-
 sub _calc_between_line
 {
-    my $rows = shift;
+    my $rows  = shift;
     my $index = shift;
     my $width = shift;
-    my @out = ();
-    
-    for(my $c = 0; $c < $width;++$c)
+    my @out   = ();
+
+    for ( my $c = 0; $c < $width; ++$c )
     {
-        my $sig = ($c ? $rows->[$index][$c-1]||q{ } : q{ })
-	        . ($rows->[$index][$c]||q{ })
-	        . ($c ? $rows->[$index+1][$c-1]||q{ } : q{ })
-		. ($rows->[$index+1][$c]||q{ });
+        my $sig =
+              ( $c ? $rows->[$index][ $c - 1 ] || q{ } : q{ } )
+            . ( $rows->[$index][$c] || q{ } )
+            . ( $c ? $rows->[ $index + 1 ][ $c - 1 ] || q{ } : q{ } )
+            . ( $rows->[ $index + 1 ][$c] || q{ } );
 
         croak "Missing between block for '$sig'.\n" unless exists $BlocksBetween{$sig};
 
         push @out, $BlocksBetween{$sig};
     }
-    
+
     return \@out;
 }
 
-
 sub _calc_on_line
 {
-    my $rows = shift;
+    my $rows  = shift;
     my $index = shift;
     my $width = shift;
-    my @out = ();
-    
-    for(my $c = 0; $c < $width;++$c)
+    my @out   = ();
+
+    for ( my $c = 0; $c < $width; ++$c )
     {
-        my $sig = ($c ? $rows->[$index][$c-1]||q{ } : q{ })
-	        . ($rows->[$index][$c]||q{ })
-	        . ($c ? $rows->[$index+1][$c-1]||q{ } : q{ })
-		. ($rows->[$index+1][$c]||q{ });
+        my $sig =
+              ( $c ? $rows->[$index][ $c - 1 ] || q{ } : q{ } )
+            . ( $rows->[$index][$c] || q{ } )
+            . ( $c ? $rows->[ $index + 1 ][ $c - 1 ] || q{ } : q{ } )
+            . ( $rows->[ $index + 1 ][$c] || q{ } );
 
         croak "Missing block for '$sig'.\n" unless exists $Blocks{$sig};
 
@@ -311,7 +308,7 @@ sub wall_definitions
 {
     my $self = shift;
 
-    return $Walls{$self->{wallform}}
+    return $Walls{ $self->{wallform} };
 }
 
 # _get_wall_forms
@@ -330,7 +327,6 @@ sub _get_wall_forms
 
     return @list;
 }
-
 
 =item convert_start_position
 
@@ -352,12 +348,12 @@ returns a two element list containing (x, y).
 sub convert_start_position
 {
     my $self = shift;
-    my ($x, $y) = @_;
+    my ( $x, $y ) = @_;
 
-    $x = 3*($x-1)+2;
-    $y = 4*($y-1);
+    $x = 3 * ( $x - 1 ) + 2;
+    $y = 4 * ( $y - 1 );
 
-    return ($x, $y);
+    return ( $x, $y );
 }
 
 =item convert_end_position
@@ -380,12 +376,12 @@ returns a two element list containing (x, y).
 sub convert_end_position
 {
     my $self = shift;
-    my ($x, $y) = @_;
+    my ( $x, $y ) = @_;
 
-    $x = 3*($x-1)+2;
-    $y = 4*($y)+2;
+    $x = 3 * ( $x - 1 ) + 2;
+    $y = 4 * ( $y ) + 2;
 
-    return ($x, $y);
+    return ( $x, $y );
 }
 
 =back
@@ -417,7 +413,6 @@ under the same terms as Perl itself.
 =cut
 
 1;
-
 
 __DATA__
 straight
