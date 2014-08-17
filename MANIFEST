@@ -47,5 +47,8 @@ t/26build_script_recthex.t
 t/27build_script_hex.t
 t/lib/MazeTestUtils.pm
 t/lib/TestString.pm
-xt/pod-coverage.t
+xt/critic.t
+xt/hasversion.t
+xt/minimumversion.t
 xt/pod.t
+xt/podcoverage.t

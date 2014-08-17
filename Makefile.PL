@@ -14,6 +14,20 @@ WriteMakefile(
         'Carp' => 0,
     },
     LICENSE             => 'perl',
+    META_MERGE          => {
+        'meta-spec' => { version => 2 },
+        resources => {
+            repository => {
+                type => 'git',
+                url  => 'https://github.com/gwadej/Games-Maze-SVG.git',
+                web  => 'https://github.com/gwadej/Games-Maze-SVG',
+            },
+        },
+    },
+    MIN_PERL_VERSION   => 5.006,
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Games-Maze-SVG-*' },
+    test               => {
+        TESTS => 't/*.t xt/*.t',
+    },
 );
