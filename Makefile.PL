@@ -8,6 +8,12 @@ WriteMakefile(
     VERSION_FROM        => 'lib/Games/Maze/SVG.pm',
     ABSTRACT_FROM       => 'lib/Games/Maze/SVG.pm',
     PL_FILES            => {},
+    CONFIGURE_REQUIRES  => {
+        'ExtUtils::MakeMaker' => 0,
+    },
+    BUILD_REQUIRES => {
+        'Test::More'       => 0,
+    },
     PREREQ_PM => {
         'Test::More' => 0,
         'Games::Maze' => 1.02,
